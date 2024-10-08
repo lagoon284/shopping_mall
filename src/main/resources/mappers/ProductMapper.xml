@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace = "org.example.shopping.mapper.ProductMapper">
+    <insert id = "insertProduct" parameterType = "org.example.shopping.model.ProductInfo">
+        INSERT INTO productinfo (prodno, name, price, provider, info, regdate)
+        VALUES (#{prodNo}, #{name}, #{price}, #{provider}, #{info}, #{regDate})
+    </insert>
+    <insert id = "multiInsertProduct">
+        INSERT INTO productinfo (prodno, name, price, provider, info, regdate)
+        values
+        <foreach collection = "list" item = "product" separator = ",">
+            (#{product.prodNo}, #{product.name}, #{product.price}, #{product.provider}, #{product.info}, #{product.regDate})
+        </foreach>
+    </insert>
+</mapper>

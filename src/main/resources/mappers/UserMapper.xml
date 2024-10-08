@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace = "org.example.shopping.mapper.UserMapper">
+    <!-- 회원가입 -->
+    <insert id = "insertUser" parameterType = "org.example.shopping.model.User">
+        INSERT INTO users (id, name)
+        VALUES (#{id}, #{name})
+    </insert>
+
+    <!-- select문 조회 업무 -->
+    <select id="selectUserById" parameterType="String">
+        SELECT * FROM users WHERE id = #{id}
+    </select>
+    <select id="selectAllUsers" parameterType="org.example.shopping.model.User">
+        select * FROM users
+    </select>
+
+    <!-- update문 수정 업무 -->
+    <update id="updateUserInfo" parameterType="org.example.shopping.model.User">
+        UPDATE users
+        SET name = #{name}
+        WHERE id = #{id}
+    </update>
+
+    <update id="dormencyFrag" parameterType="String">
+        UPDATE users
+        SET sleepfrag = NOT (SELECT sleepfrag FROM users WHERE id = #{id})
+        WHERE id = #{id}
+    </update>
+</mapper>
