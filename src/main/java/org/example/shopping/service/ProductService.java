@@ -21,4 +21,11 @@ public class ProductService {
         productMapper.multiInsertProduct(productInfos);
     }
 
+    public ProductInfo getOneProd(String prodNo) {
+        return productMapper.getOneProd(prodNo);
+    }
+
+    public List<ProductInfo> getQuanProd() {
+        return productMapper.getQuanProd();
+    }
 }

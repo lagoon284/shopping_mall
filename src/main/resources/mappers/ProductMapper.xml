@@ -2,15 +2,28 @@
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace = "org.example.shopping.mapper.ProductMapper">
+
+    <!-- 상품등록 -->
     <insert id = "insertProduct" parameterType = "org.example.shopping.model.ProductInfo">
-        INSERT INTO productinfo (prodno, name, price, provider, info, regdate)
+        INSERT INTO PRODUCTINFO (prodno, name, price, provider, info, regdate)
         VALUES (#{prodNo}, #{name}, #{price}, #{provider}, #{info}, #{regDate})
     </insert>
     <insert id = "multiInsertProduct">
-        INSERT INTO productinfo (prodno, name, price, provider, info, regdate)
+        INSERT INTO PRODUCTINFO (prodno, name, price, provider, info, regdate)
         values
         <foreach collection = "list" item = "product" separator = ",">
             (#{product.prodNo}, #{product.name}, #{product.price}, #{product.provider}, #{product.info}, #{product.regDate})
         </foreach>
     </insert>
+
+    <!-- 상품 조회 -->
+    <select id="getOneProd" parameterType="org.example.shopping.model.ProductInfo">
+        SELECT * FROM PRODUCTINFO
+        WHERE prodno = #{prodNo}
+    </select>
+
+    <select id="getQuanProd" parameterType="Integer">
+        SELECT  * FROM PRODUCTINFO
+    </select>
+
 </mapper>
