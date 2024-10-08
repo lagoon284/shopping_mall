@@ -23,6 +23,7 @@
         WHERE id = #{id}
     </update>
 
+    <!-- 휴면 계정 처리 -->
     <update id="dormencyFrag" parameterType="String">
         UPDATE users
         SET sleepfrag = NOT (SELECT sleepfrag FROM users WHERE id = #{id})

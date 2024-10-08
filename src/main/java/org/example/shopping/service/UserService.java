@@ -1,5 +1,6 @@
 package org.example.shopping.service;
 
+import jakarta.transaction.Transactional;
 import org.example.shopping.mapper.UserMapper;
 import org.example.shopping.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Transactional
     public void signupUser(User user) {
         userMapper.insertUser(user);
     }
