@@ -16,22 +16,25 @@ public class CommonAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(CommonAspect.class);
 
-    @Around("execution(* org.example.shopping.mapper..*(..))")
-    public Object logMybatisQueries(ProceedingJoinPoint joinPoint) throws Throwable {
-        String metgodName = joinPoint.getSignature().toShortString();
-        Object[] args = joinPoint.getArgs();
+    // 매퍼 aop, controller/service AOP와 내용이 겹치므로 주석처리.
+//    @Around("execution(* org.example.shopping.mapper..*(..))")
+//    public Object logMybatisQueries(ProceedingJoinPoint joinPoint) throws Throwable {
+//        String metgodName = joinPoint.getSignature().toShortString();
+//        Object[] args = joinPoint.getArgs();
+//
+//        logger.info("Executing: " + metgodName + " with args: " + Arrays.toString(args));
+//
+//        Object result = joinPoint.proceed();
+//
+//        logger.info("Result: " + result);
+//
+//        return result;
+//    }
 
-        logger.info("Executing: " + metgodName + " with args: " + Arrays.toString(args));
-
-        Object result = joinPoint.proceed();
-
-        logger.info("Result: " + result);
-
-        return result;
-    }
-
+    // controller/service AOP
     @Around("execution(* org.example.shopping.controller..*(..)) || execution(* org.example.shopping.service..*(..))")
     public Object logControllerInit(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+
         boolean isController = proceedingJoinPoint.getSignature().getDeclaringTypeName().contains("controller");
         String logSpace = isController ? "" : "  ";
 
