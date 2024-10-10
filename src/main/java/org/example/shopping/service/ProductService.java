@@ -28,4 +28,8 @@ public class ProductService {
     public List<ProductInfo> getQuanProd() {
         return productMapper.getQuanProd();
     }
+
+    public void updateProd(ProductInfo productInfo) {
+        productMapper.updateProd(productInfo);
+    }
 }

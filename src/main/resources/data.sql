@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS productinfo (
     price VARCHAR(255) NOT NULL ,
     provider NVARCHAR(255) NOT NULL ,
     info NVARCHAR(MAX),
+    usefrag BOOLEAN NOT NULL DEFAULT TRUE,
     regdate VARCHAR(19) NOT NULL ,
     upddate VARCHAR(19)
 );

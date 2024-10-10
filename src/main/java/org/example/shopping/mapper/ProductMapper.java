@@ -19,4 +19,6 @@ public interface ProductMapper {
 
     // 상품 전체 조회 일단은.
     List<ProductInfo> getQuanProd();
+
+    void updateProd(ProductInfo productInfo);
 }

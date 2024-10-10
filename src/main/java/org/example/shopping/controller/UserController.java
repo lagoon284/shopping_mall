@@ -3,6 +3,7 @@ package org.example.shopping.controller;
 
 import org.example.shopping.model.User;
 import org.example.shopping.service.UserService;
+import org.example.shopping.util.TimeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,9 @@ public class UserController {
     // 회원가입.
     @PostMapping("/signup")
     public void signup(@RequestBody User user) {
+
+        user.setRegDate(TimeConverter.toDayToString());
+
         userService.signupUser(user);
     }
 
@@ -36,12 +40,19 @@ public class UserController {
     // 회원정보 수정 id 값 변경 불가.
     @PostMapping("/updateInfo")
     public void updateUserInfo(@RequestBody User user) {
+
+        user.setUpdDate(TimeConverter.toDayToString());
+
         userService.updateUserInfo(user);
     }
 
     // 휴면회원 토글 sleepFrag 값 변경.
+    // 회원 수정에 같이 넣어서 처리하는 방법도 있는데 따로 뺀 이유는 혹시 몰라서...
     @PostMapping("/dormency")
     public void goToSleep(@RequestBody User user) {
+
+        user.setUpdDate(TimeConverter.toDayToString());
+
         userService.goToSleep(user.getId());
     }
 }

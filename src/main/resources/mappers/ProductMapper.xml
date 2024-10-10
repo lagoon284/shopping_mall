@@ -18,12 +18,26 @@
 
     <!-- 상품 조회 -->
     <select id="getOneProd" parameterType="org.example.shopping.model.ProductInfo">
-        SELECT * FROM PRODUCTINFO
-        WHERE prodno = #{prodNo}
+        SELECT * FROM   PRODUCTINFO
+        WHERE           prodno  = #{prodNo}
+        AND             USEFRAG = TRUE
     </select>
 
     <select id="getQuanProd" parameterType="Integer">
-        SELECT  * FROM PRODUCTINFO
+        SELECT * FROM  PRODUCTINFO
+        WHERE           USEFRAG    = TRUE
     </select>
+
+    <!-- 상품 수정 -->
+    <update id="updateProd" parameterType="org.example.shopping.model.ProductInfo">
+        UPDATE  PRODUCTINFO
+        SET     NAME        = #{name},
+                PRICE       = #{price},
+                PROVIDER    = #{provider},
+                INFO        = #{info},
+                USEFRAG     = #{useFrag},
+                UPDDATE     = #{updDate}
+        WHERE   PRODNO    = #{prodNo}
+    </update>
 
 </mapper>
