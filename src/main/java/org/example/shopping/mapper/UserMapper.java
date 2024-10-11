@@ -10,17 +10,19 @@ import java.util.List;
 public interface UserMapper {
 
     // 유저정보 등록
-    void insertUser(User user);
+    int insertUser(User user);
 
     // id 와 일치하는 유저정보 1개 select
     User selectUserById(@Param("id") String id);
+
+    User loginUserById(String id, String pw);
 
     // 모든 유저 정보 select
     List<User> selectAllUsers();
 
     // id 와 일치하는 유저정보 수정 (id는 바꿀 수 없음.)
-    void updateUserInfo(User user);
+    int updateUserInfo(User user);
 
     // id 와 일치하는 유저의 sleepFrag 토글
-    void dormencyFrag(String id);
+    int dormencyFrag(String id);
 }

@@ -4,29 +4,36 @@
 <mapper namespace = "org.example.shopping.mapper.UserMapper">
     <!-- 회원가입 -->
     <insert id = "insertUser" parameterType = "org.example.shopping.model.User">
-        INSERT INTO users (id, name)
-        VALUES (#{id}, #{name})
+        INSERT INTO users (id, pw, name, addr, regdate)
+        VALUES (#{id}, #{pw}, #{name}, #{addr}, #{regDate})
     </insert>
 
     <!-- select문 조회 업무 -->
     <select id="selectUserById" parameterType="String">
-        SELECT * FROM users WHERE id = #{id}
+        SELECT * FROM users
+        WHERE   id = #{id}
+        AND     SLEEPFRAG = FALSE
     </select>
+
     <select id="selectAllUsers" parameterType="org.example.shopping.model.User">
         select * FROM users
+        WHERE SLEEPFRAG = FALSE
     </select>
 
     <!-- update문 수정 업무 -->
     <update id="updateUserInfo" parameterType="org.example.shopping.model.User">
-        UPDATE users
-        SET name = #{name}
-        WHERE id = #{id}
+        UPDATE  users
+        SET     name    = #{name} ,
+                pw      = #{pw},
+                addr    = #{addr} ,
+                upddate = #{updDate}
+        WHERE   id      = #{id}
     </update>
 
     <!-- 휴면 계정 처리 -->
     <update id="dormencyFrag" parameterType="String">
-        UPDATE users
-        SET sleepfrag = NOT (SELECT sleepfrag FROM users WHERE id = #{id})
-        WHERE id = #{id}
+        UPDATE  users
+        SET     sleepfrag   = NOT (SELECT sleepfrag FROM users WHERE id = #{id})
+        WHERE   id          = #{id}
     </update>
 </mapper>

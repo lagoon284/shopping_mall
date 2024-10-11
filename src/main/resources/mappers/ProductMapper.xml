@@ -5,39 +5,40 @@
 
     <!-- 상품등록 -->
     <insert id = "insertProduct" parameterType = "org.example.shopping.model.ProductInfo">
-        INSERT INTO PRODUCTINFO (prodno, name, price, provider, info, regdate)
-        VALUES (#{prodNo}, #{name}, #{price}, #{provider}, #{info}, #{regDate})
+        INSERT INTO PRODUCTINFO (prodname, price, provider, info, regdate)
+        VALUES (#{prodName}, #{price}, #{provider}, #{info}, #{regDate})
     </insert>
+
     <insert id = "multiInsertProduct">
-        INSERT INTO PRODUCTINFO (prodno, name, price, provider, info, regdate)
+        INSERT INTO PRODUCTINFO (prodname, price, provider, info, regdate)
         values
         <foreach collection = "list" item = "product" separator = ",">
-            (#{product.prodNo}, #{product.name}, #{product.price}, #{product.provider}, #{product.info}, #{product.regDate})
+            (#{product.prodName}, #{product.price}, #{product.provider}, #{product.info}, #{product.regDate})
         </foreach>
     </insert>
 
     <!-- 상품 조회 -->
     <select id="getOneProd" parameterType="org.example.shopping.model.ProductInfo">
         SELECT * FROM   PRODUCTINFO
-        WHERE           prodno  = #{prodNo}
+        WHERE           PRODSEQNO  = #{prodSeqNo}
         AND             USEFRAG = TRUE
     </select>
 
     <select id="getQuanProd" parameterType="Integer">
-        SELECT * FROM  PRODUCTINFO
+        SELECT * FROM   PRODUCTINFO
         WHERE           USEFRAG    = TRUE
     </select>
 
     <!-- 상품 수정 -->
     <update id="updateProd" parameterType="org.example.shopping.model.ProductInfo">
         UPDATE  PRODUCTINFO
-        SET     NAME        = #{name},
+        SET     PRODNAME    = #{prodName},
                 PRICE       = #{price},
                 PROVIDER    = #{provider},
                 INFO        = #{info},
                 USEFRAG     = #{useFrag},
                 UPDDATE     = #{updDate}
-        WHERE   PRODNO    = #{prodNo}
+        WHERE   PRODSEQNO    = #{prodSeqNo}
     </update>
 
 </mapper>

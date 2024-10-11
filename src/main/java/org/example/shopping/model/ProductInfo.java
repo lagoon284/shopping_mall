@@ -13,11 +13,9 @@ import java.time.LocalDateTime;
 public class ProductInfo {
 
     // 시퀀스 번호 auto increment.
-    private Long seqNo;
-    // 상품 번호 실질적인 primary key 역할.
-    private String prodNo;
+    private Long prodSeqNo;
     // 상품 이름.
-    private String Name;
+    private String prodName;
     // 상품 가격.
     private String price;
     // 상품 판매처명.
