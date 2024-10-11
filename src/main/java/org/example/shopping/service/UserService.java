@@ -19,11 +19,15 @@ public class UserService {
     private JwtUtil jwtUtil;
 
     public String login(String userId, String password) {
+        // 받은 id 값으로 조회.
         User user = userMapper.selectUserById(userId);
 
+        // 조회한 pw 값으로 밉력받은 pw 와 비교하여 검증.
         if (user != null && user.getPw().equals(password)) {
+            // 검증에 이상없으면 계속 진행 ㄱㄱ.
             return jwtUtil.generateToken(user);
         } else {
+            // 검증 실패시 null 리턴, 컨트롤러에서 핸들링 함.
             return null;
         }
     }

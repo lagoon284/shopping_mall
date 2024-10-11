@@ -19,8 +19,11 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+    // 로그인 하는 컨트롤러... service는 userService를 사용함....
+    // 걍 유저 컨트롤러에 만들까...
     @PostMapping("/login")
     public ResponseEntity<ApiRes<String>> login(@RequestBody Map<String, String> loginRequest) {
+
         String token = userService.login(loginRequest.get("userId"), loginRequest.get("pw"));
 
         if (token == null) {
