@@ -58,7 +58,7 @@ public class UserService {
         String newAccToken = jwtUtil.generateAccToken(user);
         String newRefToken = jwtUtil.generateRefToken(user.getId());
 
-        int retVal = authTokenMapper.insertToken(user.getId(), newAccToken, newRefToken);
+        int retVal = authTokenMapper.updToken(user.getId(), newAccToken, newRefToken);
 
         if (retVal != 1) {
             return null;

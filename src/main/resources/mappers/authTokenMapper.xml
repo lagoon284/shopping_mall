@@ -8,6 +8,13 @@
         VALUES (#{userId}, #{accToken}, #{refToken})
     </insert>
 
+    <update id="updToken">
+        UPDATE  AUTHTOKEN
+        SET     ACCESSTOKEN     = #{accToken},
+                REFRESHTOKEN    = #{refToken}
+        WHERE   USERID          = #{userId}
+    </update>
+
     <select id="getToken">
         SELECT  *
         FROM    AUTHTOKEN

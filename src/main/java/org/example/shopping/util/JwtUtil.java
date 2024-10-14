@@ -1,7 +1,6 @@
 package org.example.shopping.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.example.shopping.model.User;
@@ -44,7 +43,7 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .setSubject(userId)
-                .setExpiration(new Date(System.currentTimeMillis() + expiration * 2))
+                .setExpiration(new Date(System.currentTimeMillis() + (expiration * 20)))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
@@ -72,12 +71,12 @@ public class JwtUtil {
         }
     }
 
-    public Claims extractAuth(String token) {
-        return Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token)
-                .getBody();
-    }
+//    public Claims extractAuth(String token) {
+//        return Jwts.parser()
+//                .setSigningKey(secret)
+//                .parseClaimsJws(token)
+//                .getBody();
+//    }
 
     // 토큰이 아직 유효기간이 남았는지 체크. 지나면 로그인 안됨.
     public boolean isTokenExpired(String token) {
