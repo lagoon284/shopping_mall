@@ -1,14 +1,21 @@
 -- 회원 테이블 생성.
 CREATE TABLE IF NOT EXISTS users (
-    userno       BIGINT  PRIMARY KEY AUTO_INCREMENT,
-    id          NVARCHAR(30)    NOT NULL    UNIQUE ,
-    pw          NVARCHAR(30)    NOT NULL ,
-    name        NVARCHAR(30)     NOT NULL ,
-    addr        NVARCHAR(255)    NOT NULL ,
-    sleepfrag   BOOLEAN         NOT NULL    DEFAULT FALSE ,
+    userno          BIGINT  PRIMARY KEY AUTO_INCREMENT,
+    id              NVARCHAR(30)    NOT NULL    UNIQUE ,
+    pw              NVARCHAR(30)    NOT NULL ,
+    name            NVARCHAR(30)     NOT NULL ,
+    addr            NVARCHAR(255)    NOT NULL ,
+    sleepfrag       BOOLEAN         NOT NULL    DEFAULT FALSE ,
 
-    regdate     VARCHAR(19)     NOT NULL ,
-    upddate     VARCHAR(19)
+    regdate         VARCHAR(19)     NOT NULL ,
+    upddate         VARCHAR(19)
+);
+
+CREATE TABLE IF NOT EXISTS AUTHTOKEN (
+    userid          NVARCHAR(30) ,
+
+    accesstoken     varchar(500) ,
+    refreshtoken    varchar(500)
 );
 
 -- 상품 테이블 생성

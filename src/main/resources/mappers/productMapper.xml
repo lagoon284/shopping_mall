@@ -38,7 +38,7 @@
                 INFO        = #{info},
                 USEFRAG     = #{useFrag},
                 UPDDATE     = #{updDate}
-        WHERE   PRODSEQNO    = #{prodSeqNo}
+        WHERE   PRODSEQNO   = #{prodSeqNo}
     </update>
 
 </mapper>
