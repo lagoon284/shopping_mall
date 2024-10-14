@@ -28,4 +28,7 @@ public class OrderInfo {
     private String prodName;
     // 상품 가격.
     private String prodPrice;
+
+    //--------------- orderNo 생성을 위한 param --------------//
+    private String today;
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace = "org.example.shopping.mapper.OrderInfoMapper">
+    <insert id="insPurchase" parameterType = "org.example.shopping.model.OrderInfo">
+        <selectKey keyProperty="orderNo" resultType="String" order="BEFORE">
+            SELECT
+                CASE
+                    WHEN EXISTS (SELECT 1 FROM ORDERINFO WHERE ORDERNO LIKE CONCAT(#{today},'%'))
+                    THEN ((SELECT MAX(ORDERNO) FROM ORDERINFO WHERE ORDERNO LIKE CONCAT(#{today},'%')) + 1)
+                    ELSE CONCAT(#{today},'000001')
+                END
+        </selectKey>
+
+        INSERT INTO ORDERINFO (ORDERNO, USERID, USERNAME, USERADDR, PRODSEQNO, PRODNAME, PRODPRICE, REGDATE)
+        VALUES (
+                #{orderNo},
+                #{userId},
+                #{userName},
+                #{userAddr},
+                #{prodSeqNo},
+                #{prodName},
+                #{prodPrice},
+                #{regDate}
+               );
+    </insert>
+</mapper>
