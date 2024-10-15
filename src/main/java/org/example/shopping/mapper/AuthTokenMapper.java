@@ -2,7 +2,7 @@ package org.example.shopping.mapper;
 
 import org.example.shopping.model.AuthToken;
 
-public interface AuthTokenMapper {
+public interface  AuthTokenMapper {
 
     int insertToken(String userId, String accToken, String refToken);
 

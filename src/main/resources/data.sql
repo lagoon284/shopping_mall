@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
     upddate         VARCHAR(19)
 );
 
+-- jwt 토큰 테이블 생성.
 CREATE TABLE IF NOT EXISTS AUTHTOKEN (
     userid          NVARCHAR(30) ,
     accesstoken     varchar(500) ,
@@ -19,7 +20,7 @@ CREATE TABLE IF NOT EXISTS AUTHTOKEN (
     FOREIGN KEY (userid) REFERENCES USERS(id)
 );
 
--- 상품 테이블 생성
+-- 상품 테이블 생성.
 CREATE TABLE IF NOT EXISTS productinfo (
     prodseqno   BIGINT  PRIMARY KEY AUTO_INCREMENT,
     prodname    NVARCHAR(255)   NOT NULL ,
@@ -32,7 +33,7 @@ CREATE TABLE IF NOT EXISTS productinfo (
     upddate     VARCHAR(19)
 );
 
--- 주문 테이블 생성
+-- 주문 테이블 생성.
 CREATE TABLE IF NOT EXISTS ORDERINFO (
     ORDERNO     BIGINT          PRIMARY KEY ,
     USERID      NVARCHAR(30)    NOT NULL ,
@@ -47,6 +48,17 @@ CREATE TABLE IF NOT EXISTS ORDERINFO (
 
     FOREIGN KEY (USERID) REFERENCES USERS(id),
     FOREIGN KEY (PRODSEQNO) REFERENCES productinfo(prodseqno)
+);
+
+-- 배송지 테이블 생성.
+CREATE TABLE IF NOT EXISTS DELIVERYADDR (
+    USERID      NVARCHAR(30)    NOT NULL ,
+    DELIADDRNO  TINYINT         NOT NULL CHECK (DELIADDRNO >=1 AND DELIADDRNO <=5),
+    ADDRALIAS   NVARCHAR(10)    NOT NULL DEFAULT '우리 집' ,
+    DELIADDR    NVARCHAR(255)   NOT NULL ,
+    DEFDELIADDR BOOLEAN         NOT NULL DEFAULT FALSE,
+
+    FOREIGN KEY (USERID)    REFERENCES USERS(ID)
 );
 
 -- 회원 데이터 삽입.

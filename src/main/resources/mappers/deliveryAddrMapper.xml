@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.example.shopping.mapper.DeliveryAddrMapper">
+    <insert id="insDeliAddr" parameterType="org.example.shopping.model.DeliveryAddr">
+        <selectKey keyProperty="deliAddrNo" resultType="Integer" order="BEFORE">
+            SELECT
+                CASE
+                    WHEN EXISTS (SELECT DELIADDRNO FROM DELIVERYADDR WHERE USERID = #{userId})
+                    THEN ((SELECT MAX(ORDERNO) FROM DELIVERYADDR WHERE USERID = #{userId}) + 1)
+                ELSE 1
+            END
+        </selectKey>
+
+        INSERT INTO DELIVERYADDR(USERID, DELIADDRNO, ADDRALIAS, DELIADDR, DEFDELIADDR)
+        VALUES (
+                #{userId},
+                #{deliAddrNo},
+                #{addrAlias},
+                #{deliAddr},
+                #{defDeliAddr}
+               );
+    </insert>
+
+    <select id="getDeliInfo" parameterType="String">
+        SELECT  *
+        FROM    DELIVERYADDR
+        WHERE   USERID = #{userId};
+    </select>
+
+    <update id="updDeliAddr" parameterType="org.example.shopping.model.DeliveryAddr">
+        UPDATE  DELIVARYADDR
+        SET     ADDRALIAS   = #{addrAlias},
+                DELIADDR    = #{deliAddr},
+                DEFDELIADDR = #{defDeliAddr}
+        WHERE   USERID      = #{userId};
+    </update>
+
+    <delete id="delDeliAddr" parameterType="org.example.shopping.model.DeliveryAddr">
+        DELETE  FROM    DELIVERYADDR
+                WHERE   USERID      = #{userId}
+                AND     DELIADDRNO  = #{deliAddrNo};
+    </delete>
+</mapper>
