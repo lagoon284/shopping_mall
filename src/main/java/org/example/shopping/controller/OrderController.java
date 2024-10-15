@@ -53,6 +53,15 @@ public class OrderController {
     public ResponseEntity<ApiRes<String>> updateOrder(@RequestBody OrderInfo order) {
 
         int retval = orderInfoService.updateOrder(order);
+
+        if (retval != 1) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ApiRes.diyResult("UPDATE 가 정상적으로 작동하지 않았습니다. (주문)", null));
+        }
+
+        return ResponseEntity
+                .ok(ApiRes.diyResult("UPDATE 가 성공하였습니다. (주문) => " + retval, null));
     }
 
 }
