@@ -14,4 +14,13 @@ public class OrderInfoService {
     public int insPurchase(OrderInfo order) {
         return orderInfoMapper.insPurchase(order);
     }
+
+    public OrderInfo getOrderInfo(String orderNo) {
+        return orderInfoMapper.getOrderInfo(orderNo);
+    }
+
+    public int updateOrder(OrderInfo order) {
+        // 상태값 수정으로 생각중임.
+        return orderInfoMapper.updateOrder(order);
+    }
 }

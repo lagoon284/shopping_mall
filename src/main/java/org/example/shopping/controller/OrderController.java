@@ -32,4 +32,27 @@ public class OrderController {
 
         return ResponseEntity.ok(ApiRes.diyResult("주문이 정상적으로 등록되었습니다. => " + retVal, order));
     }
+
+
+    @GetMapping("/info/{orderNo}")
+    public ResponseEntity<ApiRes<OrderInfo>> orderInfo(@PathVariable String orderNo) {
+
+        OrderInfo getOrderInfo = orderInfoService.getOrderInfo(orderNo);
+
+        if (getOrderInfo == null) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ApiRes.diyResult("주문 번호 값이 적절하지 않습니다. (조회X)", null));
+        }
+
+        return ResponseEntity
+                .ok(ApiRes.diyResult("정상적으로 조회 되었습니다.", getOrderInfo));
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<ApiRes<String>> updateOrder(@RequestBody OrderInfo order) {
+
+        int retval = orderInfoService.updateOrder(order);
+    }
+
 }

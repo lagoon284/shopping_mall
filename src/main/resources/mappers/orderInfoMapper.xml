@@ -24,4 +24,14 @@
                 #{regDate}
                );
     </insert>
+
+    <select id="getOrderInfo" resultType="org.example.shopping.model.OrderInfo" parameterType="String">
+        SELECT  *
+        FROM    ORDERINFO
+        WHERE   ORDERNO = #{orderNo}
+    </select>
+
+    <update id="updateOrder" parameterType="org.example.shopping.model.OrderInfo">
+        -- 아직 못정했음.. 주문 상태 속성 필요해보임.
+    </update>
 </mapper>
