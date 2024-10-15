@@ -13,9 +13,10 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS AUTHTOKEN (
     userid          NVARCHAR(30) ,
-
     accesstoken     varchar(500) ,
-    refreshtoken    varchar(500)
+    refreshtoken    varchar(500),
+
+    FOREIGN KEY (userid) REFERENCES USERS(id)
 );
 
 -- 상품 테이블 생성
@@ -33,16 +34,19 @@ CREATE TABLE IF NOT EXISTS productinfo (
 
 -- 주문 테이블 생성
 CREATE TABLE IF NOT EXISTS ORDERINFO (
-     ORDERNO     BIGINT          PRIMARY KEY ,
-     USERID      NVARCHAR(30)    NOT NULL ,
-     USERNAME    NVARCHAR(30)    NOT NULL ,
-     USERADDR    NVARCHAR(255)   NOT NULL ,
-     PRODSEQNO   BIGINT          NOT NULL ,
+    ORDERNO     BIGINT          PRIMARY KEY ,
+    USERID      NVARCHAR(30)    NOT NULL ,
+    USERNAME    NVARCHAR(30)    NOT NULL ,
+    USERADDR    NVARCHAR(255)   NOT NULL ,
+    PRODSEQNO   BIGINT          NOT NULL ,
 
-     PRODNAME    VARCHAR(255)    NOT NULL ,
-     PRODPRICE   NVARCHAR(255)   NOT NULL ,
-     REGDATE     VARCHAR(19)     NOT NULL ,
-     UPDDATE     VARCHAR(19)
+    PRODNAME    VARCHAR(255)    NOT NULL ,
+    PRODPRICE   NVARCHAR(255)   NOT NULL ,
+    REGDATE     VARCHAR(19)     NOT NULL ,
+    UPDDATE     VARCHAR(19) ,
+
+    FOREIGN KEY (USERID) REFERENCES USERS(id),
+    FOREIGN KEY (PRODSEQNO) REFERENCES productinfo(prodseqno)
 );
 
 -- 회원 데이터 삽입.
