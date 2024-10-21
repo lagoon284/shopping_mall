@@ -1,8 +1,10 @@
-package org.example.shopping.model;
+package org.example.shopping.model.common;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString(exclude = "retVal")
 public class AuthToken {
 
     // user id

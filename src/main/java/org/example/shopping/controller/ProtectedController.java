@@ -2,54 +2,45 @@ package org.example.shopping.controller;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
-import org.example.shopping.model.AuthToken;
+import lombok.RequiredArgsConstructor;
+import org.example.shopping.model.common.AuthToken;
 import org.example.shopping.model.User;
-import org.example.shopping.model.api.ApiRes;
 import org.example.shopping.service.UserService;
 import org.example.shopping.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/protected")
 public class ProtectedController {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/accData")
-    public ResponseEntity<String> getProtectedAccData(@RequestHeader("Authorization") String token) {
+    public String getProtectedAccData(@RequestHeader("Authorization") String token) {
+
         try {
             if (token != null && token.startsWith("seokhoAccAuth ")) {
                 String jwt = token.substring(14);
                 if (!jwtUtil.isTokenExpired(jwt)) {
                     User user = jwtUtil.extractUserObj(jwt);
-                    return ResponseEntity.ok("Protected data for " + user.toString());
+                    return "Protected data for " + user.toString();
                 }
             }
         } catch (SignatureException e) {
             // 인증에 실패했을 때 핸들링.
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authorization 값이 다릅니다.");
+            return "Authorization 값이 다릅니다.";
         } catch (ExpiredJwtException e) {
             // 유효기간이 지났을 때 핸들링.
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("다시 로그인 해주세요.");
+            return "다시 로그인 해주세요.";
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        return "Unauthorized";
     }
 
-    @PostMapping("/refData")
-    public ResponseEntity<ApiRes<Map<String, String>>> getProtectRefData(@RequestHeader("Authorization") String token) {
+    @PutMapping("/refData")
+    public String getProtectRefData(@RequestHeader("Authorization") String token) {
 
         try {
             if (token != null && token.startsWith("seokhoRefAuth")) {
@@ -59,34 +50,25 @@ public class ProtectedController {
 
                     if (getAuthInfo == null || !getAuthInfo.getRefreshToken().equals(jwt)) {
                         // 인증에 실패했을 때 핸들링.
-                        return ResponseEntity
-                                .status(HttpStatus.UNAUTHORIZED)
-                                .body(ApiRes.diyResult("Authorization 값이 다릅니다.", null));
+                        return "Authorization 값이 다릅니다.";
                     }
 
                     User getUserInfo = userService.oneUserSelect(getAuthInfo.getUserId());
 
-                    Map<String, String> newToken = userService.refLogin(getUserInfo);
+                    AuthToken retVal = userService.refLogin(getUserInfo);
 
-                    return ResponseEntity
-                            .ok(ApiRes.diyResult("JWT가 성공적으로 갱신되었습니다. => getProtectRefData", newToken));
+                    return retVal.toString();
                 }
             }
         }   catch (SignatureException e) {
             // 인증에 실패했을 때 핸들링.
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(ApiRes.diyResult("Authorization 값이 다릅니다.", null));
+            return "인증에 실패하였습니다." + e;
         } catch (ExpiredJwtException e) {
             // 유효기간이 지났을 때 핸들링.
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(ApiRes.diyResult("다시 로그인 해주세요.", null));
+            return "유효기간이 지났습니다." + e;
         }
 
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(ApiRes.diyResult("Authorization 값이 다릅니다.", null));
+        return "Authorization 값이 다릅니다.";
     }
 }
 

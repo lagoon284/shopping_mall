@@ -1,18 +1,17 @@
 package org.example.shopping.util;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 public class TimeConverter {
 
+    // Date 사용 지양. LocalDateTime 이나 LocalDate 사용 지향.
     public static String toDayToString() {
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = format.format(date);
+        LocalDateTime date = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
-        return dateString;
+        return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     public static Timestamp localDateTimeToTimeStamp(LocalDateTime ldt) {

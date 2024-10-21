@@ -1,5 +1,6 @@
 package org.example.shopping.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.example.shopping.model.OrderInfo;
 import org.example.shopping.model.api.ApiRes;
 import org.example.shopping.service.OrderInfoService;
@@ -11,57 +12,40 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/order")
+@RequiredArgsConstructor
 public class OrderController {
 
-    @Autowired
-    public OrderInfoService orderInfoService;
+    public final OrderInfoService orderInfoService;
 
-    @PostMapping("/purchase")
-    public ResponseEntity<ApiRes<OrderInfo>> purchase(@RequestBody OrderInfo order) {
-
-        order.setRegDate(TimeConverter.toDayToString());
-        order.setToday(TimeConverter.toDayToString().substring(0, 10).replace("-", ""));
+    @PostMapping("/insPurchase")
+    public String insPurchase(@RequestBody OrderInfo order) {
 
         int retVal = orderInfoService.insPurchase(order);
 
         if (retVal != 1) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(ApiRes.diyResult("주문 등록에 문제가 생겼습니다. => " + retVal, null));
+            return "주문 등록에 문제가 생겼습니다. => " + retVal;
         }
 
-        return ResponseEntity.ok(ApiRes.diyResult("주문이 정상적으로 등록되었습니다. => " + retVal, order));
+        return "주문이 정상적으로 등록되었습니다. => " + retVal;
     }
 
 
     @GetMapping("/info/{orderNo}")
-    public ResponseEntity<ApiRes<OrderInfo>> orderInfo(@PathVariable String orderNo) {
+    public OrderInfo orderInfo(@PathVariable String orderNo) {
 
-        OrderInfo getOrderInfo = orderInfoService.getOrderInfo(orderNo);
-
-        if (getOrderInfo == null) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(ApiRes.diyResult("주문 번호 값이 적절하지 않습니다. (조회X)", null));
-        }
-
-        return ResponseEntity
-                .ok(ApiRes.diyResult("정상적으로 조회 되었습니다.", getOrderInfo));
+        return orderInfoService.getOrderInfo(orderNo);
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<ApiRes<String>> updateOrder(@RequestBody OrderInfo order) {
+    @PutMapping("/update")
+    public String updateOrder(@RequestBody OrderInfo order) {
 
         int retval = orderInfoService.updateOrder(order);
 
         if (retval != 1) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(ApiRes.diyResult("UPDATE 가 정상적으로 작동하지 않았습니다. (주문)", null));
+            return "UPDATE 가 정상적으로 작동하지 않았습니다. (주문) => " + retval;
         }
 
-        return ResponseEntity
-                .ok(ApiRes.diyResult("UPDATE 가 성공하였습니다. (주문) => " + retval, null));
+        return "UPDATE 가 성공하였습니다. (주문) => " + retval;
     }
 
 }

@@ -1,16 +1,15 @@
 package org.example.shopping.model;
 
 import lombok.*;
-import org.example.shopping.util.TimeConverter;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDateTime;
+import org.example.shopping.model.common.RetAttributes;
 
 
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor      // 파라미터가 없는 디폴트 생성자를 생성해줌. (다른 생성자가 있더라도 만들어줌.)
+// @AllArgsConstructor  // 모든 필드 값을 파라미터로받는 생성자를 생성해줌.
+// lombok의 @Data 어노테이션 사용으로 @AllArgsConstructor 는 생략 가능.
 @Data
-public class ProductInfo {
+@EqualsAndHashCode(callSuper = true)
+public class ProductInfo extends RetAttributes {
 
     // 시퀀스 번호 auto increment.
     private Long prodSeqNo;
@@ -24,9 +23,5 @@ public class ProductInfo {
     private String info;
     // 조회 시 노출 여부. (판매/비판매)
     private boolean useFrag;
-    // 등록 날짜. ex) yyyy-MM-dd HH:mm:ss
-    private String regDate;
-    // 수정 날짜. 패턴은 등록 날짜와 동일.
-    private String updDate;
 
 }

@@ -1,12 +1,13 @@
 package org.example.shopping.service;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.example.shopping.mapper.AuthTokenMapper;
 import org.example.shopping.mapper.UserMapper;
-import org.example.shopping.model.AuthToken;
+import org.example.shopping.model.common.AuthToken;
 import org.example.shopping.model.User;
 import org.example.shopping.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.shopping.util.TimeConverter;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -14,16 +15,12 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor        // final이나 @NonNull으로 선언된 필드만을 파라미터로 받는 생성자를 생성.
 public class UserService {
 
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private AuthTokenMapper authTokenMapper;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final UserMapper userMapper;
+    private final AuthTokenMapper authTokenMapper;
+    private final JwtUtil jwtUtil;
 
     public Map<String, String> login(String userId, String password) {
         // 받은 id 값으로 조회.
@@ -35,10 +32,10 @@ public class UserService {
             String jwtAccToken = jwtUtil.generateAccToken(user);
             String jwtRefToken = jwtUtil.generateRefToken(user.getId());
 
-            int retVal = authTokenMapper.insertToken(user.getId(), jwtAccToken, jwtRefToken);
-
-            if (retVal != 1) {
-                return null;
+            if (authTokenMapper.getTokenToId(user.getId())) {
+                authTokenMapper.updToken(user.getId(), jwtAccToken, jwtRefToken);
+            } else {
+                authTokenMapper.insertToken(user.getId(), jwtAccToken, jwtRefToken);
             }
 
             Map<String, String> mapToken = new HashMap<>();
@@ -53,7 +50,7 @@ public class UserService {
         }
     }
 
-    public Map<String, String> refLogin(User user) {
+    public AuthToken refLogin(User user) {
 
         String newAccToken = jwtUtil.generateAccToken(user);
         String newRefToken = jwtUtil.generateRefToken(user.getId());
@@ -64,12 +61,7 @@ public class UserService {
             return null;
         }
 
-        Map<String, String> mapToken = new HashMap<>();
-
-        mapToken.put("accessToken", newAccToken);
-        mapToken.put("refreshToken", newRefToken);
-
-        return mapToken;
+        return authTokenMapper.getToken(newRefToken);
     }
 
     public AuthToken getAuthInfo(String token) {
@@ -78,6 +70,11 @@ public class UserService {
 
     @Transactional
     public int signupUser(User user) {
+
+        // test data set.
+        user.setRegDate(TimeConverter.toDayToString());
+        user.setAddr("대한민국 그 어딘가에 있음");
+
         return userMapper.insertUser(user);
     }
 
@@ -90,10 +87,16 @@ public class UserService {
     }
 
     public int updateUserInfo(User user) {
+
+        user.setUpdDate(TimeConverter.toDayToString());
+
         return userMapper.updateUserInfo(user);
     }
 
-    public int goToSleep(String id) {
-        return userMapper.dormencyFrag(id);
+    public int goToSleep(User user) {
+
+        user.setUpdDate(TimeConverter.toDayToString());
+
+        return userMapper.dormencyFrag(user.getId());
     }
 }

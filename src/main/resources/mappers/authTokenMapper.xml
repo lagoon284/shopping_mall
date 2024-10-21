@@ -21,6 +21,13 @@
         WHERE   REFRESHTOKEN  = #{token}
     </select>
 
+    <!--  테이블에 해당하는 값이 있는지 true/false  -->
+    <select id="getTokenToId" resultType="boolean">
+        SELECT  COUNT(1) > 0
+        FROM    AUTHTOKEN
+        WHERE   USERID      = #{userId}
+    </select>
+
 
 </mapper>
 

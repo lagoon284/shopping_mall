@@ -13,9 +13,9 @@ CREATE TABLE IF NOT EXISTS users (
 
 -- jwt 토큰 테이블 생성.
 CREATE TABLE IF NOT EXISTS AUTHTOKEN (
-    userid          NVARCHAR(30) ,
-    accesstoken     varchar(500) ,
-    refreshtoken    varchar(500),
+    userid          NVARCHAR(30) UNIQUE ,
+    accesstoken     varchar(1000) ,
+    refreshtoken    varchar(1000),
 
     FOREIGN KEY (userid) REFERENCES USERS(id)
 );

@@ -1,20 +1,18 @@
 package org.example.shopping.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
 
 
 @Aspect
 @Component
+@Slf4j      // 아래 주석된 final Logger 라인의 어노테이션 버전.
 public class CommonAspect {
 
-    private static final Logger logger = LoggerFactory.getLogger(CommonAspect.class);
+//    private static final Logger logger = LoggerFactory.getLogger(CommonAspect.class);     // 이렇게 사용해도 되긴함.
 
     // 매퍼 aop, controller/service AOP와 내용이 겹치므로 주석처리.
 //    @Around("execution(* org.example.shopping.mapper..*(..))")
@@ -38,7 +36,7 @@ public class CommonAspect {
         boolean isController = proceedingJoinPoint.getSignature().getDeclaringTypeName().contains("controller");
         String logSpace = isController ? "" : "  ";
 
-        if (logger.isWarnEnabled()) {
+        if (log.isWarnEnabled()) {
             String name = proceedingJoinPoint.getSignature().getName();
 
             String[] pathStr = proceedingJoinPoint.getSignature().getDeclaringTypeName().split("\\.");
@@ -54,7 +52,7 @@ public class CommonAspect {
                 }
             }
 
-            logger.warn("{} {} [{}] : {} {}",
+            log.warn("{} {} [{}] : {} {}",
                     isController ? "--" : "  ┕",
                     isController ? "Controller" : "Service",
                     splPath, name,
@@ -63,8 +61,8 @@ public class CommonAspect {
 
         Object result = proceedingJoinPoint.proceed();
 
-        if (logger.isWarnEnabled()) {
-            logger.warn("{} {}RESULT : {}", logSpace,
+        if (log.isWarnEnabled()) {
+            log.warn("{} {}RESULT : {}", logSpace,
                     isController ? "┕ C => " : "┕ S => ", result);
         }
 

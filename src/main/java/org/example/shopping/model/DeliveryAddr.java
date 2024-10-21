@@ -1,9 +1,12 @@
 package org.example.shopping.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.example.shopping.model.common.RetAttributes;
 
 @Data
-public class DeliveryAddr {
+@EqualsAndHashCode(callSuper = true)
+public class DeliveryAddr extends RetAttributes {
 
     // 유저 개인당 여러개의 배송지
     // 회원(유저) id
@@ -16,5 +19,4 @@ public class DeliveryAddr {
     private String deliAddr;
     // 디폴트 주소 여부
     private boolean defDeliAddr;
-
 }

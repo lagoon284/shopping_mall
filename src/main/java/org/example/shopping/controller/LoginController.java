@@ -1,39 +1,29 @@
 package org.example.shopping.controller;
 
-import org.example.shopping.model.User;
-import org.example.shopping.model.api.ApiRes;
+import lombok.RequiredArgsConstructor;
 import org.example.shopping.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class LoginController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     // 로그인 하는 컨트롤러... service는 userService를 사용함....
     // 걍 유저 컨트롤러에 만들까...
-    @PostMapping("/login")
-    public ResponseEntity<ApiRes<Map<String, String>>> login(@RequestBody Map<String, String> loginRequest) {
+    @PutMapping("/login")
+    public String login(@RequestBody Map<String, String> loginRequest) {
 
         Map<String, String> token = userService.login(loginRequest.get("userId"), loginRequest.get("pw"));
 
         if (token == null || token.isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(ApiRes.diyResult("ID에 해당하는 계정정보가 없습니다.", null));
+            return "ID에 해당하는 계정정보가 없습니다.";
         }
 
-        return ResponseEntity.ok(ApiRes.diyResult("로그인에 성공하였습니다.", token));
+        return "로그인에 성공하였습니다." + token;
     }
 }

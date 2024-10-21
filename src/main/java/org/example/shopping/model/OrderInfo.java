@@ -1,17 +1,16 @@
 package org.example.shopping.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.example.shopping.model.common.RetAttributes;
 
 @Data
-public class OrderInfo {
+@EqualsAndHashCode(callSuper = true)
+public class OrderInfo extends RetAttributes {
 
     //-------------------- 주문 정보 -------------------//
     // 주문 번호. auto increment 값.
     private String orderNo;
-    // 주문 등록 날짜.
-    private String regDate;
-    // 주문 수정 날짜.
-    private String updDate;
 
     //-------------------- 주문자 정보 -------------------//
     // 주문한 회원 아이디.
