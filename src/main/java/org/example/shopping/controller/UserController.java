@@ -35,29 +35,29 @@ public class UserController {
 
     // id 와 일치하는 계정 정보 하나 select.
     @GetMapping("/findID/{id}")
-    public User oneUserSelect(@PathVariable String id) {
+    public ResponseEntity<User> oneUserSelect(@PathVariable String id) {
 
-        return userService.oneUserSelect(id);
+        return ResponseEntity.ok(userService.oneUserSelect(id));
     }
 
     // 모든 계정 정보 select.
     @GetMapping("/allUserSelect")
-    public List<User> allUserSelect() {
+    public ResponseEntity<List<User>> allUserSelect() {
 
-        return userService.allUserSelect();
+        return ResponseEntity.ok(userService.allUserSelect());
     }
 
     // 회원정보 수정 id 값 변경 불가.
     @PutMapping("/updateInfo")
-    public String updateUserInfo(@RequestBody User user) {
+    public ResponseEntity<String> updateUserInfo(@RequestBody User user) {
 
         int updResult = userService.updateUserInfo(user);
         
         if (updResult != 1) {
-            return "단건 UPDATE에 실패하였습니다. => " + updResult;
+            return ResponseEntity.badRequest().body("단건 UPDATE에 실패하였습니다. => " + updResult);
         }
 
-        return "업데이트 성공 => " + updResult;
+        return ResponseEntity.ok("업데이트 성공 => " + updResult);
 
     }
 
