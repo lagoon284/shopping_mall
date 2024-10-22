@@ -14,6 +14,11 @@ import static org.example.shopping.enums.ErrorCode.INTERNAL_SERVER_ERROR;
 @RestControllerAdvice(basePackages = "org.example.shopping.controller")
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<?> nullPointExceptionHandler() {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     // CustomException 에서 지정한 에러일 경우.
     @ExceptionHandler({CustomException.class})
     protected ResponseEntity<?> handleCustomException(CustomException ex) {
