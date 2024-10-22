@@ -16,6 +16,12 @@ public enum ErrorCode {
     ORDER_NOT_FOUND(404, "존재하지 않는 주문 ID 입니다."),
     DELIVERY_ADDR_NOT_FOUND(404, "배송지가 존재하지 않습니다."),        // 일단 넣어놓은 추후 빠질 수 있음...
 
+    // 403 FORBIDDEN 지정한 리소스에 대한 엑세스가 금지됨.
+    AUTH_SIGNATURE_FAIL_ERROR(403, "엑세스 토큰이 일치하지 않습니다."),
+    AUTH_SIGNATURE_EXPIRED_ERROR(401, "엑세스 토큰의 유효시간이 만료 되었습니다."),
+    AUTH_REF_SIGNATURE_FAIL_ERROR(403, "REFRESH TOKEN 값이 일치하지 않습니다."),
+    AUTH_REF_SIGNATURE_EXPIRED_ERROR(401, "REFRESH TOKEN 의 유효기간이 만료 되었습니다."),
+
     // 409 CONFLICT 중복된 리소스.
     ALREADY_SAVED_USER(409, "이미 존재하는 회원 ID 입니다."),
     // ALREADY_SAVED_PRODUCT(409, "이미 존재하는 상품 입니다."),          // 일단 주석... 동일한 상품도 재등록 할 수 있음...
