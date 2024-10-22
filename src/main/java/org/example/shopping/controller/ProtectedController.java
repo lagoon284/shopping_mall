@@ -5,6 +5,8 @@ import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.dto.common.AuthToken;
 import org.example.shopping.dto.User;
+import org.example.shopping.enums.ErrorCode;
+import org.example.shopping.exception.CustomException;
 import org.example.shopping.service.UserService;
 import org.example.shopping.util.JwtUtil;
 import org.springframework.web.bind.annotation.*;
@@ -18,29 +20,28 @@ public class ProtectedController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/accData")
-    public String getProtectedAccData(@RequestHeader("Authorization") String token) {
+    public User getProtectedAccData(@RequestHeader("Authorization") String token) {
 
         try {
             if (token != null && token.startsWith("seokhoAccAuth ")) {
                 String jwt = token.substring(14);
                 if (!jwtUtil.isTokenExpired(jwt)) {
-                    User user = jwtUtil.extractUserObj(jwt);
-                    return "Protected data for " + user.toString();
+                    return jwtUtil.extractUserObj(jwt);
                 }
             }
         } catch (SignatureException e) {
             // 인증에 실패했을 때 핸들링.
-            return "Authorization 값이 다릅니다.";
+            throw new SignatureException("Authorization 값이 다릅니다.");
         } catch (ExpiredJwtException e) {
             // 유효기간이 지났을 때 핸들링.
-            return "다시 로그인 해주세요.";
+            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), e.getMessage());
         }
 
-        return "Unauthorized";
+        throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/refData")
-    public String getProtectRefData(@RequestHeader("Authorization") String token) {
+    public AuthToken getProtectRefData(@RequestHeader("Authorization") String token) {
 
         try {
             if (token != null && token.startsWith("seokhoRefAuth")) {
@@ -50,25 +51,22 @@ public class ProtectedController {
 
                     if (getAuthInfo == null || !getAuthInfo.getRefreshToken().equals(jwt)) {
                         // 인증에 실패했을 때 핸들링.
-                        return "Authorization 값이 다릅니다.";
+                        throw new SignatureException("Authorization 값이 다릅니다.");
                     }
-
                     User getUserInfo = userService.oneUserSelect(getAuthInfo.getUserId());
 
-                    AuthToken retVal = userService.refLogin(getUserInfo);
-
-                    return retVal.toString();
+                    return userService.refLogin(getUserInfo);
                 }
             }
         }   catch (SignatureException e) {
             // 인증에 실패했을 때 핸들링.
-            return "인증에 실패하였습니다." + e;
+            throw new SignatureException("Authorization 값이 다릅니다.");
         } catch (ExpiredJwtException e) {
             // 유효기간이 지났을 때 핸들링.
-            return "유효기간이 지났습니다." + e;
+            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), e.getMessage());
         }
 
-        return "Authorization 값이 다릅니다.";
+        throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 }
 

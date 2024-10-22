@@ -2,6 +2,8 @@ package org.example.shopping.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.dto.ProductInfo;
+import org.example.shopping.enums.ErrorCode;
+import org.example.shopping.exception.CustomException;
 import org.example.shopping.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +23,10 @@ public class ProductController {
         int retVal = productService.insertProduct(productInfo);
 
         if (retVal != 1) {
-            return "PRODUCTINFO 테이블 INSERT 작업에 이상이 있습니다. => " + retVal;
+            throw new CustomException(ErrorCode.INSERT_FAIL_PRODUCT_ERROR);
         }
 
-        return "PRODUCTINFO 테이블에 정상적으로 INSERT 되었습니다. => " + retVal;
+        return "Success";
     }
 
     // 상품 여러개 등록하기
@@ -34,24 +36,36 @@ public class ProductController {
         int retVal = productService.multiInsertProdct(productInfos);
 
         if (retVal < 1) {
-            return "PRODUCTINFO 테이블 INSERT 작업에 이상이 있습니다. (MULTI) => " + retVal;
+            throw new CustomException(ErrorCode.INSERT_FAIL_PRODUCT_ERROR);
         }
 
-        return "PRODUCTINFO 테이블에 정상적으로 INSERT 되었습니다. (MULTI) => " + retVal;
+        return "Success";
     }
 
     // 한개의 상품 정보 가져오기
     @GetMapping("/info/{prodSeqNo}")
     public ProductInfo getOneProd(@PathVariable Long prodSeqNo) {
 
-        return productService.getOneProd(prodSeqNo);
+        ProductInfo prodInfo = productService.getOneProd(prodSeqNo);
+
+        if (prodInfo == null) {
+            throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
+        }
+
+        return prodInfo;
     }
 
     // 일단 전체로 불러오기 (추후 수정 예정 - 지시된 수량 별 혹은 페이지 별.)
     @GetMapping("/infoProds")
     public List<ProductInfo> getQuanProd() {
 
-        return productService.getQuanProd();
+        List<ProductInfo> prodInfos = productService.getQuanProd();
+
+        if (prodInfos.isEmpty()) {
+            throw new CustomException(ErrorCode.SELECT_FAIL_PRODUCT_ERROR);
+        }
+
+        return prodInfos;
     }
 
     // 단건 상품 수정
@@ -62,9 +76,9 @@ public class ProductController {
         int retVal = productService.updateProd(productInfo);
 
         if (retVal != 1) {
-            return "단건 UPDATE에 실패하였습니다. => " + retVal;
+            throw new CustomException(ErrorCode.CONFLICT_REQUEST_PRODUCT);
         }
 
-        return "업데이트 성공 => " + retVal;
+        return "Success";
     }
 }

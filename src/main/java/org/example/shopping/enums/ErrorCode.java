@@ -25,13 +25,24 @@ public enum ErrorCode {
     // 409 CONFLICT 비즈니스 로직 충돌이나 이미 수정한 리소스를 수정하려 할 때.
     CONFLICT_REQUEST_USER(409, "단일 회원 정보 수정에 실패하였습니다."),
     CONFLICT_REQUEST_DORMENCY(409, "단일 회원 휴면계정 전환에 실패하였습니다."),
+    CONFLICT_REQUEST_PRODUCT(409, "단일 상품정보 수정에 실패하였습니다."),
+    CONFLICT_REQUEST_ORDER(409, "단일 주문 수정에 실패하였습니다."),
+    CONFLICT_REQUEST_DELIVERY(409, "단일 배송지정보 수정에 실패하였습니다."),
+
+    DELETE_REQUEST_DELIVERY_ERROR(409, "배송지 삭제 작업에 실패하였습니다."),
 
     // 503 기타 공용적인 에러
     NOT_READY_SERVICE_ERROR(503, "아직 지정되지 않은 공용적인 오류입니다. (TEST ERROR)"),
 
     // 500 INTERNAL SERVER ERROR
     INTERNAL_SERVER_ERROR(500, "서버 에러입니다."),
-    INSERT_FAIL_USER_ERROR(500, "인서트 작업에 실패하였습니다.");
+    INSERT_FAIL_USER_ERROR(500, "회원 인서트 작업에 실패하였습니다."),
+    INSERT_FAIL_PRODUCT_ERROR(500, "상품 인서트 작업에 실패하였습니다."),
+    INSERT_FAIL_DELIVERY_ERROR(500, "배송지 인서트 작업에 싪패하였습니다."),
+    SELECT_FAIL_PRODUCT_ERROR(500, "상품 테이블에 데이터가 없습니다."),
+    SELECT_FAIL_ORDER_ERROR(500, "주문 인서트 작업에 실패하였씁니다."),
+
+    ;
 
 
 

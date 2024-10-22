@@ -22,7 +22,7 @@ public class UserService {
     private final AuthTokenMapper authTokenMapper;
     private final JwtUtil jwtUtil;
 
-    public Map<String, String> login(String userId, String password) {
+    public AuthToken login(String userId, String password) {
         // 받은 id 값으로 조회.
         User user = userMapper.selectUserById(userId);
 
@@ -38,12 +38,13 @@ public class UserService {
                 authTokenMapper.insertToken(user.getId(), jwtAccToken, jwtRefToken);
             }
 
-            Map<String, String> mapToken = new HashMap<>();
+            AuthToken token = new AuthToken();
 
-            mapToken.put("accessToken", jwtAccToken);
-            mapToken.put("refreshToken", jwtRefToken);
+            token.setUserId(userId);
+            token.setAccessToken(jwtAccToken);
+            token.setRefreshToken(jwtRefToken);
 
-            return mapToken;
+            return token;
         } else {
             // 검증 실패시 null 리턴, 컨트롤러에서 핸들링 함.
             return null;
