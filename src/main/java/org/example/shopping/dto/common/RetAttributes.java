@@ -1,4 +1,4 @@
-package org.example.shopping.model.common;
+package org.example.shopping.dto.common;
 
 import lombok.Data;
 

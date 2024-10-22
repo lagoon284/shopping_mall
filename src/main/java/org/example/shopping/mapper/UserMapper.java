@@ -2,7 +2,7 @@ package org.example.shopping.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.example.shopping.model.User;
+import org.example.shopping.dto.User;
 
 import java.util.List;
 

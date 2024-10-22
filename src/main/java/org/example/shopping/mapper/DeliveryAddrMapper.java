@@ -1,7 +1,7 @@
 package org.example.shopping.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.example.shopping.model.DeliveryAddr;
+import org.example.shopping.dto.DeliveryAddr;
 
 import java.util.List;
 

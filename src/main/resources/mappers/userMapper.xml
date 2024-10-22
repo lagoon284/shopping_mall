@@ -3,7 +3,7 @@
 
 <mapper namespace = "org.example.shopping.mapper.UserMapper">
     <!-- 회원가입 -->
-    <insert id = "insertUser" parameterType = "org.example.shopping.model.User">
+    <insert id = "insertUser" parameterType = "org.example.shopping.dto.User">
         INSERT INTO users (id, pw, name, addr, regdate)
         VALUES (#{id}, #{pw}, #{name}, #{addr}, #{regDate})
     </insert>
@@ -15,13 +15,13 @@
         AND     SLEEPFRAG = FALSE
     </select>
 
-    <select id="selectAllUsers" parameterType="org.example.shopping.model.User">
+    <select id="selectAllUsers" parameterType="org.example.shopping.dto.User">
         select * FROM users
         WHERE SLEEPFRAG = FALSE
     </select>
 
     <!-- update문 수정 업무 -->
-    <update id="updateUserInfo" parameterType="org.example.shopping.model.User">
+    <update id="updateUserInfo" parameterType="org.example.shopping.dto.User">
         UPDATE  users
         SET     name    = #{name} ,
                 pw      = #{pw},

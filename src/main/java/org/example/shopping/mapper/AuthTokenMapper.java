@@ -1,6 +1,6 @@
 package org.example.shopping.mapper;
 
-import org.example.shopping.model.common.AuthToken;
+import org.example.shopping.dto.common.AuthToken;
 
 public interface  AuthTokenMapper {
 

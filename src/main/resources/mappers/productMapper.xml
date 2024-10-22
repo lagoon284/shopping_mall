@@ -4,7 +4,7 @@
 <mapper namespace = "org.example.shopping.mapper.ProductMapper">
 
     <!-- 상품등록 -->
-    <insert id = "insertProduct" parameterType = "org.example.shopping.model.ProductInfo">
+    <insert id = "insertProduct" parameterType = "org.example.shopping.dto.ProductInfo">
         INSERT INTO PRODUCTINFO (prodname, price, provider, info, regdate)
         VALUES (#{prodName}, #{price}, #{provider}, #{info}, #{regDate})
     </insert>
@@ -18,7 +18,7 @@
     </insert>
 
     <!-- 상품 조회 -->
-    <select id="getOneProd" parameterType="org.example.shopping.model.ProductInfo">
+    <select id="getOneProd" parameterType="org.example.shopping.dto.ProductInfo">
         SELECT * FROM   PRODUCTINFO
         WHERE           PRODSEQNO  = #{prodSeqNo}
         AND             USEFRAG = TRUE
@@ -30,7 +30,7 @@
     </select>
 
     <!-- 상품 수정 -->
-    <update id="updateProd" parameterType="org.example.shopping.model.ProductInfo">
+    <update id="updateProd" parameterType="org.example.shopping.dto.ProductInfo">
         UPDATE  PRODUCTINFO
         SET     PRODNAME    = #{prodName},
                 PRICE       = #{price},

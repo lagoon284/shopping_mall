@@ -1,7 +1,7 @@
 package org.example.shopping.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.model.DeliveryAddr;
+import org.example.shopping.dto.DeliveryAddr;
 import org.example.shopping.service.DeliveryAddrService;
 import org.springframework.web.bind.annotation.*;
 

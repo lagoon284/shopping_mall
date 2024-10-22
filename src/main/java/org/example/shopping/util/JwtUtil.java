@@ -3,7 +3,7 @@ package org.example.shopping.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.example.shopping.model.User;
+import org.example.shopping.dto.User;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;

@@ -1,8 +1,8 @@
-package org.example.shopping.model;
+package org.example.shopping.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.example.shopping.model.common.RetAttributes;
+import org.example.shopping.dto.common.RetAttributes;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

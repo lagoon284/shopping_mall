@@ -1,4 +1,4 @@
-package org.example.shopping.model.api;
+package org.example.shopping.dto.api;
 
 import lombok.Builder;
 import lombok.Data;

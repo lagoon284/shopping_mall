@@ -1,7 +1,7 @@
 package org.example.shopping.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.example.shopping.model.OrderInfo;
+import org.example.shopping.dto.OrderInfo;
 
 @Mapper
 public interface OrderInfoMapper {

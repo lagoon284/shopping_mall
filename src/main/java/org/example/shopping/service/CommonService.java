@@ -2,7 +2,7 @@ package org.example.shopping.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.shopping.model.ProductInfo;
+import org.example.shopping.dto.ProductInfo;
 import org.springframework.stereotype.Service;
 
 import java.io.File;

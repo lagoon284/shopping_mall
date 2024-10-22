@@ -1,13 +1,8 @@
 package org.example.shopping.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.model.OrderInfo;
-import org.example.shopping.model.api.ApiRes;
+import org.example.shopping.dto.OrderInfo;
 import org.example.shopping.service.OrderInfoService;
-import org.example.shopping.util.TimeConverter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

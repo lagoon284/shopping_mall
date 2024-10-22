@@ -1,7 +1,7 @@
 package org.example.shopping.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.shopping.model.ProductInfo;
+import org.example.shopping.dto.ProductInfo;
 import org.example.shopping.service.CommonService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;

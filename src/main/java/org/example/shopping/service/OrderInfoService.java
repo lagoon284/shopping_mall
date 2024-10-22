@@ -2,9 +2,8 @@ package org.example.shopping.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.mapper.OrderInfoMapper;
-import org.example.shopping.model.OrderInfo;
+import org.example.shopping.dto.OrderInfo;
 import org.example.shopping.util.TimeConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

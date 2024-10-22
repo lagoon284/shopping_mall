@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="org.example.shopping.mapper.DeliveryAddrMapper">
-    <insert id="insDeliAddr" parameterType="org.example.shopping.model.DeliveryAddr">
+    <insert id="insDeliAddr" parameterType="org.example.shopping.dto.DeliveryAddr">
         <selectKey keyProperty="deliAddrNo" resultType="Integer" order="BEFORE">
             SELECT
                 CASE
@@ -28,7 +28,7 @@
         WHERE   USERID = #{userId};
     </select>
 
-    <update id="updDeliAddr" parameterType="org.example.shopping.model.DeliveryAddr">
+    <update id="updDeliAddr" parameterType="org.example.shopping.dto.DeliveryAddr">
         UPDATE  DELIVARYADDR
         SET     ADDRALIAS   = #{addrAlias},
                 DELIADDR    = #{deliAddr},
@@ -36,7 +36,7 @@
         WHERE   USERID      = #{userId};
     </update>
 
-    <delete id="delDeliAddr" parameterType="org.example.shopping.model.DeliveryAddr">
+    <delete id="delDeliAddr" parameterType="org.example.shopping.dto.DeliveryAddr">
         DELETE  FROM    DELIVERYADDR
                 WHERE   USERID      = #{userId}
                 AND     DELIADDRNO  = #{deliAddrNo};

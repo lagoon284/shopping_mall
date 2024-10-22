@@ -2,7 +2,7 @@ package org.example.shopping.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.mapper.DeliveryAddrMapper;
-import org.example.shopping.model.DeliveryAddr;
+import org.example.shopping.dto.DeliveryAddr;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

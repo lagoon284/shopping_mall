@@ -1,9 +1,9 @@
-package org.example.shopping.util;
+package org.example.shopping.wrapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.model.api.ApiRes;
+import org.example.shopping.dto.api.ApiRes;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
