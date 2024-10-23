@@ -1,6 +1,8 @@
 package org.example.shopping.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.shopping.enums.ErrorCode;
+import org.example.shopping.exception.CustomException;
 import org.example.shopping.mapper.OrderInfoMapper;
 import org.example.shopping.dto.OrderInfo;
 import org.example.shopping.util.TimeConverter;
@@ -12,20 +14,27 @@ public class OrderInfoService {
 
     public final OrderInfoMapper orderInfoMapper;
 
-    public int insPurchase(OrderInfo order) {
+    public void insPurchase(OrderInfo order) {
 
-        order.setRegDate(TimeConverter.toDayToString());
-        order.setToday(TimeConverter.toDayToString().substring(0, 10).replace("-", ""));
-
-        return orderInfoMapper.insPurchase(order);
+        if (orderInfoMapper.insPurchase(order) != 1) {
+            throw new CustomException(ErrorCode.SELECT_FAIL_ORDER_ERROR);
+        };
     }
 
     public OrderInfo getOrderInfo(String orderNo) {
-        return orderInfoMapper.getOrderInfo(orderNo);
+        OrderInfo orderInfo = orderInfoMapper.getOrderInfo(orderNo);
+
+        if (orderInfo == null) {
+            throw new CustomException(ErrorCode.ORDER_NOT_FOUND);
+        }
+
+        return orderInfo;
     }
 
-    public int updateOrder(OrderInfo order) {
+    public void updateOrder(OrderInfo order) {
         // 상태값 수정으로 생각중임.
-        return orderInfoMapper.updateOrder(order);
+        if (orderInfoMapper.updateOrder(order) != 1) {
+            throw new CustomException(ErrorCode.CONFLICT_REQUEST_ORDER);
+        }
     }
 }

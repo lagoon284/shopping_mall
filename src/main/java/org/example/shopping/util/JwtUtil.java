@@ -80,6 +80,11 @@ public class JwtUtil {
 
     // 토큰이 아직 유효기간이 남았는지 체크. 지나면 로그인 안됨.
     public boolean isTokenExpired(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getExpiration().before(new Date());
+        return Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration()
+                .before(new Date());
     }
 }

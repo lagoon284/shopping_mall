@@ -22,6 +22,8 @@ public enum ErrorCode {
     AUTH_REF_SIGNATURE_FAIL_ERROR(403, "REFRESH TOKEN 값이 일치하지 않습니다."),
     AUTH_REF_SIGNATURE_EXPIRED_ERROR(401, "REFRESH TOKEN 의 유효기간이 만료 되었습니다."),
 
+    AUTH_REF_SIGNATURE_UPDATE_ERROR(403, "새로 발급된 엑세스 토큰의 UPDATE가 실패하였습니다."),
+
     // 409 CONFLICT 중복된 리소스.
     ALREADY_SAVED_USER(409, "이미 존재하는 회원 ID 입니다."),
     // ALREADY_SAVED_PRODUCT(409, "이미 존재하는 상품 입니다."),          // 일단 주석... 동일한 상품도 재등록 할 수 있음...

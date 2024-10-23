@@ -2,17 +2,16 @@ package org.example.shopping.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.shopping.dto.User;
+import org.example.shopping.dto.common.AuthToken;
+import org.example.shopping.enums.ErrorCode;
+import org.example.shopping.exception.CustomException;
 import org.example.shopping.mapper.AuthTokenMapper;
 import org.example.shopping.mapper.UserMapper;
-import org.example.shopping.dto.common.AuthToken;
-import org.example.shopping.dto.User;
 import org.example.shopping.util.JwtUtil;
-import org.example.shopping.util.TimeConverter;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor        // final이나 @NonNull으로 선언된 필드만을 파라미터로 받는 생성자를 생성.
@@ -47,7 +46,7 @@ public class UserService {
             return token;
         } else {
             // 검증 실패시 null 리턴, 컨트롤러에서 핸들링 함.
-            return null;
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
     }
 
@@ -59,7 +58,7 @@ public class UserService {
         int retVal = authTokenMapper.updToken(user.getId(), newAccToken, newRefToken);
 
         if (retVal != 1) {
-            return null;
+            throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_UPDATE_ERROR);
         }
 
         return authTokenMapper.getToken(newRefToken);
@@ -70,34 +69,46 @@ public class UserService {
     }
 
     @Transactional
-    public int signupUser(User user) {
+    public void signupUser(User user) {
 
-        // test data set.
-        user.setRegDate(TimeConverter.toDayToString());
-        user.setAddr("대한민국 그 어딘가에 있음");
-
-        return userMapper.insertUser(user);
+        if (userMapper.insertUser(user) != 1) {
+            throw new CustomException(ErrorCode.INSERT_FAIL_USER_ERROR);
+        }
     }
 
     public User oneUserSelect(String id) {
-        return userMapper.selectUserById(id);
+
+        User userInfo = userMapper.selectUserById(id);
+
+        if (userInfo == null) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        return userInfo;
     }
 
     public List<User> allUserSelect() {
-        return userMapper.selectAllUsers();
+
+        List<User> userInfos = userMapper.selectAllUsers();
+
+        if (userInfos.isEmpty()) {
+            throw new CustomException(ErrorCode.NOT_READY_SERVICE_ERROR);
+        }
+
+        return userInfos;
     }
 
-    public int updateUserInfo(User user) {
+    public void updateUserInfo(User user) {
 
-        user.setUpdDate(TimeConverter.toDayToString());
-
-        return userMapper.updateUserInfo(user);
+        if (userMapper.updateUserInfo(user) != 1) {
+            throw new CustomException(ErrorCode.CONFLICT_REQUEST_USER);
+        }
     }
 
-    public int goToSleep(User user) {
+    public void goToSleep(User user) {
 
-        user.setUpdDate(TimeConverter.toDayToString());
-
-        return userMapper.dormencyFrag(user.getId());
+        if (userMapper.dormencyFrag(user.getId()) != 1) {
+            throw new CustomException(ErrorCode.CONFLICT_REQUEST_DORMENCY);
+        }
     }
 }

@@ -1,10 +1,12 @@
 package org.example.shopping.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.jdbc.Null;
 import org.example.shopping.dto.ProductInfo;
 import org.example.shopping.enums.ErrorCode;
 import org.example.shopping.exception.CustomException;
 import org.example.shopping.service.ProductService;
+import org.example.shopping.util.TimeConverter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,11 +22,22 @@ public class ProductController {
     @PostMapping("/insert")
     public String productInsert(@RequestBody ProductInfo productInfo) {
 
-        int retVal = productService.insertProduct(productInfo);
+        productInfo.setRegDate(TimeConverter.toDayToString());
 
-        if (retVal != 1) {
-            throw new CustomException(ErrorCode.INSERT_FAIL_PRODUCT_ERROR);
+        try {
+            boolean prodParamCheck = productInfo.getProdName().isEmpty()
+                    || productInfo.getPrice().isEmpty()
+                    || productInfo.getProvider().isEmpty()
+                    || productInfo.getRegDate().isEmpty();
+
+            if (prodParamCheck) {
+                throw new CustomException(ErrorCode.INVALID_PARAMETER);
+            }
+        } catch (NullPointerException e) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
+
+        productService.insertProduct(productInfo);
 
         return "Success";
     }
@@ -33,11 +46,30 @@ public class ProductController {
     @PostMapping("/multiInsert")
     public String multiProductInsert(@RequestBody List<ProductInfo> productInfos) {
 
-        int retVal = productService.multiInsertProdct(productInfos);
-
-        if (retVal < 1) {
-            throw new CustomException(ErrorCode.INSERT_FAIL_PRODUCT_ERROR);
+        if (productInfos.isEmpty()) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
+
+        for (ProductInfo prod : productInfos) {
+
+            prod.setRegDate(TimeConverter.toDayToString());
+
+            try {
+                boolean prodParamCheck = prod.getProdName().isEmpty()
+                        || prod.getPrice().isEmpty()
+                        || prod.getProvider().isEmpty()
+                        || prod.getRegDate().isEmpty();
+
+                if (prodParamCheck) {
+                    throw new CustomException(ErrorCode.INVALID_PARAMETER);
+                }
+            } catch (NullPointerException e) {
+                throw new CustomException(ErrorCode.INVALID_PARAMETER);
+            }
+        }
+
+
+        productService.multiInsertProdct(productInfos);
 
         return "Success";
     }
@@ -46,26 +78,14 @@ public class ProductController {
     @GetMapping("/info/{prodSeqNo}")
     public ProductInfo getOneProd(@PathVariable Long prodSeqNo) {
 
-        ProductInfo prodInfo = productService.getOneProd(prodSeqNo);
-
-        if (prodInfo == null) {
-            throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
-        }
-
-        return prodInfo;
+        return productService.getOneProd(prodSeqNo);
     }
 
     // 일단 전체로 불러오기 (추후 수정 예정 - 지시된 수량 별 혹은 페이지 별.)
     @GetMapping("/infoProds")
     public List<ProductInfo> getQuanProd() {
 
-        List<ProductInfo> prodInfos = productService.getQuanProd();
-
-        if (prodInfos.isEmpty()) {
-            throw new CustomException(ErrorCode.SELECT_FAIL_PRODUCT_ERROR);
-        }
-
-        return prodInfos;
+        return productService.getQuanProd();
     }
 
     // 단건 상품 수정
@@ -73,11 +93,24 @@ public class ProductController {
     @PutMapping("/updateProd")
     public String updateProd(@RequestBody ProductInfo productInfo) {
 
-        int retVal = productService.updateProd(productInfo);
+        productInfo.setUpdDate(TimeConverter.toDayToString());
 
-        if (retVal != 1) {
-            throw new CustomException(ErrorCode.CONFLICT_REQUEST_PRODUCT);
+        try {
+            boolean prodParamCheck = productInfo.getProdSeqNo() == 0
+                    || productInfo.getProdName().isEmpty()
+                    || productInfo.getPrice().isEmpty()
+                    || productInfo.getProvider().isEmpty()
+                    || productInfo.getInfo().isEmpty()
+                    || productInfo.getUpdDate().isEmpty();
+
+            if (prodParamCheck) {
+                throw new CustomException(ErrorCode.INVALID_PARAMETER);
+            }
+        } catch (NullPointerException e) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
+
+        productService.updateProd(productInfo);
 
         return "Success";
     }

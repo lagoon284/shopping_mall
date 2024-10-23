@@ -21,12 +21,17 @@ public class LoginController {
     @PutMapping("/login")
     public AuthToken login(@RequestBody Map<String, String> loginRequest) {
 
-        AuthToken token = userService.login(loginRequest.get("userId"), loginRequest.get("pw"));
+        try {
+            boolean loginParamCheck = loginRequest.get("userId").isEmpty()
+                    || loginRequest.get("pw").isEmpty();
 
-        if (token == null) {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+            if (loginParamCheck) {
+                throw new CustomException(ErrorCode.INVALID_PARAMETER);
+            }
+        } catch (NullPointerException e) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
 
-        return token;
+        return userService.login(loginRequest.get("userId"), loginRequest.get("pw"));
     }
 }

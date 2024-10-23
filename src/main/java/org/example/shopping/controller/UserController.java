@@ -2,10 +2,12 @@ package org.example.shopping.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.jdbc.Null;
+import org.example.shopping.dto.User;
 import org.example.shopping.enums.ErrorCode;
 import org.example.shopping.exception.CustomException;
-import org.example.shopping.dto.User;
 import org.example.shopping.service.UserService;
+import org.example.shopping.util.TimeConverter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +23,25 @@ public class UserController {
     @PostMapping("/signup")
     public String signup(@RequestBody User user) {
 
-        int retVal = userService.signupUser(user);
+        // 등록일시 set.
+        user.setRegDate(TimeConverter.toDayToString());
 
-        if (retVal != 1) {
-            throw new CustomException(ErrorCode.INSERT_FAIL_USER_ERROR);
+        // param 검증 null check.
+        try {
+            boolean paramCheck = user.getId().isEmpty()
+                    || user.getPw().isEmpty()
+                    || user.getName().isEmpty()
+                    || user.getAddr().isEmpty()
+                    || user.getRegDate().isEmpty();
+
+            if (paramCheck) {
+                throw new CustomException(ErrorCode.INVALID_PARAMETER);
+            }
+        } catch (NullPointerException e) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
+
+        userService.signupUser(user);
 
         return "Success";
     }
@@ -34,37 +50,39 @@ public class UserController {
     @GetMapping("/findID/{id}")
     public User oneUserSelect(@PathVariable String id) {
 
-        User userInfo = userService.oneUserSelect(id);
-
-        if (userInfo == null) {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
-        }
-
-        return userInfo;
+        return userService.oneUserSelect(id);
     }
 
     // 모든 계정 정보 select.
     @GetMapping("/allUserSelect")
     public List<User> allUserSelect() {
 
-        List<User> userInfos = userService.allUserSelect();
-
-        if (userInfos.isEmpty()) {
-            throw new CustomException(ErrorCode.NOT_READY_SERVICE_ERROR);
-        }
-
-        return userInfos;
+        return userService.allUserSelect();
     }
 
     // 회원정보 수정 id 값 변경 불가.
     @PutMapping("/updateInfo")
     public String updateUserInfo(@RequestBody User user) {
 
-        int updResult = userService.updateUserInfo(user);
-        
-        if (updResult != 1) {
-            throw new CustomException(ErrorCode.CONFLICT_REQUEST_USER);
+        // 수정일시 set.
+        user.setUpdDate(TimeConverter.toDayToString());
+
+        // param 검증 null check.
+        try {
+            boolean paramCheck = user.getId().isEmpty()
+                    || user.getPw().isEmpty()
+                    || user.getName().isEmpty()
+                    || user.getAddr().isEmpty()
+                    || user.getUpdDate().isEmpty();
+
+            if (paramCheck) {
+                throw new CustomException(ErrorCode.INVALID_PARAMETER);
+            }
+        } catch (NullPointerException e) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
+
+        userService.updateUserInfo(user);
 
         return "Success";
 
@@ -75,11 +93,14 @@ public class UserController {
     @PutMapping("/dormency")
     public String goToSleep(@RequestBody User user) {
 
-        int updResult = userService.goToSleep(user);
-        
-        if (updResult != 1) {
-            throw new CustomException(ErrorCode.CONFLICT_REQUEST_DORMENCY);
+        user.setUpdDate(TimeConverter.toDayToString());
+
+        // param 검증 null check.
+        if (user.getId() == null || user.getId().isEmpty() || user.getId().length() > 30) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
+
+        userService.goToSleep(user);
         
         return "Success";
     }

@@ -1,6 +1,8 @@
 package org.example.shopping.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.shopping.enums.ErrorCode;
+import org.example.shopping.exception.CustomException;
 import org.example.shopping.mapper.ProductMapper;
 import org.example.shopping.dto.ProductInfo;
 import org.example.shopping.util.TimeConverter;
@@ -14,34 +16,52 @@ public class ProductService {
 
     private final ProductMapper productMapper;
 
-    public int insertProduct(ProductInfo productInfo) {
+    public void insertProduct(ProductInfo productInfo) {
 
-        productInfo.setRegDate(TimeConverter.toDayToString());
+        int retVal = productMapper.insertProduct(productInfo);
 
-        return productMapper.insertProduct(productInfo);
+        if (retVal != 1) {
+            throw new CustomException(ErrorCode.INSERT_FAIL_PRODUCT_ERROR);
+        }
     }
 
-    public int multiInsertProdct(List<ProductInfo> productInfos) {
+    public void multiInsertProdct(List<ProductInfo> productInfos) {
 
-        for (ProductInfo prod : productInfos) {
-            prod.setRegDate(TimeConverter.toDayToString());
+        int retVal = productMapper.multiInsertProduct(productInfos);
+
+        if (productInfos.size() != retVal) {
+            throw new CustomException(ErrorCode.INSERT_FAIL_PRODUCT_ERROR);
         }
-
-        return productMapper.multiInsertProduct(productInfos);
     }
 
     public ProductInfo getOneProd(Long prodSeqNo) {
-        return productMapper.getOneProd(prodSeqNo);
+
+        ProductInfo prodInfo = productMapper.getOneProd(prodSeqNo);
+
+        if (prodInfo == null) {
+            throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
+        }
+
+        return prodInfo;
     }
 
     public List<ProductInfo> getQuanProd() {
-        return productMapper.getQuanProd();
+
+        List<ProductInfo> prodInfos = productMapper.getQuanProd();
+
+        if (prodInfos.isEmpty()) {
+            throw new CustomException(ErrorCode.SELECT_FAIL_PRODUCT_ERROR);
+        }
+
+        return prodInfos;
     }
 
-    public int updateProd(ProductInfo productInfo) {
+    public void updateProd(ProductInfo productInfo) {
 
-        productInfo.setUpdDate(TimeConverter.toDayToString());
+        int retVal = productMapper.updateProd(productInfo);
 
-        return productMapper.updateProd(productInfo);
+        if (retVal != 1) {
+            throw new CustomException(ErrorCode.CONFLICT_REQUEST_PRODUCT);
+        }
     }
 }
