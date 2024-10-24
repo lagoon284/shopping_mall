@@ -41,12 +41,10 @@ public class ResponseWrapper implements ResponseBodyAdvice<Object> {
         }
 
         // type이 ApiRes 클래스에서 상속/구현 되었는지?
-        if (ApiRes.class.isAssignableFrom(type)) {
-            return false;
-        }
-
         // return false가 되면 감싸지 않겠다는 의미.
-        return true;
+        return !ApiRes.class.isAssignableFrom(type);
+
+
     }
 
     // 감싸줄때 어떨게 구성할지 짜는 메소드.
