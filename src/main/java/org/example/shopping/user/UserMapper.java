@@ -1,4 +1,4 @@
-package org.example.shopping.funcBase.user;
+package org.example.shopping.user;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

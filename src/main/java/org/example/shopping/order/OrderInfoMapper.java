@@ -1,7 +1,6 @@
-package org.example.shopping.funcBase.order;
+package org.example.shopping.order;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.example.shopping.funcBase.order.OrderInfo;
 
 @Mapper
 public interface OrderInfoMapper {

@@ -1,4 +1,4 @@
-package org.example.shopping.funcBase.order;
+package org.example.shopping.order;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

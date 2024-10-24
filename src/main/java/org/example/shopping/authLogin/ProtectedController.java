@@ -3,10 +3,10 @@ package org.example.shopping.authLogin;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.funcBase.user.User;
+import org.example.shopping.user.User;
 import org.example.shopping.util.exception.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
-import org.example.shopping.funcBase.user.UserService;
+import org.example.shopping.user.UserService;
 import org.example.shopping.util.common.JwtUtil;
 import org.springframework.web.bind.annotation.*;
 

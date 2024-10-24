@@ -1,4 +1,4 @@
-package org.example.shopping.funcBase.deliveryAddr;
+package org.example.shopping.deliveryAddr;
 
 import org.apache.ibatis.annotations.Mapper;
 

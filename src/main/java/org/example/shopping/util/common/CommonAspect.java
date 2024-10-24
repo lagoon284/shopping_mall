@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 
@@ -29,11 +30,16 @@ public class CommonAspect {
 //        return result;
 //    }
 
+    // mapper 는 로그로 별도로 찍어주지 않기 위해 제외.
+    @Pointcut("execution(* org.example.shopping..*Mapper.*(..))")
+    public void excludeMappers() {}
+
     // controller/service AOP
-    @Around("execution(* org.example.shopping.main..*(..)) || execution(* org.example.shopping.service..*(..))")
+    @Around("execution(* org.example.shopping..*(..)) && !excludeMappers()")
     public Object logControllerInit(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
-        boolean isController = proceedingJoinPoint.getSignature().getDeclaringTypeName().contains("controller");
+
+        boolean isController = proceedingJoinPoint.getSignature().getDeclaringTypeName().contains("Controller");
         String logSpace = isController ? "" : "  ";
 
         if (log.isWarnEnabled()) {

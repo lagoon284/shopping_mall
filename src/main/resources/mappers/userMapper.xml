@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace = "org.example.shopping.funcBase.user.UserMapper">
+<mapper namespace = "org.example.shopping.user.UserMapper">
     <!-- 회원가입 -->
-    <insert id = "insertUser" parameterType = "org.example.shopping.funcBase.user.User">
+    <insert id = "insertUser" parameterType = "org.example.shopping.user.User">
         INSERT INTO users (id, pw, name, addr, regdate)
         VALUES (#{id}, #{pw}, #{name}, #{addr}, #{regDate})
     </insert>
@@ -12,16 +12,16 @@
     <select id="selectUserById" parameterType="String">
         SELECT * FROM users
         WHERE   id = #{id}
-        AND     SLEEPFRAG = FALSE
+          AND     SLEEPFRAG = FALSE
     </select>
 
-    <select id="selectAllUsers" parameterType="org.example.shopping.funcBase.user.User">
+    <select id="selectAllUsers" parameterType="org.example.shopping.user.User">
         select * FROM users
         WHERE SLEEPFRAG = FALSE
     </select>
 
     <!-- update문 수정 업무 -->
-    <update id="updateUserInfo" parameterType="org.example.shopping.funcBase.user.User">
+    <update id="updateUserInfo" parameterType="org.example.shopping.user.User">
         UPDATE  users
         SET     name    = #{name} ,
                 pw      = #{pw},

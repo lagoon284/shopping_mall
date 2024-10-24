@@ -1,4 +1,4 @@
-package org.example.shopping.funcBase.user;
+package org.example.shopping.user;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

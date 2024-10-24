@@ -1,4 +1,4 @@
-package org.example.shopping.funcBase.order;
+package org.example.shopping.order;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.util.exception.ErrorCode;

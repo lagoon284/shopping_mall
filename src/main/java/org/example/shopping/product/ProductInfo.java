@@ -1,4 +1,4 @@
-package org.example.shopping.funcBase.product;
+package org.example.shopping.product;
 
 import lombok.*;
 import org.example.shopping.util.common.RetAttributes;

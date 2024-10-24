@@ -1,4 +1,4 @@
-package org.example.shopping.funcBase.deliveryAddr;
+package org.example.shopping.deliveryAddr;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.util.exception.ErrorCode;

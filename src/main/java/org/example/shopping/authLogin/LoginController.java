@@ -3,7 +3,7 @@ package org.example.shopping.authLogin;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.util.exception.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
-import org.example.shopping.funcBase.user.UserService;
+import org.example.shopping.user.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
