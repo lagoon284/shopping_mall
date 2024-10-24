@@ -31,13 +31,12 @@ public class CommonAspect {
 //    }
 
     // mapper 는 로그로 별도로 찍어주지 않기 위해 제외.
-    @Pointcut("execution(* org.example.shopping..*Mapper.*(..))")
+    @Pointcut("execution(* org.example.shopping..*Mapper.*(..)) || execution(* org.example.shopping.util..*(..))")
     public void excludeMappers() {}
 
     // controller/service AOP
     @Around("execution(* org.example.shopping..*(..)) && !excludeMappers()")
     public Object logControllerInit(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-
 
         boolean isController = proceedingJoinPoint.getSignature().getDeclaringTypeName().contains("Controller");
         String logSpace = isController ? "" : "  ";
@@ -67,9 +66,21 @@ public class CommonAspect {
 
         Object result = proceedingJoinPoint.proceed();
 
-        if (log.isWarnEnabled()) {
+        if (log.isWarnEnabled() && result != null) {
             log.warn("{} {}RESULT : {}", logSpace,
                     isController ? "┕ C => " : "┕ S => ", result);
+        }
+
+        return result;
+    }
+
+    @Around("execution(* org.example.shopping.util.wrapper..*(..)))")
+    public Object logWrapperInit(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+
+        Object result = proceedingJoinPoint.proceed();
+
+        if (log.isWarnEnabled() && !(result instanceof Boolean && (Boolean) result)) {
+            log.warn("==== RETURN RESULT : {}", result);
         }
 
         return result;
