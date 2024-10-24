@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace = "org.example.shopping.funcBase.order.OrderInfoMapper">
+    <insert id="insPurchase" parameterType = "org.example.shopping.funcBase.order.OrderInfo">
+        <selectKey keyProperty="orderNo" resultType="String" order="BEFORE">
+            SELECT
+                CASE
+                    WHEN EXISTS (SELECT 1 FROM ORDERINFO WHERE ORDERNO LIKE CONCAT(#{today},'%'))
+                    THEN ((SELECT MAX(ORDERNO) FROM ORDERINFO WHERE ORDERNO LIKE CONCAT(#{today},'%')) + 1)
+                    ELSE CONCAT(#{today},'000001')
+                END
+        </selectKey>
+
+        INSERT INTO ORDERINFO (ORDERNO, USERID, USERNAME, USERADDR, PRODSEQNO, PRODNAME, PRODPRICE, REGDATE)
+        VALUES (
+                #{orderNo},
+                #{userId},
+                #{userName},
+                #{userAddr},
+                #{prodSeqNo},
+                #{prodName},
+                #{prodPrice},
+                #{regDate}
+               );
+    </insert>
+
+    <select id="getOrderInfo" resultType="org.example.shopping.funcBase.order.OrderInfo" parameterType="String">
+        SELECT  *
+        FROM    ORDERINFO
+        WHERE   ORDERNO = #{orderNo}
+    </select>
+
+    <update id="updateOrder" parameterType="org.example.shopping.funcBase.order.OrderInfo">
+        -- 아직 못정했음.. 주문 상태 속성 필요해보임.
+    </update>
+</mapper>
