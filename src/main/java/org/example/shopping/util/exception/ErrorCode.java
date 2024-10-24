@@ -46,9 +46,9 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(500, "서버 에러입니다."),
     INSERT_FAIL_USER_ERROR(500, "회원 인서트 작업에 실패하였습니다."),
     INSERT_FAIL_PRODUCT_ERROR(500, "상품 인서트 작업에 실패하였습니다."),
-    INSERT_FAIL_DELIVERY_ERROR(500, "배송지 인서트 작업에 싪패하였습니다."),
+    INSERT_FAIL_DELIVERY_ERROR(500, "배송지 인서트 작업에 실패하였습니다."),
     SELECT_FAIL_PRODUCT_ERROR(500, "상품 테이블에 데이터가 없습니다."),
-    SELECT_FAIL_ORDER_ERROR(500, "주문 인서트 작업에 실패하였씁니다."),
+    SELECT_FAIL_ORDER_ERROR(500, "주문 인서트 작업에 실패하였습니다."),
 
     ;
 

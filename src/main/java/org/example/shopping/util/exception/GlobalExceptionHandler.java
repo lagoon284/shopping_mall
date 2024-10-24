@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static org.example.shopping.util.exception.ErrorCode.INTERNAL_SERVER_ERROR;
 
-@RestControllerAdvice(basePackages = "org.example.shopping.controller")
+@RestControllerAdvice(basePackages = "org.example.shopping")
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NullPointerException.class)
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<?> handleServerException(Exception ex) {
         return new ResponseEntity<>(new ErrorDto(
                 INTERNAL_SERVER_ERROR.getStatus()
-                , INTERNAL_SERVER_ERROR.getMessage())
+                , ex.getMessage())
                 , HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
