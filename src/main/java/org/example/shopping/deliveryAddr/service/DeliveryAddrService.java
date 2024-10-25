@@ -3,7 +3,7 @@ package org.example.shopping.deliveryAddr.service;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.deliveryAddr.mapper.DeliveryAddrMapper;
 import org.example.shopping.deliveryAddr.dto.DeliveryAddr;
-import org.example.shopping.util.exception.ErrorCode;
+import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.springframework.stereotype.Service;
 

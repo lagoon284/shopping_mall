@@ -2,6 +2,7 @@ package org.example.shopping.util.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -35,7 +36,7 @@ public class CommonAspect {
     public void excludeMappers() {}
 
     // controller/service AOP
-    @Around("execution(* org.example.shopping.*Controller.*(..)) && !excludeMappers()")
+    @Around("execution(* org.example.shopping.*.controller.*Controller.*(..)) && !excludeMappers()")
     public Object logControllerInit(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         boolean isController = proceedingJoinPoint.getSignature().getDeclaringTypeName().contains("Controller");
@@ -50,9 +51,11 @@ public class CommonAspect {
 
             if (pathStr.length > 3) {
                 for (int i = 3; i < pathStr.length; i++) {
-                    splPath.append(pathStr[i]);
-                    if (i < pathStr.length -1) {
-                        splPath.append(".");
+                    if (i % 2 > 0) {
+                        splPath.append(pathStr[i]);
+                        if (i < pathStr.length - 1) {
+                            splPath.append(".");
+                        }
                     }
                 }
             }

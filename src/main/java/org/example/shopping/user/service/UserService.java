@@ -2,10 +2,11 @@ package org.example.shopping.user.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.authLogin.dto.AuthToken;
 import org.example.shopping.user.dto.User;
 import org.example.shopping.user.mapper.UserMapper;
-import org.example.shopping.util.exception.ErrorCode;
+import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.authLogin.mapper.AuthTokenMapper;
 import org.example.shopping.util.common.JwtUtil;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor        // final이나 @NonNull으로 선언된 필드만을 파라미터로 받는 생성자를 생성.
+@Slf4j
 public class UserService {
 
     private final UserMapper userMapper;

@@ -1,9 +1,10 @@
 package org.example.shopping.product.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.product.dto.ProductInfo;
 import org.example.shopping.product.service.ProductService;
-import org.example.shopping.util.exception.ErrorCode;
+import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.util.common.TimeConverter;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
+@Slf4j
 public class ProductController {
 
     private final ProductService productService;
@@ -49,6 +51,8 @@ public class ProductController {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
 
+        int index = 1;
+
         for (ProductInfo prod : productInfos) {
 
             prod.setRegDate(TimeConverter.toDayToString());
@@ -60,9 +64,13 @@ public class ProductController {
                         || prod.getRegDate().isEmpty();
 
                 if (prodParamCheck) {
+                    log.info(index + ", " + prod);
                     throw new CustomException(ErrorCode.INVALID_PARAMETER);
                 }
+
+                index++;
             } catch (NullPointerException e) {
+                log.info(index + ", " + prod);
                 throw new CustomException(ErrorCode.INVALID_PARAMETER);
             }
         }

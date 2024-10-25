@@ -1,4 +1,4 @@
-package org.example.shopping.util.exception;
+package org.example.shopping.util.exception.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

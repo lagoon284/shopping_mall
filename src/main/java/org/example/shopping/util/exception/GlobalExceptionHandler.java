@@ -1,5 +1,7 @@
 package org.example.shopping.util.exception;
 
+import lombok.extern.slf4j.Slf4j;
+import org.example.shopping.util.exception.dto.ErrorDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestHeaderException;
@@ -7,9 +9,10 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static org.example.shopping.util.exception.ErrorCode.INTERNAL_SERVER_ERROR;
+import static org.example.shopping.util.exception.enums.ErrorCode.INTERNAL_SERVER_ERROR;
 
-@RestControllerAdvice(basePackages = "org.example.shopping.user.controller.*Controller")
+@RestControllerAdvice(basePackages = "org.example.shopping")
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NullPointerException.class)
@@ -20,6 +23,9 @@ public class GlobalExceptionHandler {
     // CustomException 에서 지정한 에러일 경우.
     @ExceptionHandler({CustomException.class})
     protected ResponseEntity<?> handleCustomException(CustomException ex) {
+
+        log.info("----- THROW CUSTOM EXCEPTION!!! : STATUS = {}, MESSAGE = {}", ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage());
+
         return new ResponseEntity<>(new ErrorDto(
                 ex.getErrorCode().getStatus()
                 , ex.getErrorCode().getMessage())

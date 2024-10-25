@@ -1,4 +1,4 @@
-package org.example.shopping.main;
+package org.example.shopping.main.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.product.dto.ProductInfo;

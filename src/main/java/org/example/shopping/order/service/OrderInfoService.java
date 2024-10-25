@@ -3,7 +3,7 @@ package org.example.shopping.order.service;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.order.dto.OrderInfo;
 import org.example.shopping.order.mapper.OrderInfoMapper;
-import org.example.shopping.util.exception.ErrorCode;
+import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.springframework.stereotype.Service;
 

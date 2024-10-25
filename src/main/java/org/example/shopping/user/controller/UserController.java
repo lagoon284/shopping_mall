@@ -4,7 +4,7 @@ package org.example.shopping.user.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.user.dto.User;
 import org.example.shopping.user.service.UserService;
-import org.example.shopping.util.exception.ErrorCode;
+import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.util.common.TimeConverter;
 import org.springframework.web.bind.annotation.*;
