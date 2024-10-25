@@ -1,4 +1,4 @@
-package org.example.shopping.order;
+package org.example.shopping.order.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

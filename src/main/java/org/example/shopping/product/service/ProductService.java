@@ -1,6 +1,8 @@
-package org.example.shopping.product;
+package org.example.shopping.product.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.shopping.product.dto.ProductInfo;
+import org.example.shopping.product.mapper.ProductMapper;
 import org.example.shopping.util.exception.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.springframework.stereotype.Service;

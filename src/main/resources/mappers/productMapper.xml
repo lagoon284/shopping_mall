@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace = "org.example.shopping.product.ProductMapper">
+<mapper namespace = "org.example.shopping.product.mapper.ProductMapper">
 
     <!-- 상품등록 -->
-    <insert id = "insertProduct" parameterType = "org.example.shopping.product.ProductInfo">
+    <insert id = "insertProduct" parameterType = "org.example.shopping.product.dto.ProductInfo">
         INSERT INTO PRODUCTINFO (prodname, price, provider, info, regdate)
         VALUES (#{prodName}, #{price}, #{provider}, #{info}, #{regDate})
     </insert>
@@ -18,7 +18,7 @@
     </insert>
 
     <!-- 상품 조회 -->
-    <select id="getOneProd" parameterType="org.example.shopping.product.ProductInfo">
+    <select id="getOneProd" parameterType="org.example.shopping.product.dto.ProductInfo">
         SELECT * FROM   PRODUCTINFO
         WHERE           PRODSEQNO  = #{prodSeqNo}
         AND             USEFRAG = TRUE
@@ -30,7 +30,7 @@
     </select>
 
     <!-- 상품 수정 -->
-    <update id="updateProd" parameterType="org.example.shopping.product.ProductInfo">
+    <update id="updateProd" parameterType="org.example.shopping.product.dto.ProductInfo">
         UPDATE  PRODUCTINFO
         SET     PRODNAME    = #{prodName},
                 PRICE       = #{price},

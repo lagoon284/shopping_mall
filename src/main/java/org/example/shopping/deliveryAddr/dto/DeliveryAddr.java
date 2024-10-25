@@ -1,4 +1,4 @@
-package org.example.shopping.deliveryAddr;
+package org.example.shopping.deliveryAddr.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

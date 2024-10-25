@@ -1,7 +1,8 @@
-package org.example.shopping.user;
+package org.example.shopping.user.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.example.shopping.user.dto.User;
 
 import java.util.List;
 

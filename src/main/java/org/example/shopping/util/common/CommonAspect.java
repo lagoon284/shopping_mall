@@ -31,11 +31,11 @@ public class CommonAspect {
 //    }
 
     // mapper 는 로그로 별도로 찍어주지 않기 위해 제외.
-    @Pointcut("execution(* org.example.shopping..*Mapper.*(..)) || execution(* org.example.shopping.util..*(..))")
+    @Pointcut("execution(* org.example.shopping.*Mapper.*(..)) || execution(* org.example.shopping.util..*(..))")
     public void excludeMappers() {}
 
     // controller/service AOP
-    @Around("execution(* org.example.shopping..*(..)) && !excludeMappers()")
+    @Around("execution(* org.example.shopping.*Controller.*(..)) && !excludeMappers()")
     public Object logControllerInit(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         boolean isController = proceedingJoinPoint.getSignature().getDeclaringTypeName().contains("Controller");

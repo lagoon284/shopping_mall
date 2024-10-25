@@ -1,6 +1,7 @@
-package org.example.shopping.product;
+package org.example.shopping.product.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.example.shopping.product.dto.ProductInfo;
 
 import java.util.List;
 

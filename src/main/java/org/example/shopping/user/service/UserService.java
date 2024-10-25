@@ -1,11 +1,13 @@
-package org.example.shopping.user;
+package org.example.shopping.user.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.authLogin.AuthToken;
+import org.example.shopping.authLogin.dto.AuthToken;
+import org.example.shopping.user.dto.User;
+import org.example.shopping.user.mapper.UserMapper;
 import org.example.shopping.util.exception.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
-import org.example.shopping.authLogin.AuthTokenMapper;
+import org.example.shopping.authLogin.mapper.AuthTokenMapper;
 import org.example.shopping.util.common.JwtUtil;
 import org.springframework.stereotype.Service;
 

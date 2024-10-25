@@ -1,4 +1,4 @@
-package org.example.shopping.product;
+package org.example.shopping.product.dto;
 
 import lombok.*;
 import org.example.shopping.util.common.RetAttributes;

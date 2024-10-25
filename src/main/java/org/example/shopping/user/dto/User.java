@@ -1,4 +1,4 @@
-package org.example.shopping.user;
+package org.example.shopping.user.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

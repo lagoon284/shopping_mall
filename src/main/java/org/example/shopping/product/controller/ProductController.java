@@ -1,6 +1,8 @@
-package org.example.shopping.product;
+package org.example.shopping.product.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.shopping.product.dto.ProductInfo;
+import org.example.shopping.product.service.ProductService;
 import org.example.shopping.util.exception.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.util.common.TimeConverter;

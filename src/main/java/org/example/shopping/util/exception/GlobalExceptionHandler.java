@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static org.example.shopping.util.exception.ErrorCode.INTERNAL_SERVER_ERROR;
 
-@RestControllerAdvice(basePackages = "org.example.shopping")
+@RestControllerAdvice(basePackages = "org.example.shopping.user.controller.*Controller")
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NullPointerException.class)

@@ -1,9 +1,10 @@
-package org.example.shopping.authLogin;
+package org.example.shopping.authLogin.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.shopping.authLogin.dto.AuthToken;
 import org.example.shopping.util.exception.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
-import org.example.shopping.user.UserService;
+import org.example.shopping.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;

@@ -1,4 +1,4 @@
-package org.example.shopping.authLogin;
+package org.example.shopping.authLogin.dto;
 
 import lombok.Data;
 import lombok.ToString;

@@ -1,4 +1,6 @@
-package org.example.shopping.authLogin;
+package org.example.shopping.authLogin.mapper;
+
+import org.example.shopping.authLogin.dto.AuthToken;
 
 public interface  AuthTokenMapper {
 
