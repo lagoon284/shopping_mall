@@ -5,7 +5,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.authLogin.dto.AuthToken;
 import org.example.shopping.user.dto.User;
+import org.example.shopping.user.dto.UserDormancyReq;
+import org.example.shopping.user.dto.UserInsertReq;
+import org.example.shopping.user.dto.UserUpdateReq;
 import org.example.shopping.user.mapper.UserMapper;
+import org.example.shopping.util.common.TimeConverter;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.authLogin.mapper.AuthTokenMapper;
@@ -71,7 +75,10 @@ public class UserService {
     }
 
     @Transactional
-    public void signupUser(User user) {
+    public void signupUser(UserInsertReq user) {
+
+        // 등록일시 set.
+        user.setRegDate(TimeConverter.toDayToString());
 
         if (userMapper.insertUser(user) != 1) {
             throw new CustomException(ErrorCode.INSERT_FAIL_USER_ERROR);
@@ -100,14 +107,16 @@ public class UserService {
         return userInfos;
     }
 
-    public void updateUserInfo(User user) {
+    public void updateUserInfo(UserUpdateReq user) {
 
         if (userMapper.updateUserInfo(user) != 1) {
             throw new CustomException(ErrorCode.CONFLICT_REQUEST_USER);
         }
     }
 
-    public void goToSleep(User user) {
+    public void goToSleep(UserDormancyReq user) {
+
+        user.setUpdDate(TimeConverter.toDayToString());
 
         if (userMapper.dormencyFrag(user.getId()) != 1) {
             throw new CustomException(ErrorCode.CONFLICT_REQUEST_DORMENCY);
