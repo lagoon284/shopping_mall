@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.authLogin.dto.AuthToken;
 import org.example.shopping.user.dto.User;
-import org.example.shopping.user.dto.UserDormancyReq;
+import org.example.shopping.user.dto.UserDormencyReq;
 import org.example.shopping.user.dto.UserInsertReq;
 import org.example.shopping.user.dto.UserUpdateReq;
 import org.example.shopping.user.mapper.UserMapper;
@@ -114,7 +114,7 @@ public class UserService {
         }
     }
 
-    public void goToSleep(UserDormancyReq user) {
+    public void goToSleep(UserDormencyReq user) {
 
         user.setUpdDate(TimeConverter.toDayToString());
 

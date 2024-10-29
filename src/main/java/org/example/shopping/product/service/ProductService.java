@@ -2,7 +2,10 @@ package org.example.shopping.product.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.product.dto.ProductInfo;
+import org.example.shopping.product.dto.ProductInsertReq;
+import org.example.shopping.product.dto.ProductUpdateReq;
 import org.example.shopping.product.mapper.ProductMapper;
+import org.example.shopping.util.common.TimeConverter;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.springframework.stereotype.Service;
@@ -15,7 +18,9 @@ public class ProductService {
 
     private final ProductMapper productMapper;
 
-    public void insertProduct(ProductInfo productInfo) {
+    public void insertProduct(ProductInsertReq productInfo) {
+
+        productInfo.setRegDate(TimeConverter.toDayToString());
 
         int retVal = productMapper.insertProduct(productInfo);
 
@@ -24,7 +29,7 @@ public class ProductService {
         }
     }
 
-    public void multiInsertProdct(List<ProductInfo> productInfos) {
+    public void multiInsertProdct(List<ProductInsertReq> productInfos) {
 
         int retVal = productMapper.multiInsertProduct(productInfos);
 
@@ -55,7 +60,9 @@ public class ProductService {
         return prodInfos;
     }
 
-    public void updateProd(ProductInfo productInfo) {
+    public void updateProd(ProductUpdateReq productInfo) {
+
+        productInfo.setUpdDate(TimeConverter.toDayToString());
 
         int retVal = productMapper.updateProd(productInfo);
 

@@ -16,18 +16,18 @@ public class ValidationUtil {
             try {
                 Object value = field.get(obj);
                 if (value == null) {
-                    return false;           // null 또는 빈 문자열인 경우
+                    return true;           // null 또는 빈 문자열인 경우
                 } else if (value instanceof String && ((String) value).isEmpty()) {
-                    return false;           // 빈 문자열 체크.
+                    return true;           // 빈 문자열 체크.
                 } else if (value instanceof Number && ((Number) value).doubleValue() <= 0) {
-                    return false;           // 숫자 타입일 경우 0 이하 체크.
+                    return true;           // 숫자 타입일 경우 0 이하 체크.
                 }
                 // 이후 비슷한 소스로 여러 타입 지정 가능.
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                return false;
+                return true;
             }
         }
-        return true;                        // 모든 필드가 유효한 경우.
+        return false;                        // 모든 필드가 유효한 경우.
     }
 }

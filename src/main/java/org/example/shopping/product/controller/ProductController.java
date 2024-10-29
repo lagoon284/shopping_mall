@@ -3,7 +3,10 @@ package org.example.shopping.product.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.product.dto.ProductInfo;
+import org.example.shopping.product.dto.ProductInsertReq;
+import org.example.shopping.product.dto.ProductUpdateReq;
 import org.example.shopping.product.service.ProductService;
+import org.example.shopping.util.common.ValidationUtil;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.util.common.TimeConverter;
@@ -21,20 +24,9 @@ public class ProductController {
 
     // 상품 한개 등록하기
     @PostMapping("/insert")
-    public String productInsert(@RequestBody ProductInfo productInfo) {
+    public String productInsert(@RequestBody ProductInsertReq productInfo) {
 
-        productInfo.setRegDate(TimeConverter.toDayToString());
-
-        try {
-            boolean prodParamCheck = productInfo.getProdName().isEmpty()
-                    || productInfo.getPrice().isEmpty()
-                    || productInfo.getProvider().isEmpty()
-                    || productInfo.getRegDate().isEmpty();
-
-            if (prodParamCheck) {
-                throw new CustomException(ErrorCode.INVALID_PARAMETER);
-            }
-        } catch (NullPointerException e) {
+        if (ValidationUtil.validateObject(productInfo)) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
 
@@ -45,36 +37,21 @@ public class ProductController {
 
     // 상품 여러개 등록하기
     @PostMapping("/multiInsert")
-    public String multiProductInsert(@RequestBody List<ProductInfo> productInfos) {
-
-        if (productInfos.isEmpty()) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
+    public String multiProductInsert(@RequestBody List<ProductInsertReq> productInfos) {
 
         int index = 1;
 
-        for (ProductInfo prod : productInfos) {
+        for (ProductInsertReq prod : productInfos) {
 
             prod.setRegDate(TimeConverter.toDayToString());
 
-            try {
-                boolean prodParamCheck = prod.getProdName().isEmpty()
-                        || prod.getPrice().isEmpty()
-                        || prod.getProvider().isEmpty()
-                        || prod.getRegDate().isEmpty();
-
-                if (prodParamCheck) {
-                    log.info(index + ", " + prod);
-                    throw new CustomException(ErrorCode.INVALID_PARAMETER);
-                }
-
-                index++;
-            } catch (NullPointerException e) {
-                log.info(index + ", " + prod);
+            if (ValidationUtil.validateObject(prod)) {
+                log.info("{} 개 중, {} 번째 항목에서 적정하지 않은 Parameter가 있습니다.", productInfos.size(), index);
                 throw new CustomException(ErrorCode.INVALID_PARAMETER);
             }
-        }
 
+            index++;
+        }
 
         productService.multiInsertProdct(productInfos);
 
@@ -98,22 +75,9 @@ public class ProductController {
     // 단건 상품 수정
     // 상품 수정시 USEFRAG 값으로 사용 비사용 하여 조회시 노출/비노출 수정 가능.
     @PutMapping("/updateProd")
-    public String updateProd(@RequestBody ProductInfo productInfo) {
+    public String updateProd(@RequestBody ProductUpdateReq productInfo) {
 
-        productInfo.setUpdDate(TimeConverter.toDayToString());
-
-        try {
-            boolean prodParamCheck = productInfo.getProdSeqNo() == 0
-                    || productInfo.getProdName().isEmpty()
-                    || productInfo.getPrice().isEmpty()
-                    || productInfo.getProvider().isEmpty()
-                    || productInfo.getInfo().isEmpty()
-                    || productInfo.getUpdDate().isEmpty();
-
-            if (prodParamCheck) {
-                throw new CustomException(ErrorCode.INVALID_PARAMETER);
-            }
-        } catch (NullPointerException e) {
+        if (ValidationUtil.validateObject(productInfo)) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
 

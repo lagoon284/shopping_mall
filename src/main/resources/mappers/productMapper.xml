@@ -5,15 +5,15 @@
 
     <!-- 상품등록 -->
     <insert id = "insertProduct" parameterType = "org.example.shopping.product.dto.ProductInfo">
-        INSERT INTO PRODUCTINFO (prodname, price, provider, info, regdate)
-        VALUES (#{prodName}, #{price}, #{provider}, #{info}, #{regDate})
+        INSERT INTO PRODUCTINFO (prodname, price, provider, info, usefrag, regdate)
+        VALUES (#{prodName}, #{price}, #{provider}, #{info}, #{useFrag}, #{regDate})
     </insert>
 
     <insert id = "multiInsertProduct">
-        INSERT INTO PRODUCTINFO (prodname, price, provider, info, regdate)
+        INSERT INTO PRODUCTINFO (prodname, price, provider, info, usefrag, regdate)
         values
         <foreach collection = "list" item = "product" separator = ",">
-            (#{product.prodName}, #{product.price}, #{product.provider}, #{product.info}, #{product.regDate})
+            (#{product.prodName}, #{product.price}, #{product.provider}, #{product.info}, #{product.useFrag}, #{product.regDate})
         </foreach>
     </insert>
 
