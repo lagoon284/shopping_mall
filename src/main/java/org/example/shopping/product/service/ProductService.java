@@ -31,6 +31,10 @@ public class ProductService {
 
     public void multiInsertProdct(List<ProductInsertReq> productInfos) {
 
+        for (ProductInsertReq prod : productInfos) {
+            prod.setRegDate(TimeConverter.toDayToString());
+        }
+
         int retVal = productMapper.multiInsertProduct(productInfos);
 
         if (productInfos.size() != retVal) {

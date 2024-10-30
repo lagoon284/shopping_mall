@@ -4,10 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.util.exception.dto.ErrorDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import static org.example.shopping.util.exception.enums.ErrorCode.INTERNAL_SERVER_ERROR;
 
@@ -59,6 +61,24 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorDto(
                 ex.getStatusCode().value()
                 , ex.getMessage() + ", " + ex.getHeaderName())
+                , HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    protected ResponseEntity<?> handleValiedException(MethodArgumentNotValidException ex) {
+        return new ResponseEntity<>(new ErrorDto(
+                ex.getStatusCode().value()
+                , ex.getMessage())
+                , HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler({HandlerMethodValidationException.class})
+    protected ResponseEntity<?> handleValidException(HandlerMethodValidationException ex) {
+        return new ResponseEntity<>(new ErrorDto(
+                ex.getStatusCode().value()
+                , "request parameter 에 문제가 있습니다. 확인해주세요.")
                 , HttpStatus.BAD_REQUEST
         );
     }

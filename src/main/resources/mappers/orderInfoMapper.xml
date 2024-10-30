@@ -6,9 +6,9 @@
         <selectKey keyProperty="orderNo" resultType="String" order="BEFORE">
             SELECT
                 CASE
-                    WHEN EXISTS (SELECT 1 FROM ORDERINFO WHERE ORDERNO LIKE CONCAT(DATE_FORMAT(CURRENT_DATE, 'yyMMdd'),'%'))
-                    THEN ((SELECT MAX(ORDERNO) FROM ORDERINFO WHERE ORDERNO LIKE CONCAT(DATE_FORMAT(CURRENT_DATE, 'yyMMdd'),'%')) + 1)
-                    ELSE CONCAT(#{today},'000001')
+                    WHEN EXISTS (SELECT 1 FROM ORDERINFO WHERE ORDERNO LIKE CONCAT(FORMATDATETIME(CURRENT_DATE, 'yyMMdd'),'%'))
+                    THEN ((SELECT MAX(ORDERNO) FROM ORDERINFO WHERE ORDERNO LIKE CONCAT(FORMATDATETIME(CURRENT_DATE, 'yyMMdd'),'%')) + 1)
+                    ELSE CONCAT(FORMATDATETIME(CURRENT_DATE, 'yyMMdd'),'000001')
                 END
         </selectKey>
 

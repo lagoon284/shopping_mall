@@ -30,4 +30,36 @@ public class ValidationUtil {
         }
         return false;                        // 모든 필드가 유효한 경우.
     }
+
+    // 객체 병합 메서드.
+    public static <T, U> void mergeObject(T objectA, U objectB) {
+        // A 클래스의 모든 필드에 대해 반복.
+        for (Field fieldA : objectA.getClass().getDeclaredFields()) {
+            try {
+                // 필드의 이름 가져오기.
+                String fieldName = fieldA.getName();
+
+                // B 클래스에서 동일한 이름의 필드 찾기.
+                Field fieldB = null;
+                for (Field declaredField : objectB.getClass().getDeclaredFields()) {
+                    if (declaredField.getName().equals(fieldName)) {
+                        fieldB = declaredField;
+                        break;
+                    }
+                }
+                // 필드가 존재하는 경우에만 처리.
+                if (fieldB != null) {
+                    fieldA.setAccessible(true);
+                    fieldB.setAccessible(true);
+
+                    // A 객체의 값이 null이면 B 객체의 값을 사용.
+                    if (fieldA.get(objectA) == null) {
+                        fieldA.set(objectA, fieldB.get(objectB));
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -1,11 +1,13 @@
 package org.example.shopping.user.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.example.shopping.util.common.RetAttributes;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User extends RetAttributes {
 
     // 시퀀스 번호 auto increment 값.
@@ -20,4 +22,5 @@ public class User extends RetAttributes {
     private String addr;
     // 휴면 계정 frag.
     private boolean sleepFrag;
+
 }

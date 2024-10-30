@@ -29,7 +29,8 @@ public class OrderInfo extends RetAttributes {
     private String prodPrice;
 
     //------------- orderNo 생성을 위한 param ------------//
-    private String today;
+    // mapper.xml 에 today 지정 쿼리 작성해둠.
+//    private String today;
 
     // 결제 수단 및 결제 날짜, 주문 상태(결제완료, 배송완료, 완결 등)
     // 주문자가 아닌 받는 사람 이름, 받는사람 주소 등 추가적으로 필요한 상황.

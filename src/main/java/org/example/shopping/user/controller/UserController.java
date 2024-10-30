@@ -1,6 +1,7 @@
 package org.example.shopping.user.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.user.dto.User;
 import org.example.shopping.user.dto.UserDormencyReq;
@@ -24,11 +25,7 @@ public class UserController {
 
     // 회원가입.
     @PostMapping("/signup")
-    public String signup(@RequestBody UserInsertReq user) {
-
-        if (ValidationUtil.validateObject(user)) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
+    public String signup(@RequestBody @Valid UserInsertReq user) {
 
         userService.signupUser(user);
 
@@ -51,31 +48,17 @@ public class UserController {
 
     // 회원정보 수정 id 값 변경 불가.
     @PutMapping("/updateInfo")
-    public String updateUserInfo(@RequestBody UserUpdateReq user) {
-
-        // 수정일시 set.
-        user.setUpdDate(TimeConverter.toDayToString());
-
-        // param 검증 null check.
-        if (ValidationUtil.validateObject(user)) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
+    public String updateUserInfo(@RequestBody @Valid UserUpdateReq user) {
 
         userService.updateUserInfo(user);
 
         return "Success";
-
     }
 
     // 휴면회원 토글 sleepFrag 값 변경.
     // 회원 수정에 같이 넣어서 처리하는 방법도 있는데 따로 뺀 이유는 혹시 몰라서...
     @PutMapping("/dormency")
-    public String goToSleep(@RequestBody UserDormencyReq user) {
-
-        // param 검증 null check.
-        if (ValidationUtil.validateObject(user)) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
+    public String goToSleep(@RequestBody @Valid UserDormencyReq user) {
 
         userService.goToSleep(user);
         

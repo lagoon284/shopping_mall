@@ -1,11 +1,16 @@
 package org.example.shopping.order.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.order.dto.OrderInfo;
+import org.example.shopping.order.dto.OrderInsertReq;
+import org.example.shopping.order.dto.OrderUpdateReq;
 import org.example.shopping.order.service.OrderInfoService;
+import org.example.shopping.util.common.ValidationUtil;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.util.common.TimeConverter;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,25 +21,7 @@ public class OrderController {
     public final OrderInfoService orderInfoService;
 
     @PostMapping("/insPurchase")
-    public String insPurchase(@RequestBody OrderInfo order) {
-
-        order.setRegDate(TimeConverter.toDayToString());
-        order.setToday(TimeConverter.toDayToString().substring(0, 10).replace("-", ""));
-
-        try {
-            boolean orderParamCheck = order.getUserId().isBlank()
-                    || order.getUserName().isEmpty()
-                    || order.getUserAddr().isEmpty()
-                    || order.getProdSeqNo().isEmpty()
-                    || order.getProdName().isEmpty()
-                    || order.getProdPrice().isEmpty();
-
-            if (orderParamCheck) {
-                throw new CustomException(ErrorCode.INVALID_PARAMETER);
-            }
-        } catch (NullPointerException e) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
+    public String insPurchase(@RequestBody @Valid OrderInsertReq order) {
 
         orderInfoService.insPurchase(order);
 
@@ -49,22 +36,9 @@ public class OrderController {
     }
 
     @PutMapping("/update")
-    public String updateOrder(@RequestBody OrderInfo order) {
+    public String updateOrder(@RequestBody @Valid OrderUpdateReq order) {
 
-        order.setUpdDate(TimeConverter.toDayToString());
-
-        try {
-            boolean orderParamCheck = order.getUserId().isBlank()
-                    || order.getUserName().isEmpty()
-                    || order.getUserAddr().isEmpty()
-                    || order.getProdSeqNo().isEmpty()
-                    || order.getProdName().isEmpty()
-                    || order.getProdPrice().isEmpty();
-
-            if (orderParamCheck) {
-                throw new CustomException(ErrorCode.INVALID_PARAMETER);
-            }
-        } catch (NullPointerException e) {
+        if (ValidationUtil.validateObject(order)) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
 

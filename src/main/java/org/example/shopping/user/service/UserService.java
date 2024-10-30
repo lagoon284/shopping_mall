@@ -109,6 +109,9 @@ public class UserService {
 
     public void updateUserInfo(UserUpdateReq user) {
 
+        // 수정일시 set.
+        user.setUpdDate(TimeConverter.toDayToString());
+
         if (userMapper.updateUserInfo(user) != 1) {
             throw new CustomException(ErrorCode.CONFLICT_REQUEST_USER);
         }

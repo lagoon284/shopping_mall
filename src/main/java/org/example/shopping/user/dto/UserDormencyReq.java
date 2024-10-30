@@ -1,5 +1,6 @@
 package org.example.shopping.user.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,5 +13,6 @@ import org.example.shopping.util.common.RetAttributes;
 @EqualsAndHashCode(callSuper = false)
 public class UserDormencyReq extends RetAttributes {
 
+    @NotBlank
     private String id;
 }

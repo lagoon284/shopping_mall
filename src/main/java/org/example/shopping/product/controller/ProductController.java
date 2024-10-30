@@ -1,5 +1,6 @@
 package org.example.shopping.product.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.product.dto.ProductInfo;
@@ -24,11 +25,7 @@ public class ProductController {
 
     // 상품 한개 등록하기
     @PostMapping("/insert")
-    public String productInsert(@RequestBody ProductInsertReq productInfo) {
-
-        if (ValidationUtil.validateObject(productInfo)) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
+    public String productInsert(@RequestBody @Valid ProductInsertReq productInfo) {
 
         productService.insertProduct(productInfo);
 
@@ -37,21 +34,21 @@ public class ProductController {
 
     // 상품 여러개 등록하기
     @PostMapping("/multiInsert")
-    public String multiProductInsert(@RequestBody List<ProductInsertReq> productInfos) {
+    public String multiProductInsert(@RequestBody @Valid List<ProductInsertReq> productInfos) {
 
-        int index = 1;
-
-        for (ProductInsertReq prod : productInfos) {
-
-            prod.setRegDate(TimeConverter.toDayToString());
-
-            if (ValidationUtil.validateObject(prod)) {
-                log.info("{} 개 중, {} 번째 항목에서 적정하지 않은 Parameter가 있습니다.", productInfos.size(), index);
-                throw new CustomException(ErrorCode.INVALID_PARAMETER);
-            }
-
-            index++;
-        }
+//        int index = 1;
+//
+//        for (@Valid ProductInsertReq prod : productInfos) {
+//
+//            prod.setRegDate(TimeConverter.toDayToString());
+//
+//            if (ValidationUtil.validateObject(prod)) {
+//                log.info("{} 개 중, {} 번째 항목에서 적정하지 않은 Parameter가 있습니다.", productInfos.size(), index);
+//                throw new CustomException(ErrorCode.INVALID_PARAMETER);
+//            }
+//
+//            index++;
+//        }
 
         productService.multiInsertProdct(productInfos);
 
@@ -75,11 +72,7 @@ public class ProductController {
     // 단건 상품 수정
     // 상품 수정시 USEFRAG 값으로 사용 비사용 하여 조회시 노출/비노출 수정 가능.
     @PutMapping("/updateProd")
-    public String updateProd(@RequestBody ProductUpdateReq productInfo) {
-
-        if (ValidationUtil.validateObject(productInfo)) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
+    public String updateProd(@RequestBody @Valid ProductUpdateReq productInfo) {
 
         productService.updateProd(productInfo);
 
