@@ -38,10 +38,6 @@ public class OrderController {
     @PutMapping("/update")
     public String updateOrder(@RequestBody @Valid OrderUpdateReq order) {
 
-        if (ValidationUtil.validateObject(order)) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
-
         orderInfoService.updateOrder(order);
 
         return "Success";
