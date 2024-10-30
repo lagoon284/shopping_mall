@@ -1,7 +1,11 @@
 package org.example.shopping.deliveryAddr.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.deliveryAddr.dto.DeliveryAddr;
+import org.example.shopping.deliveryAddr.dto.DeliveryAddrDelete;
+import org.example.shopping.deliveryAddr.dto.DeliveryAddrInsert;
+import org.example.shopping.deliveryAddr.dto.DeliveryAddrUpdate;
 import org.example.shopping.deliveryAddr.service.DeliveryAddrService;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
@@ -17,19 +21,7 @@ public class DeliveryAddrController {
     private final DeliveryAddrService deliAddrService;
 
     @PostMapping("/insert")
-    public String insertDeliAddr(@RequestBody DeliveryAddr deliAddr) {
-
-        try {
-            boolean deliParamCheck = deliAddr.getUserId().isEmpty()
-                    || deliAddr.getAddrAlias().isEmpty()
-                    || deliAddr.getDeliAddr().isEmpty();
-
-            if (deliParamCheck) {
-                throw new CustomException(ErrorCode.INVALID_PARAMETER);
-            }
-        } catch (NullPointerException e) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
+    public String insertDeliAddr(@RequestBody @Valid DeliveryAddrInsert deliAddr) {
 
         deliAddrService.insDeliAddr(deliAddr);
 
@@ -43,19 +35,7 @@ public class DeliveryAddrController {
     }
 
     @PutMapping("/update")
-    public String updDeliAddr(@RequestBody DeliveryAddr deliAddr) {
-
-        try {
-            boolean deliParamCheck = deliAddr.getUserId().isEmpty()
-                    || deliAddr.getAddrAlias().isEmpty()
-                    || deliAddr.getDeliAddr().isEmpty();
-
-            if (deliParamCheck) {
-                throw new CustomException(ErrorCode.INVALID_PARAMETER);
-            }
-        } catch (NullPointerException e) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
+    public String updDeliAddr(@RequestBody @Valid DeliveryAddrUpdate deliAddr) {
 
         deliAddrService.updDeliAddr(deliAddr);
 
@@ -63,18 +43,7 @@ public class DeliveryAddrController {
     }
 
     @DeleteMapping("/delete")
-    public String delDeliAddr(@RequestBody DeliveryAddr deliAddr) {
-
-        try {
-            boolean deliParamCheck = deliAddr.getUserId().isEmpty()
-                    || deliAddr.getDeliAddrNo() > 5;
-
-            if (deliParamCheck) {
-                throw new CustomException(ErrorCode.INVALID_PARAMETER);
-            }
-        } catch (NullPointerException e) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
+    public String delDeliAddr(@RequestBody @Valid DeliveryAddrDelete deliAddr) {
 
         deliAddrService.delDeliAddr(deliAddr);
 

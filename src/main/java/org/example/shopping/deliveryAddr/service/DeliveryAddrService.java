@@ -1,8 +1,12 @@
 package org.example.shopping.deliveryAddr.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.shopping.deliveryAddr.dto.DeliveryAddrDelete;
+import org.example.shopping.deliveryAddr.dto.DeliveryAddrInsert;
+import org.example.shopping.deliveryAddr.dto.DeliveryAddrUpdate;
 import org.example.shopping.deliveryAddr.mapper.DeliveryAddrMapper;
 import org.example.shopping.deliveryAddr.dto.DeliveryAddr;
+import org.example.shopping.util.common.TimeConverter;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.springframework.stereotype.Service;
@@ -15,7 +19,9 @@ public class DeliveryAddrService {
 
     private final DeliveryAddrMapper deliAddrMapper;
 
-    public void insDeliAddr(DeliveryAddr deliAddr) {
+    public void insDeliAddr(DeliveryAddrInsert deliAddr) {
+
+        deliAddr.setRegDate(TimeConverter.toDayToString());
 
         int retVal = deliAddrMapper.insDeliAddr(deliAddr);
 
@@ -35,7 +41,9 @@ public class DeliveryAddrService {
         return deliAddrs;
     }
 
-    public void updDeliAddr(DeliveryAddr deliAddr) {
+    public void updDeliAddr(DeliveryAddrUpdate deliAddr) {
+
+        deliAddr.setRegDate(TimeConverter.toDayToString());
 
         int retVal =  deliAddrMapper.updDeliAddr(deliAddr);
 
@@ -44,7 +52,7 @@ public class DeliveryAddrService {
         }
     }
 
-    public void delDeliAddr(DeliveryAddr deliAddr) {
+    public void delDeliAddr(DeliveryAddrDelete deliAddr) {
 
         int retVal = deliAddrMapper.delDeliAddr(deliAddr);
 
