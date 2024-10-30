@@ -1,7 +1,9 @@
 package org.example.shopping.authLogin.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.authLogin.dto.AuthToken;
+import org.example.shopping.authLogin.dto.Login;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.user.service.UserService;
@@ -19,19 +21,8 @@ public class LoginController {
     // 로그인 하는 컨트롤러... service는 userService를 사용함....
     // 걍 유저 컨트롤러에 만들까...
     @PutMapping("/login")
-    public AuthToken login(@RequestBody Map<String, String> loginRequest) {
+    public AuthToken login(@RequestBody @Valid Login loginRequest) {
 
-        try {
-            boolean loginParamCheck = loginRequest.get("userId").isEmpty()
-                    || loginRequest.get("pw").isEmpty();
-
-            if (loginParamCheck) {
-                throw new CustomException(ErrorCode.INVALID_PARAMETER);
-            }
-        } catch (NullPointerException e) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
-
-        return userService.login(loginRequest.get("userId"), loginRequest.get("pw"));
+        return userService.login(loginRequest);
     }
 }

@@ -4,16 +4,17 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.authLogin.dto.AuthToken;
+import org.example.shopping.authLogin.dto.Login;
+import org.example.shopping.authLogin.mapper.AuthTokenMapper;
 import org.example.shopping.user.dto.User;
 import org.example.shopping.user.dto.UserDormencyReq;
 import org.example.shopping.user.dto.UserInsertReq;
 import org.example.shopping.user.dto.UserUpdateReq;
 import org.example.shopping.user.mapper.UserMapper;
-import org.example.shopping.util.common.TimeConverter;
-import org.example.shopping.util.exception.enums.ErrorCode;
-import org.example.shopping.util.exception.CustomException;
-import org.example.shopping.authLogin.mapper.AuthTokenMapper;
 import org.example.shopping.util.common.JwtUtil;
+import org.example.shopping.util.common.TimeConverter;
+import org.example.shopping.util.exception.CustomException;
+import org.example.shopping.util.exception.enums.ErrorCode;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,12 +28,12 @@ public class UserService {
     private final AuthTokenMapper authTokenMapper;
     private final JwtUtil jwtUtil;
 
-    public AuthToken login(String userId, String password) {
+    public AuthToken login(Login loginReq) {
         // 받은 id 값으로 조회.
-        User user = userMapper.selectUserById(userId);
+        User user = userMapper.selectUserById(loginReq.getUserId());
 
         // 조회한 pw 값으로 밉력받은 pw 와 비교하여 검증.
-        if (user != null && user.getPw().equals(password)) {
+        if (user != null && user.getPw().equals(loginReq.getPw())) {
             // 검증에 이상없으면 계속 진행 ㄱㄱ.
             String jwtAccToken = jwtUtil.generateAccToken(user);
             String jwtRefToken = jwtUtil.generateRefToken(user.getId());
@@ -45,7 +46,7 @@ public class UserService {
 
             AuthToken token = new AuthToken();
 
-            token.setUserId(userId);
+            token.setUserId(loginReq.getUserId());
             token.setAccessToken(jwtAccToken);
             token.setRefreshToken(jwtRefToken);
 
