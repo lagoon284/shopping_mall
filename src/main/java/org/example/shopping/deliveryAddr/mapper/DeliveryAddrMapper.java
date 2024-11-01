@@ -13,6 +13,8 @@ public interface DeliveryAddrMapper {
 
     int insDeliAddr(DeliveryAddrInsert deliAddr);
 
+    int updDefDeliAddr(DeliveryAddrInsert deliAddr);
+
     List<DeliveryAddr> getDeliInfo(String userId);
 
     int updDeliAddr(DeliveryAddrUpdate deliAddr);

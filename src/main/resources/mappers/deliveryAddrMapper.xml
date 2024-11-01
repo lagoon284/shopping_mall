@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="org.example.shopping.deliveryAddr.mapper.DeliveryAddrMapper">
-    <insert id="insDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddr">
+    <insert id="insDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrInsert">
         <selectKey keyProperty="deliAddrNo" resultType="Integer" order="BEFORE">
             SELECT
                 CASE
                     WHEN EXISTS (SELECT DELIADDRNO FROM DELIVERYADDR WHERE USERID = #{userId})
-                    THEN ((SELECT MAX(ORDERNO) FROM DELIVERYADDR WHERE USERID = #{userId}) + 1)
+                    THEN ((SELECT MAX(DELIADDRNO) FROM DELIVERYADDR WHERE USERID = #{userId}) + 1)
                 ELSE 1
             END
         </selectKey>
@@ -21,6 +21,13 @@
                 #{defDeliAddr}
                );
     </insert>
+
+    <update id="updDefDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrInsert">
+        UPDATE DELIVERYADDR
+        SET DEFDELIADDR = FALSE
+        WHERE USERID = #{userId}
+        AND #{defDeliAddr} = TRUE;
+    </update>
 
     <select id="getDeliInfo" parameterType="String">
         SELECT  *

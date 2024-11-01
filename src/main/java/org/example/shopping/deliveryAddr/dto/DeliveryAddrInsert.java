@@ -15,9 +15,13 @@ public class DeliveryAddrInsert extends RetAttributes {
     @NotBlank
     private String userId;
 
+    private int deliAddrNo;
+
     @NotBlank
     private String addrAlias;
 
     @NotBlank
     private String deliAddr;
+
+    private boolean defDeliAddr;
 }

@@ -36,20 +36,6 @@ public class ProductController {
     @PostMapping("/multiInsert")
     public String multiProductInsert(@RequestBody @Valid List<ProductInsertReq> productInfos) {
 
-//        int index = 1;
-//
-//        for (@Valid ProductInsertReq prod : productInfos) {
-//
-//            prod.setRegDate(TimeConverter.toDayToString());
-//
-//            if (ValidationUtil.validateObject(prod)) {
-//                log.info("{} 개 중, {} 번째 항목에서 적정하지 않은 Parameter가 있습니다.", productInfos.size(), index);
-//                throw new CustomException(ErrorCode.INVALID_PARAMETER);
-//            }
-//
-//            index++;
-//        }
-
         productService.multiInsertProdct(productInfos);
 
         return "Success";
