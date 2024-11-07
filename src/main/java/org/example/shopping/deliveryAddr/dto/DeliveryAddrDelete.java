@@ -1,6 +1,8 @@
 package org.example.shopping.deliveryAddr.dto;
 
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -13,6 +15,7 @@ public class DeliveryAddrDelete {
     @NotBlank
     private String userId;
 
-    @Size(min = 1, max = 5)
+    @Min(value = 1)
+    @Max(value = 5)
     private int deliAddrNo;
 }

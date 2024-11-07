@@ -29,6 +29,7 @@ public enum ErrorCode {
     // ALREADY_SAVED_PRODUCT(409, "이미 존재하는 상품 입니다."),          // 일단 주석... 동일한 상품도 재등록 할 수 있음...
     ALREADY_SAVED_ORDER(409, "이미 존재하는 주문 입니다."),
     ALREADY_SAVED_DELIVERY(409, "이미 존재하는 배송지 입니다."),
+    ALREADY_SAVED_DELIVERY_ALIAS(409, "이미 존재하는 배송지 별명입니다."),
 
     // 409 CONFLICT 비즈니스 로직 충돌이나 이미 수정한 리소스를 수정하려 할 때.
     CONFLICT_REQUEST_USER(409, "단일 회원 정보 수정에 실패하였습니다."),
@@ -38,6 +39,8 @@ public enum ErrorCode {
     CONFLICT_REQUEST_DELIVERY(409, "단일 배송지정보 수정에 실패하였습니다."),
 
     DELETE_REQUEST_DELIVERY_ERROR(409, "배송지 삭제 작업에 실패하였습니다."),
+
+    NOT_DELETE_DEFAULT_DELIADDR(409, "기본 배송지로 설정된 배송지는 지울 수 없습니다."),
 
     // 503 기타 공용적인 에러
     NOT_READY_SERVICE_ERROR(503, "아직 지정되지 않은 공용적인 오류입니다. (TEST ERROR)"),

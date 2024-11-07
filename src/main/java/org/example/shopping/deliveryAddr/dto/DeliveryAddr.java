@@ -5,8 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.example.shopping.util.common.RetAttributes;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class DeliveryAddr extends RetAttributes {
+public class DeliveryAddr {
 
     // 유저 개인당 여러개의 배송지
     // 회원(유저) id

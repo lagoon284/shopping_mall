@@ -2,10 +2,7 @@ package org.example.shopping.deliveryAddr.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.deliveryAddr.dto.DeliveryAddr;
-import org.example.shopping.deliveryAddr.dto.DeliveryAddrDelete;
-import org.example.shopping.deliveryAddr.dto.DeliveryAddrInsert;
-import org.example.shopping.deliveryAddr.dto.DeliveryAddrUpdate;
+import org.example.shopping.deliveryAddr.dto.*;
 import org.example.shopping.deliveryAddr.service.DeliveryAddrService;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
@@ -38,6 +35,14 @@ public class DeliveryAddrController {
     public String updDeliAddr(@RequestBody @Valid DeliveryAddrUpdate deliAddr) {
 
         deliAddrService.updDeliAddr(deliAddr);
+
+        return "Success";
+    }
+
+    @PutMapping("/defUpdate")
+    public String updDefDeliAddr(@RequestBody @Valid DeliveryAddrDefUpdate deliAddr) {
+
+        deliAddrService.updDefDeliAddr(deliAddr);
 
         return "Success";
     }
