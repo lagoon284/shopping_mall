@@ -85,10 +85,14 @@ public class DeliveryAddrService {
 
         List<DeliveryAddr> getDeliInfo = deliAddrMapper.getDeliInfo(deliAddr.getUserId());
 
-        DeliveryAddr deliInfo = getDeliInfo.get(deliAddr.getDeliAddrNo() - 1);
+        if (!getDeliInfo.isEmpty()) {
+            DeliveryAddr deliInfo = getDeliInfo.get(deliAddr.getDeliAddrNo() - 1);
 
-        if (deliInfo.isDefDeliAddr()) {
-            throw new CustomException(ErrorCode.NOT_DELETE_DEFAULT_DELIADDR);
+            if (deliInfo.isDefDeliAddr()) {
+                throw new CustomException(ErrorCode.NOT_DELETE_DEFAULT_DELIADDR);
+            }
+        } else {
+            throw new CustomException(ErrorCode.DELIVERY_ADDR_NOT_FOUND);
         }
 
         if (deliAddrMapper.delDeliAddr(deliAddr) != 1 || deliAddrMapper.updDeliAddrNo(deliAddr) < 1) {

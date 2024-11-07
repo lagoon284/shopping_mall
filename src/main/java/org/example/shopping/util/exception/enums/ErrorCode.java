@@ -14,7 +14,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(404, "존재하지 않는 회원 ID 입니다."),
     PRODUCT_NOT_FOUND(404, "존재하지 않는 상품 ID 입니다."),
     ORDER_NOT_FOUND(404, "존재하지 않는 주문 ID 입니다."),
-    DELIVERY_ADDR_NOT_FOUND(404, "배송지가 존재하지 않습니다."),        // 일단 넣어놓은 추후 빠질 수 있음...
+    DELIVERY_ADDR_NOT_FOUND(404, "존재하지 않는 배송지 입니다."),        // 일단 넣어놓은 추후 빠질 수 있음...
 
     // 403 FORBIDDEN 지정한 리소스에 대한 엑세스가 금지됨.
     AUTH_SIGNATURE_FAIL_ERROR(403, "엑세스 토큰이 일치하지 않습니다."),
