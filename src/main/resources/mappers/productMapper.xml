@@ -5,15 +5,15 @@
 
     <!-- 상품등록 -->
     <insert id = "insertProduct" parameterType = "org.example.shopping.product.dto.ProductInfo">
-        INSERT INTO PRODUCTINFO (prodname, price, provider, info, usefrag, regdate)
-        VALUES (#{prodName}, #{price}, #{provider}, #{info}, #{useFrag}, #{regDate})
+        INSERT INTO PRODUCTINFO (prodname, price, provider, info, useflag, regdate)
+        VALUES (#{prodName}, #{price}, #{provider}, #{info}, #{useFlag}, #{regDate})
     </insert>
 
     <insert id = "multiInsertProduct">
-        INSERT INTO PRODUCTINFO (prodname, price, provider, info, usefrag, regdate)
+        INSERT INTO PRODUCTINFO (prodname, price, provider, info, useflag, regdate)
         values
         <foreach collection = "list" item = "product" separator = ",">
-            (#{product.prodName}, #{product.price}, #{product.provider}, #{product.info}, #{product.useFrag}, #{product.regDate})
+            (#{product.prodName}, #{product.price}, #{product.provider}, #{product.info}, #{product.useFlag}, #{product.regDate})
         </foreach>
     </insert>
 
@@ -21,12 +21,12 @@
     <select id="getOneProd" parameterType="org.example.shopping.product.dto.ProductInfo">
         SELECT * FROM   PRODUCTINFO
         WHERE           PRODSEQNO  = #{prodSeqNo}
-        AND             USEFRAG = TRUE
+        AND             USEFLAG = TRUE
     </select>
 
     <select id="getQuanProd" parameterType="Integer">
         SELECT * FROM   PRODUCTINFO
-        WHERE           USEFRAG    = TRUE
+        WHERE           USEFLAG    = TRUE
     </select>
 
     <!-- 상품 수정 -->
@@ -36,7 +36,7 @@
                 PRICE       = #{price},
                 PROVIDER    = #{provider},
                 INFO        = #{info},
-                USEFRAG     = #{useFrag},
+                USEFLAG     = #{useFlag},
                 UPDDATE     = #{updDate}
         WHERE   PRODSEQNO   = #{prodSeqNo}
     </update>

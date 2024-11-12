@@ -22,6 +22,6 @@ public class ProductInfo extends RetAttributes {
     // 상품 정보.
     private String info;
     // 조회 시 노출 여부. (판매/비판매)
-    private boolean useFrag;
+    private boolean useFlag;
 
 }

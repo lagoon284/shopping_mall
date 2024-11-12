@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome to My Website!</h1>
+    <p></p>
+    <label for="userId">userId : </label><input id="userId" value=""><br/>
+    <label for="pw">pw : </label><input id="pw" value=""><br/>
+    <p></p>
+    <button id="login">로그인</button>
+    <p></p>
+    <a>result</a>
+    <div id="result"></div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const accToken = localStorage.getItem("accessToken");
+        const refToken = localStorage.getItem("refreshToken");
+
+        if (accToken) {
+            $.ajax({
+                url: "/api/protected/accData",
+                type: "POST",
+                contentType: "application/json",
+                headers: {
+                    Authorization: "seokhoAccAuth " + accToken
+                },
+                success: function (res) {
+                    const userInfo = `
+                                <div>
+                                    <p>User ID: ${res.data.id}</p>
+                                    <p>User No: ${res.data.userNo}</p>
+                                    <p>Name: ${res.data.name}</p>
+                                    <p>Addr: ${res.data.addr}</p>
+                                    <p>SleepFlag: ${res.data.sleepFlag}</p>
+                                </div>
+                            `;
+                    $("#result").html("<h1>자동로그인 성공</h1>").append(userInfo);
+                },
+                error: function (res) {
+                    alert("refToken 사용.");
+                    if (res.status === 401) {
+                        $.ajax({
+                            url: "/api/protected/refData",
+                            type: "PUT",
+                            contentType: "application/json",
+                            headers: {
+                                Authorization: "seokhoRefAuth " + refToken
+                            },
+                            success: function (res) {
+
+                                localStorage.setItem("accessToken", res.data.accessToken);
+                                localStorage.setItem("refreshToken", res.data.refreshToken);
+                                console.log("refresh success");
+                            },
+                            error: function () {
+                                $("#result").html("jwt가 모두 만료 되었습니다. 재로그인해주세요.");
+                            }
+                        })
+                    } else {
+                        $("#result").html("뭔가 잘못 되었다...");
+                    }
+                }
+            })
+        }
+
+
+
+        $("#login").click( function () {
+            const userId = $("#userId").val();
+            const pw = $("#pw").val();
+
+            $.ajax({
+                url: "/api/auth/login",
+                type: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    userId: userId,
+                    pw: pw
+                }),
+                success: function (res) {
+                    $("#result").html("아이디 : " + res.data.userId + "<br/><p/>" + "accToken : " + res.data.accessToken + "<br/><p/>" + "refToken : " + res.data.refreshToken);
+                    alert("success");
+
+                    localStorage.setItem("accessToken", res.data.accessToken);
+                    localStorage.setItem("refreshToken", res.data.refreshToken);
+
+                },
+                error: function (res) {
+                    alert("회원정보가 일치하지 않습니다... 이 사람아..");
+                    $("#result").html("status : " + res.status);
+                }
+            });
+        });
+    });
+</script>
+</html>

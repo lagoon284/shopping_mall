@@ -55,7 +55,7 @@ public class UserController {
         return "success";
     }
 
-    // 휴면회원 토글 sleepFrag 값 변경.
+    // 휴면회원 토글 sleepFlag 값 변경.
     // 회원 수정에 같이 넣어서 처리하는 방법도 있는데 따로 뺀 이유는 혹시 몰라서...
     @PutMapping("/dormency")
     public String goToSleep(@RequestBody @Valid UserDormencyReq user) {

@@ -24,5 +24,5 @@ public class ProductInsertReq extends RetAttributes {
     @NotBlank
     private String info;
 
-    private boolean useFrag;
+    private boolean useFlag;
 }

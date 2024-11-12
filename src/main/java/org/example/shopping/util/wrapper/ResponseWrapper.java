@@ -18,7 +18,7 @@ import java.lang.reflect.ParameterizedType;
 
 
 // wrapper 클레스로 controller에서 리턴할때마다 감싸주는 친구.
-@RestControllerAdvice(basePackages = "org.example.shopping")         // 해당 경로에서 리턴하는 controller만 감싸줌.
+@RestControllerAdvice(basePackages = "org.example.shopping" )         // 해당 경로에서 리턴하는 controller만 감싸줌.
 @RequiredArgsConstructor                                                        // 필드의 의존성 주입을 위한 어노테이션.
 public class ResponseWrapper implements ResponseBodyAdvice<Object> {
 

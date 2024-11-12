@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     pw              NVARCHAR(30)    NOT NULL ,
     name            NVARCHAR(30)     NOT NULL ,
     addr            NVARCHAR(255)    NOT NULL ,
-    sleepfrag       BOOLEAN         NOT NULL    DEFAULT FALSE ,
+    sleepflag       BOOLEAN         NOT NULL    DEFAULT FALSE ,
 
     regdate         VARCHAR(19)     NOT NULL ,
     upddate         VARCHAR(19)
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS productinfo (
     provider    NVARCHAR(255)   NOT NULL ,
     info        NVARCHAR(MAX) ,
 
-    usefrag     BOOLEAN         NOT NULL ,
+    useflag     BOOLEAN         NOT NULL ,
     regdate     VARCHAR(19)     NOT NULL ,
     upddate     VARCHAR(19)
 );
@@ -73,9 +73,9 @@ FROM (SELECT 'test1' AS id, '1234' AS PW, 'John Doe' AS name, '경기도 용인�
 WHERE NOT EXISTS (SELECT 1 FROM users);
 
 -- 상품 데이터 삽입.
-INSERT INTO productinfo (prodname, price, provider, info, usefrag, regdate)
+INSERT INTO productinfo (prodname, price, provider, info, useflag, regdate)
 SELECT *
-FROM (SELECT '티셔츠' AS prodname, '25000' AS price, '마프' AS provider, '평범한 티 입니다.' AS info, true as usefrag, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') AS regdate UNION ALL
+FROM (SELECT '티셔츠' AS prodname, '25000' AS price, '마프' AS provider, '평범한 티 입니다.' AS info, true as useflag, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') AS regdate UNION ALL
       SELECT '티셔츠1', '25000', '마프', '평범한 티 입니다.', true, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
       SELECT '티셔츠2', '25000', '마프', '평범한 티 입니다.', true, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
       SELECT '티셔츠3', '25000', '마프', '평범한 티 입니다.', true, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL

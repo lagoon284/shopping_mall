@@ -122,7 +122,7 @@ public class UserService {
 
         user.setUpdDate(TimeConverter.toDayToString());
 
-        if (userMapper.dormencyFrag(user.getId()) != 1) {
+        if (userMapper.dormencyFlag(user.getId()) != 1) {
             throw new CustomException(ErrorCode.CONFLICT_REQUEST_DORMENCY);
         }
     }

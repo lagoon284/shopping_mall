@@ -20,7 +20,7 @@ public class User extends RetAttributes {
     private String name;
     // 회원이 설정한 주소.
     private String addr;
-    // 휴면 계정 frag.
-    private boolean sleepFrag;
+    // 휴면 계정 flag.
+    private boolean sleepFlag;
 
 }

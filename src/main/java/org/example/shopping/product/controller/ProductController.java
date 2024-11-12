@@ -56,7 +56,7 @@ public class ProductController {
     }
 
     // 단건 상품 수정
-    // 상품 수정시 USEFRAG 값으로 사용 비사용 하여 조회시 노출/비노출 수정 가능.
+    // 상품 수정시 USEFLAG 값으로 사용 비사용 하여 조회시 노출/비노출 수정 가능.
     @PutMapping("/updateProd")
     public String updateProd(@RequestBody @Valid ProductUpdateReq productInfo) {
 

@@ -25,6 +25,6 @@ public interface UserMapper {
     // id 와 일치하는 유저정보 수정 (id는 바꿀 수 없음.)
     int updateUserInfo(UserUpdateReq user);
 
-    // id 와 일치하는 유저의 sleepFrag 토글
-    int dormencyFrag(String id);
+    // id 와 일치하는 유저의 sleepFlag 토글
+    int dormencyFlag(String id);
 }

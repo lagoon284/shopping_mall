@@ -12,12 +12,12 @@
     <select id="selectUserById" parameterType="String">
         SELECT * FROM users
         WHERE   id = #{id}
-          AND     SLEEPFRAG = FALSE
+          AND     SLEEPFLAG = FALSE
     </select>
 
     <select id="selectAllUsers" parameterType="org.example.shopping.user.dto.User">
         select * FROM users
-        WHERE SLEEPFRAG = FALSE
+        WHERE SLEEPFLAG = FALSE
     </select>
 
     <!-- update문 수정 업무 -->
@@ -31,9 +31,9 @@
     </update>
 
     <!-- 휴면 계정 처리 -->
-    <update id="dormencyFrag" parameterType="String">
+    <update id="dormencyFlag" parameterType="String">
         UPDATE  users
-        SET     sleepfrag   = NOT (SELECT sleepfrag FROM users WHERE id = #{id})
+        SET     sleepflag   = NOT (SELECT sleepflag FROM users WHERE id = #{id})
         WHERE   id          = #{id}
     </update>
 </mapper>
