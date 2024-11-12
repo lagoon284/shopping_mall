@@ -25,7 +25,7 @@ public class OrderController {
 
         orderInfoService.insPurchase(order);
 
-        return "Success";
+        return "success";
     }
 
 
@@ -40,6 +40,6 @@ public class OrderController {
 
         orderInfoService.updateOrder(order);
 
-        return "Success";
+        return "success";
     }
 }

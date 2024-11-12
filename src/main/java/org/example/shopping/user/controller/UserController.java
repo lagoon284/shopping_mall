@@ -29,7 +29,7 @@ public class UserController {
 
         userService.signupUser(user);
 
-        return "Success";
+        return "success";
     }
 
     // id 와 일치하는 계정 정보 하나 select.
@@ -52,7 +52,7 @@ public class UserController {
 
         userService.updateUserInfo(user);
 
-        return "Success";
+        return "success";
     }
 
     // 휴면회원 토글 sleepFrag 값 변경.
@@ -62,6 +62,6 @@ public class UserController {
 
         userService.goToSleep(user);
         
-        return "Success";
+        return "success";
     }
 }

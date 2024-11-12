@@ -22,7 +22,7 @@ public class DeliveryAddrController {
 
         deliAddrService.insDeliAddr(deliAddr);
 
-        return "Success";
+        return "success";
     }
 
     @GetMapping("/read/{userId}")
@@ -36,7 +36,7 @@ public class DeliveryAddrController {
 
         deliAddrService.updDeliAddr(deliAddr);
 
-        return "Success";
+        return "success";
     }
 
     @PutMapping("/defUpdate")
@@ -44,7 +44,7 @@ public class DeliveryAddrController {
 
         deliAddrService.updDefDeliAddr(deliAddr);
 
-        return "Success";
+        return "success";
     }
 
     @DeleteMapping("/delete")
@@ -52,6 +52,6 @@ public class DeliveryAddrController {
 
         deliAddrService.delDeliAddr(deliAddr);
 
-        return "Success";
+        return "success";
     }
 }

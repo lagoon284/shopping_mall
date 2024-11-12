@@ -41,7 +41,9 @@ public class DeliveryAddrService {
             deliAddr.setDefDeliAddr(true);
         }
 
+        // 배송지는 하나의 ID당 5개로 제한.
         if (deliInfo.size() < 5) {
+            // 5개 이상일때 리턴이 없고 sql exception을 띄움. 그래서 try-catch로 감싸줌.
             try {
                 if (deliAddrMapper.insDeliAddr(deliAddr) != 1) {
                     throw new CustomException(ErrorCode.INSERT_FAIL_DELIVERY_ERROR);

@@ -29,7 +29,7 @@ public class ProductController {
 
         productService.insertProduct(productInfo);
 
-        return "Success";
+        return "success";
     }
 
     // 상품 여러개 등록하기
@@ -38,7 +38,7 @@ public class ProductController {
 
         productService.multiInsertProdct(productInfos);
 
-        return "Success";
+        return "success";
     }
 
     // 한개의 상품 정보 가져오기
@@ -62,6 +62,6 @@ public class ProductController {
 
         productService.updateProd(productInfo);
 
-        return "Success";
+        return "success";
     }
 }
