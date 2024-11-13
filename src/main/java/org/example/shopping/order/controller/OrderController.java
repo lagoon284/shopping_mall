@@ -21,11 +21,9 @@ public class OrderController {
     public final OrderInfoService orderInfoService;
 
     @PostMapping("/insPurchase")
-    public String insPurchase(@RequestBody @Valid OrderInsertReq order) {
+    public void insPurchase(@RequestBody @Valid OrderInsertReq order) {
 
         orderInfoService.insPurchase(order);
-
-        return "success";
     }
 
 
@@ -36,10 +34,8 @@ public class OrderController {
     }
 
     @PutMapping("/update")
-    public String updateOrder(@RequestBody @Valid OrderUpdateReq order) {
+    public void updateOrder(@RequestBody @Valid OrderUpdateReq order) {
 
         orderInfoService.updateOrder(order);
-
-        return "success";
     }
 }

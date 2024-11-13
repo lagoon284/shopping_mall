@@ -14,11 +14,13 @@ public class ApiRes<T> {
 
     private final String timeStamp = LocalDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     private String path;
+    private String statCode;
     private T data;
 
     @Builder
-    public ApiRes(String path, T data) {
+    public ApiRes(String path, String statCode, T data) {
         this.path       = path;
+        this.statCode   = statCode;
         this.data       = data;
     }
 }

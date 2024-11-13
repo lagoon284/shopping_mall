@@ -1,10 +1,13 @@
 package org.example.shopping.util.wrapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.util.api.ApiRes;
+import org.springframework.boot.json.JsonParser;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -28,7 +31,7 @@ public class ResponseWrapper implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
 
-        Class<?> type = returnType.getParameterType();      // 파라미터의 타입을 저장. 이후 대상 클레스들에서 상곡, 구현 되었는지 비교하게 됨.
+        Class<?> type = returnType.getParameterType();      // 파라미터의 타입을 저장. 이후 대상 클레스들에서 상속, 구현 되었는지 비교하게 됨.
 
         // type이 ResponseEntity 클래스에서 상속/구현 되었는지? isAssignnableFrom은 instanceof와 비슷하지만 instanceof는 인스턴스 화 되었는지가 다름.
         if (ResponseEntity.class.isAssignableFrom(type)) {
@@ -58,25 +61,47 @@ public class ResponseWrapper implements ResponseBodyAdvice<Object> {
 
         // controller 경로를 넣어줄 예정으로 path 값 추가.
         String path = request.getURI().getPath();
+        // 만든 커스텀 클래스로 빌더하기 위해 변수 생성.
+        ApiRes<?> apiRes;
 
-        // 만든 커스텀 클래스로 빌더.
-        ApiRes<?> apiRes = ApiRes.builder()
-                // controller 경로.
-                .path(path)
-                // return 하는 객체...?
-                .data(body)
-                .build();
+        System.out.println(body.getClass());
+        System.out.println(body);
+
+        // 컨트롤러의 리턴이 String 일 때, 문자열 그대로 리턴.
+        if (body instanceof String) {
+            return body;
+        }
+
+        if(returnType.getParameterType().equals(void.class)) {
+            // return type 이 void 일 때,
+            apiRes = ApiRes.builder()
+                    .path(path)
+                    .statCode("success")
+                    .build();
+        } else {
+            // return type 이 void 가 아닐 때,
+            apiRes = ApiRes.builder()
+                    // controller 경로.
+                    .path(path)
+                    // return 하는 객체...?
+                    .data(body)
+                    .build();
+        }
+
+        return apiRes;
 
         // mapping json converter 가공을 거쳤는지? (그냥 String이라면 false, 객체로 받아 json으로 가공을 해준다면 true)
-        if (MappingJackson2HttpMessageConverter.class.isAssignableFrom(selectedConverterType)) {
-            return apiRes;
-        }
+//        if (MappingJackson2HttpMessageConverter.class.isAssignableFrom(selectedConverterType)) {
+//            return apiRes;
+//        }
 
-        try {
-            response.getHeaders().set("Content-Type", "application/json");
-            return objectMapper.writeValueAsString(apiRes);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        // "success" 를 리턴하기위해 만든 String => JSON 변환기 였는데 리턴 타입을 void로 바꾸면서 위에 if절 로 바뀜.
+        // 일단 보류...
+//        try {
+//            response.getHeaders().set("Content-Type", "application/json");
+//            return objectMapper.writeValueAsString(apiRes);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }

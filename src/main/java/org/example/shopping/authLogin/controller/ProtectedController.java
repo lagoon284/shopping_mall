@@ -44,7 +44,7 @@ public class ProtectedController {
     public AuthToken getProtectRefData(@RequestHeader("Authorization") String token) {
 
         try {
-            if (token != null && token.startsWith("seokhoRefAuth")) {
+            if (token != null && token.startsWith("seokhoRefAuth ")) {
                 String jwt = token.substring(14);
                 if (!jwtUtil.isTokenExpired(jwt)) {
                     AuthToken getAuthInfo = userService.getAuthInfo(jwt);

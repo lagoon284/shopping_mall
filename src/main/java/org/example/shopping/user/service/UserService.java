@@ -39,16 +39,20 @@ public class UserService {
             String jwtRefToken = jwtUtil.generateRefToken(user.getId());
 
             if (authTokenMapper.getTokenToId(user.getId())) {
-                authTokenMapper.updToken(user.getId(), jwtAccToken, jwtRefToken);
+                if (authTokenMapper.updToken(user.getId(), jwtAccToken, jwtRefToken) != 1) {
+                    throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_UPDATE_ERROR);
+                };
             } else {
-                authTokenMapper.insertToken(user.getId(), jwtAccToken, jwtRefToken);
+                if (authTokenMapper.insertToken(user.getId(), jwtAccToken, jwtRefToken) != 1) {
+                    throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_INSERT_ERROR);
+                };
             }
 
             AuthToken token = new AuthToken();
 
             token.setUserId(loginReq.getUserId());
-            token.setAccessToken(jwtAccToken);
-            token.setRefreshToken(jwtRefToken);
+            token.setAccessToken("seokhoAccAuth " + jwtAccToken);
+            token.setRefreshToken("seokhoRefAuth " + jwtRefToken);
 
             return token;
         } else {

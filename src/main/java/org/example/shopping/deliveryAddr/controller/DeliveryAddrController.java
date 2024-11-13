@@ -18,40 +18,32 @@ public class DeliveryAddrController {
     private final DeliveryAddrService deliAddrService;
 
     @PostMapping("/insert")
-    public String insertDeliAddr(@RequestBody @Valid DeliveryAddrInsert deliAddr) {
+    public void insertDeliAddr(@RequestBody @Valid DeliveryAddrInsert deliAddr) {
 
         deliAddrService.insDeliAddr(deliAddr);
-
-        return "success";
     }
 
-    @GetMapping("/read/{userId}")
+    @GetMapping("/{userId}")
     public List<DeliveryAddr> getDeliInfo(@PathVariable String userId) {
 
         return deliAddrService.getDeliInfo(userId);
     }
 
     @PutMapping("/update")
-    public String updDeliAddr(@RequestBody @Valid DeliveryAddrUpdate deliAddr) {
+    public void updDeliAddr(@RequestBody @Valid DeliveryAddrUpdate deliAddr) {
 
         deliAddrService.updDeliAddr(deliAddr);
-
-        return "success";
     }
 
     @PutMapping("/defUpdate")
-    public String updDefDeliAddr(@RequestBody @Valid DeliveryAddrDefUpdate deliAddr) {
+    public void updDefDeliAddr(@RequestBody @Valid DeliveryAddrDefUpdate deliAddr) {
 
         deliAddrService.updDefDeliAddr(deliAddr);
-
-        return "success";
     }
 
     @DeleteMapping("/delete")
-    public String delDeliAddr(@RequestBody @Valid DeliveryAddrDelete deliAddr) {
+    public void delDeliAddr(@RequestBody @Valid DeliveryAddrDelete deliAddr) {
 
         deliAddrService.delDeliAddr(deliAddr);
-
-        return "success";
     }
 }

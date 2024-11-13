@@ -23,6 +23,7 @@ public enum ErrorCode {
     AUTH_REF_SIGNATURE_EXPIRED_ERROR(401, "REFRESH TOKEN 의 유효기간이 만료 되었습니다."),
 
     AUTH_REF_SIGNATURE_UPDATE_ERROR(403, "새로 발급된 엑세스 토큰의 UPDATE가 실패하였습니다."),
+    AUTH_REF_SIGNATURE_INSERT_ERROR(403, "새로 발급된 엑세스 토큰의 INSERT가 실패하였습니다."),
 
     // 409 CONFLICT 중복된 리소스.
     ALREADY_SAVED_USER(409, "이미 존재하는 회원 ID 입니다."),

@@ -29,7 +29,7 @@
                 type: "POST",
                 contentType: "application/json",
                 headers: {
-                    Authorization: "seokhoAccAuth " + accToken
+                    Authorization: accToken
                 },
                 success: function (res) {
                     const userInfo = `
@@ -51,7 +51,7 @@
                             type: "PUT",
                             contentType: "application/json",
                             headers: {
-                                Authorization: "seokhoRefAuth " + refToken
+                                Authorization: refToken
                             },
                             success: function (res) {
 

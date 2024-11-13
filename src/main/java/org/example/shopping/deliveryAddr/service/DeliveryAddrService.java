@@ -58,13 +58,8 @@ public class DeliveryAddrService {
 
     public List<DeliveryAddr> getDeliInfo(String userId) {
 
-        List<DeliveryAddr> deliAddrs = deliAddrMapper.getDeliInfo(userId);
-
-        if (deliAddrs.isEmpty()) {
-            throw new CustomException(ErrorCode.DELIVERY_ADDR_NOT_FOUND);
-        }
-
-        return deliAddrs;
+        // 배송지가 없어도 return.
+        return deliAddrMapper.getDeliInfo(userId);
     }
 
     public void updDeliAddr(DeliveryAddrUpdate deliAddr) {

@@ -25,15 +25,13 @@ public class UserController {
 
     // 회원가입.
     @PostMapping("/signup")
-    public String signup(@RequestBody @Valid UserInsertReq user) {
+    public void signup(@RequestBody @Valid UserInsertReq user) {
 
         userService.signupUser(user);
-
-        return "success";
     }
 
     // id 와 일치하는 계정 정보 하나 select.
-    @GetMapping("/findID/{id}")
+    @GetMapping("/{id}")
     public User oneUserSelect(@PathVariable String id) {
 
         return userService.oneUserSelect(id);
@@ -48,20 +46,16 @@ public class UserController {
 
     // 회원정보 수정 id 값 변경 불가.
     @PutMapping("/updateInfo")
-    public String updateUserInfo(@RequestBody @Valid UserUpdateReq user) {
+    public void updateUserInfo(@RequestBody @Valid UserUpdateReq user) {
 
         userService.updateUserInfo(user);
-
-        return "success";
     }
 
     // 휴면회원 토글 sleepFlag 값 변경.
     // 회원 수정에 같이 넣어서 처리하는 방법도 있는데 따로 뺀 이유는 혹시 몰라서...
     @PutMapping("/dormency")
-    public String goToSleep(@RequestBody @Valid UserDormencyReq user) {
+    public void goToSleep(@RequestBody @Valid UserDormencyReq user) {
 
         userService.goToSleep(user);
-        
-        return "success";
     }
 }

@@ -25,20 +25,16 @@ public class ProductController {
 
     // 상품 한개 등록하기
     @PostMapping("/insert")
-    public String productInsert(@RequestBody @Valid ProductInsertReq productInfo) {
+    public void productInsert(@RequestBody @Valid ProductInsertReq productInfo) {
 
         productService.insertProduct(productInfo);
-
-        return "success";
     }
 
     // 상품 여러개 등록하기
     @PostMapping("/multiInsert")
-    public String multiProductInsert(@RequestBody @Valid List<ProductInsertReq> productInfos) {
+    public void multiProductInsert(@RequestBody @Valid List<ProductInsertReq> productInfos) {
 
         productService.multiInsertProdct(productInfos);
-
-        return "success";
     }
 
     // 한개의 상품 정보 가져오기
@@ -58,10 +54,8 @@ public class ProductController {
     // 단건 상품 수정
     // 상품 수정시 USEFLAG 값으로 사용 비사용 하여 조회시 노출/비노출 수정 가능.
     @PutMapping("/updateProd")
-    public String updateProd(@RequestBody @Valid ProductUpdateReq productInfo) {
+    public void updateProd(@RequestBody @Valid ProductUpdateReq productInfo) {
 
         productService.updateProd(productInfo);
-
-        return "success";
     }
 }
