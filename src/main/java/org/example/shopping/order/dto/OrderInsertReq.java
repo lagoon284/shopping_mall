@@ -1,14 +1,12 @@
 package org.example.shopping.order.dto;
 
 
-import com.sun.istack.NotNull;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.util.common.RetAttributes;
-import org.hibernate.annotations.NotFound;
+import org.example.shopping.util.common.dto.RetAttributes;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

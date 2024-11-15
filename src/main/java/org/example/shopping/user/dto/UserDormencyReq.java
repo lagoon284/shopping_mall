@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.example.shopping.util.common.RetAttributes;
+import org.example.shopping.util.common.dto.RetAttributes;
 
 @Data
 @AllArgsConstructor

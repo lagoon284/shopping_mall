@@ -1,4 +1,4 @@
-package org.example.shopping.util.common;
+package org.example.shopping.util.common.dto;
 
 import lombok.Data;
 

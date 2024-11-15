@@ -10,13 +10,29 @@
 
     <!-- select문 조회 업무 -->
     <select id="selectUserById" parameterType="String">
-        SELECT * FROM users
+        SELECT    USERNO
+                , ID
+                , PW
+                , NAME
+                , ADDR
+                , SLEEPFLAG
+                , REGDATE
+                , UPDDATE
+        FROM users
         WHERE   id = #{id}
           AND     SLEEPFLAG = FALSE
     </select>
 
     <select id="selectAllUsers" parameterType="org.example.shopping.user.dto.User">
-        select * FROM users
+        select     USERNO
+                 , ID
+                 , PW
+                 , NAME
+                 , ADDR
+                 , SLEEPFLAG
+                 , REGDATE
+                 , UPDDATE
+        FROM users
         WHERE SLEEPFLAG = FALSE
     </select>
 

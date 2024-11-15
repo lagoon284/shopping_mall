@@ -16,7 +16,9 @@
     </update>
 
     <select id="getToken">
-        SELECT  *
+        SELECT    USERID
+                , ACCESSTOKEN
+                , REFRESHTOKEN
         FROM    AUTHTOKEN
         WHERE   REFRESHTOKEN  = #{token}
     </select>

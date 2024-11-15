@@ -1,7 +1,7 @@
 package org.example.shopping.product.dto;
 
 import lombok.*;
-import org.example.shopping.util.common.RetAttributes;
+import org.example.shopping.util.common.dto.RetAttributes;
 
 
 @NoArgsConstructor      // 파라미터가 없는 디폴트 생성자를 생성해줌. (다른 생성자가 있더라도 만들어줌.)

@@ -64,9 +64,6 @@ public class ResponseWrapper implements ResponseBodyAdvice<Object> {
         // 만든 커스텀 클래스로 빌더하기 위해 변수 생성.
         ApiRes<?> apiRes;
 
-        System.out.println(body.getClass());
-        System.out.println(body);
-
         // 컨트롤러의 리턴이 String 일 때, 문자열 그대로 리턴.
         if (body instanceof String) {
             return body;
@@ -76,7 +73,6 @@ public class ResponseWrapper implements ResponseBodyAdvice<Object> {
             // return type 이 void 일 때,
             apiRes = ApiRes.builder()
                     .path(path)
-                    .statCode("success")
                     .build();
         } else {
             // return type 이 void 가 아닐 때,

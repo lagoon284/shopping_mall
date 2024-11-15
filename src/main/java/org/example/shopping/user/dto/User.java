@@ -1,7 +1,7 @@
 package org.example.shopping.user.dto;
 
 import lombok.*;
-import org.example.shopping.util.common.RetAttributes;
+import org.example.shopping.util.common.dto.RetAttributes;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

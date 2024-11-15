@@ -25,7 +25,7 @@ public class ProductService {
         int retVal = productMapper.insertProduct(productInfo);
 
         if (retVal != 1) {
-            throw new CustomException(ErrorCode.INSERT_FAIL_PRODUCT_ERROR);
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
     }
 
@@ -38,7 +38,7 @@ public class ProductService {
         int retVal = productMapper.multiInsertProduct(productInfos);
 
         if (productInfos.size() != retVal) {
-            throw new CustomException(ErrorCode.INSERT_FAIL_PRODUCT_ERROR);
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
     }
 
@@ -71,7 +71,7 @@ public class ProductService {
         int retVal = productMapper.updateProd(productInfo);
 
         if (retVal != 1) {
-            throw new CustomException(ErrorCode.CONFLICT_REQUEST_PRODUCT);
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
     }
 }

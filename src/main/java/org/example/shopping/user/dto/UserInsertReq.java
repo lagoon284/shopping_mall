@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.example.shopping.util.common.RetAttributes;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

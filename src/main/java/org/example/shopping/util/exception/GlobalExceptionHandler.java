@@ -59,15 +59,31 @@ public class GlobalExceptionHandler {
 
     // request parameter 가 적절하지 않을 때 리턴하는 에러.
     @ExceptionHandler({HandlerMethodValidationException.class, MethodArgumentNotValidException.class, MissingServletRequestParameterException.class, NullPointerException.class})
-    protected ResponseEntity<?> handleValidException(HandlerMethodValidationException ex) {
+    protected ResponseEntity<?> handleValidException(Exception ex) {
+
+        String message;
+        HttpStatus status;
+
+        if (ex instanceof HandlerMethodValidationException) {
+            message = "요청 값이 적절하지 않습니다.";
+            status = HttpStatus.BAD_REQUEST;
+        } else if (ex instanceof MethodArgumentNotValidException) {
+            message = "유효성 검사에 실패했습니다.";
+            status = HttpStatus.BAD_REQUEST;
+        } else if (ex instanceof MissingServletRequestParameterException) {
+            message = "필수 요청 파라미터가 누락되었습니다.";
+            status = HttpStatus.BAD_REQUEST;
+        } else if (ex instanceof NullPointerException) {
+            message = "서버 오류가 발생했습니다.";
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        } else {
+            message = "알 수 없는 오류가 발생했습니다.";
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
 
         log.info("----- THROW EXCEPTION!!! : MESSAGE = {}", ex.getMessage());
 
-        return new ResponseEntity<>(new ErrorDto(
-                ex.getStatusCode().value()
-                , "요청 값이 적절하지 않습니다.")
-                , HttpStatus.BAD_REQUEST
-        );
+        return new ResponseEntity<>(new ErrorDto(status.value(), message), status);
     }
 
     // 요청받은 본문의 데이터 타입이 JSON이 아닐때 리턴.

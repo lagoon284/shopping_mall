@@ -38,7 +38,11 @@
     </update>
 
     <select id="getDeliInfo" parameterType="String">
-        SELECT  *
+        SELECT    USERID
+                , DELIADDRNO
+                , ADDRALIAS
+                , DELIADDR
+                , DEFDELIADDR
         FROM    DELIVERYADDR
         WHERE   USERID = #{userId};
     </select>

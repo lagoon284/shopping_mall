@@ -1,8 +1,6 @@
 package org.example.shopping.deliveryAddr.dto;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.example.shopping.util.common.RetAttributes;
 
 @Data
 public class DeliveryAddr {

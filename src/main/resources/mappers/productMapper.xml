@@ -4,7 +4,7 @@
 <mapper namespace = "org.example.shopping.product.mapper.ProductMapper">
 
     <!-- 상품등록 -->
-    <insert id = "insertProduct" parameterType = "org.example.shopping.product.dto.ProductInfo">
+    <insert id = "insertProduct" parameterType = "org.example.shopping.product.dto.ProductInsertReq">
         INSERT INTO PRODUCTINFO (prodname, price, provider, info, useflag, regdate)
         VALUES (#{prodName}, #{price}, #{provider}, #{info}, #{useFlag}, #{regDate})
     </insert>
@@ -19,18 +19,34 @@
 
     <!-- 상품 조회 -->
     <select id="getOneProd" parameterType="org.example.shopping.product.dto.ProductInfo">
-        SELECT * FROM   PRODUCTINFO
+        SELECT    PRODSEQNO
+                , PRODNAME
+                , PRICE
+                , PROVIDER
+                , INFO
+                , USEFLAG
+                , REGDATE
+                , UPDDATE
+        FROM   PRODUCTINFO
         WHERE           PRODSEQNO  = #{prodSeqNo}
         AND             USEFLAG = TRUE
     </select>
 
     <select id="getQuanProd" parameterType="Integer">
-        SELECT * FROM   PRODUCTINFO
+        SELECT   PRODSEQNO
+                 , PRODNAME
+                 , PRICE
+                 , PROVIDER
+                 , INFO
+                 , USEFLAG
+                 , REGDATE
+                 , UPDDATE
+        FROM   PRODUCTINFO
         WHERE           USEFLAG    = TRUE
     </select>
 
     <!-- 상품 수정 -->
-    <update id="updateProd" parameterType="org.example.shopping.product.dto.ProductInfo">
+    <update id="updateProd" parameterType="org.example.shopping.product.dto.ProductUpdateReq">
         UPDATE  PRODUCTINFO
         SET     PRODNAME    = #{prodName},
                 PRICE       = #{price},

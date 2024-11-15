@@ -26,7 +26,15 @@
     </insert>
 
     <select id="getOrderInfo" resultType="org.example.shopping.order.dto.OrderInfo" parameterType="String">
-        SELECT  *
+        SELECT    ORDERNO
+                , USERID
+                , USERNAME
+                , USERADDR
+                , PRODSEQNO
+                , PRODNAME
+                , PRODPRICE
+                , REGDATE
+                , UPDDATE
         FROM    ORDERINFO
         WHERE   ORDERNO = #{orderNo}
     </select>

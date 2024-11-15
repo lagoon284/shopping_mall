@@ -2,7 +2,7 @@ package org.example.shopping.order.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.example.shopping.util.common.RetAttributes;
+import org.example.shopping.util.common.dto.RetAttributes;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

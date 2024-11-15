@@ -16,6 +16,7 @@ import org.example.shopping.util.common.TimeConverter;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -85,18 +86,22 @@ public class UserService {
         // 등록일시 set.
         user.setRegDate(TimeConverter.toDayToString());
 
-        if (userMapper.insertUser(user) != 1) {
-            throw new CustomException(ErrorCode.INSERT_FAIL_USER_ERROR);
-        }
+        userMapper.insertUser(user);
     }
 
     public User oneUserSelect(String id) {
 
         User userInfo = userMapper.selectUserById(id);
 
-        if (userInfo == null) {
+        if (ObjectUtils.isEmpty(userInfo)) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
+
+        // pw 값 가리기
+        // 자리수를 알려주면 안될거 같음...그냥 고정 자리로 해야겠음.
+//        String pwHide = String.valueOf('*').repeat(userInfo.getPw().length());
+        // 13개
+        userInfo.setPw("*************");
 
         return userInfo;
     }
@@ -105,8 +110,17 @@ public class UserService {
 
         List<User> userInfos = userMapper.selectAllUsers();
 
-        if (userInfos.isEmpty()) {
+        if (ObjectUtils.isEmpty(userInfos)) {
             throw new CustomException(ErrorCode.NOT_READY_SERVICE_ERROR);
+        }
+
+        // pw 값 가리기
+        for (User userInfo : userInfos) {
+            // 자리수를 알려주면 안될거 같음...그냥 고정 자리로 해야겠음.
+//            String pwHide = String.valueOf('*').repeat(userInfo.getPw().length());
+
+            // 13개
+            userInfo.setPw("*************");
         }
 
         return userInfos;
