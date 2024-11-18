@@ -21,12 +21,10 @@ public class OrderUpdateReq extends RetAttributes {
     @NotBlank(message = "사용자 주소는 Null일 수 없습니다.")
     private String userAddr;
 
-    @NotBlank(message = "상품 번호는 Null일 수 없습니다.")
-    private String prodSeqNo;
+    private Long prodSeqNo;
 
     @NotBlank(message = "상품 이름은 Null일 수 없습니다.")
     private String prodName;
 
-    @NotBlank(message = "상품 가격은 Null일 수 없습니다.")
-    private String prodPrice;
+    private int prodPrice;
 }

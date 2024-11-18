@@ -16,7 +16,7 @@ public class ProductInfo extends RetAttributes {
     // 상품 이름.
     private String prodName;
     // 상품 가격.
-    private String price;
+    private int price;
     // 상품 판매처명.
     private String provider;
     // 상품 정보.

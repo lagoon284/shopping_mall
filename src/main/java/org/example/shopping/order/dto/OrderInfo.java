@@ -10,7 +10,7 @@ public class OrderInfo extends RetAttributes {
 
     //-------------------- 주문 정보 -------------------//
     // 주문 번호. auto increment 값.
-    private String orderNo;
+    private Long orderNo;
 
     //-------------------- 주문자 정보 -------------------//
     // 주문한 회원 아이디.
@@ -22,11 +22,11 @@ public class OrderInfo extends RetAttributes {
 
     //------------------ 판매자/상품 정보 -----------------//
     // 상품 번호.
-    private String prodSeqNo;
+    private Long prodSeqNo;
     // 상품 이름.
     private String prodName;
     // 상품 가격.
-    private String prodPrice;
+    private int prodPrice;
 
     //------------- orderNo 생성을 위한 param ------------//
     // mapper.xml 에 today 지정 쿼리 작성해둠.

@@ -18,8 +18,7 @@ public class ProductUpdateReq extends RetAttributes {
     @NotBlank
     private String prodName;
 
-    @NotBlank
-    private String price;
+    private int price;
 
     @NotBlank
     private String provider;
