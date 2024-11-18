@@ -38,7 +38,7 @@ public class ProductController {
     }
 
     // 한개의 상품 정보 가져오기
-    @GetMapping("/info/{prodSeqNo}")
+    @GetMapping("/{prodSeqNo}")
     public ProductInfo getOneProd(@PathVariable Long prodSeqNo) {
 
         return productService.getOneProd(prodSeqNo);

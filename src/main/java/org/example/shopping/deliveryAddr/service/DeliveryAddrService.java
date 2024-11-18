@@ -24,6 +24,11 @@ public class DeliveryAddrService {
 
         List<DeliveryAddr> deliInfo = deliAddrMapper.getDeliInfo(deliAddr.getUserId());
 
+        // 배송지는 하나의 ID당 5개로 제한.
+        if (deliInfo.size() >= 5) {
+            throw new CustomException(ErrorCode.INSERT_FAIL_DELIVERY_OVER_ERROR);
+        }
+
         // 배송지 별칭 중복 확인. (별칭 중복 허용하지 않음.)
         for (DeliveryAddr userDeli : deliInfo) {
             if (Objects.equals(userDeli.getAddrAlias(), deliAddr.getAddrAlias())) {
@@ -41,14 +46,7 @@ public class DeliveryAddrService {
             deliAddr.setDefDeliAddr(true);
         }
 
-        // 배송지는 하나의 ID당 5개로 제한.
-        if (deliInfo.size() < 5) {
-            if (deliAddrMapper.insDeliAddr(deliAddr) != 1) {
-                throw new CustomException(ErrorCode.INSERT_FAIL_DELIVERY_ERROR);
-            }
-        } else {
-            throw new CustomException(ErrorCode.INSERT_FAIL_DELIVERY_OVER_ERROR);
-        }
+        deliAddrMapper.insDeliAddr(deliAddr);
     }
 
     public List<DeliveryAddr> getDeliInfo(String userId) {
@@ -70,21 +68,9 @@ public class DeliveryAddrService {
         deliAddrMapper.updDefDeliAddr(deliAddr);
     }
 
-    public void delDeliAddr(DeliveryAddrDelete deliAddr) {
+    public void delDeliAddr(int deliAddrNo) {
 
-        List<DeliveryAddr> getDeliInfo = deliAddrMapper.getDeliInfo(deliAddr.getUserId());
-
-        if (!getDeliInfo.isEmpty()) {
-            DeliveryAddr deliInfo = getDeliInfo.get(deliAddr.getDeliAddrNo() - 1);
-
-            if (deliInfo.isDefDeliAddr()) {
-                throw new CustomException(ErrorCode.NOT_DELETE_DEFAULT_DELIADDR);
-            }
-        } else {
-            throw new CustomException(ErrorCode.DELIVERY_ADDR_NOT_FOUND);
-        }
-
-        deliAddrMapper.delDeliAddr(deliAddr);
-        deliAddrMapper.updDeliAddrNo(deliAddr);
+        deliAddrMapper.delDeliAddr(deliAddrNo);
+//        deliAddrMapper.updDeliAddrNo(deliAddr);
     }
 }

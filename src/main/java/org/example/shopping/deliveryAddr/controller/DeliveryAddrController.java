@@ -41,9 +41,9 @@ public class DeliveryAddrController {
         deliAddrService.updDefDeliAddr(deliAddr);
     }
 
-    @DeleteMapping("/delete")
-    public void delDeliAddr(@RequestBody @Valid DeliveryAddrDelete deliAddr) {
+    @DeleteMapping("/delete/{deliAddrNo}")
+    public void delDeliAddr(@PathVariable @Valid int deliAddrNo) {
 
-        deliAddrService.delDeliAddr(deliAddr);
+        deliAddrService.delDeliAddr(deliAddrNo);
     }
 }

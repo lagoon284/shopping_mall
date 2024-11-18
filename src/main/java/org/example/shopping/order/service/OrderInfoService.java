@@ -6,8 +6,6 @@ import org.example.shopping.order.dto.OrderInsertReq;
 import org.example.shopping.order.dto.OrderUpdateReq;
 import org.example.shopping.order.mapper.OrderInfoMapper;
 import org.example.shopping.util.common.TimeConverter;
-import org.example.shopping.util.exception.enums.ErrorCode;
-import org.example.shopping.util.exception.CustomException;
 import org.springframework.stereotype.Service;
 
 @Service

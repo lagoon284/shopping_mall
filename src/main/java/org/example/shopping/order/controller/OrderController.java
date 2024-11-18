@@ -27,7 +27,7 @@ public class OrderController {
     }
 
 
-    @GetMapping("/info/{orderNo}")
+    @GetMapping("/{orderNo}")
     public OrderInfo orderInfo(@PathVariable String orderNo) {
 
         return orderInfoService.getOrderInfo(orderNo);

@@ -18,7 +18,7 @@ public interface DeliveryAddrMapper {
 
     int updDeliAddr(DeliveryAddrUpdate deliAddr);
 
-    int delDeliAddr(DeliveryAddrDelete deliAddr);
+    int delDeliAddr(int deliAddrNo);
 
-    int updDeliAddrNo(DeliveryAddrDelete deliAddr);
+//    int updDeliAddrNo(DeliveryAddrDelete deliAddr);
 }

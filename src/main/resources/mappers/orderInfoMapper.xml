@@ -3,7 +3,7 @@
 
 <mapper namespace = "org.example.shopping.order.mapper.OrderInfoMapper">
     <insert id="insPurchase" parameterType = "org.example.shopping.order.dto.OrderInfo">
-        <selectKey keyProperty="orderNo" resultType="String" order="BEFORE">
+        <selectKey keyProperty="orderNo" resultType="Long" order="BEFORE">
             SELECT
                 CASE
                     WHEN EXISTS (SELECT 1 FROM ORDERINFO WHERE ORDERNO LIKE CONCAT(FORMATDATETIME(CURRENT_DATE, 'yyyyMMdd'),'%'))
