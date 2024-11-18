@@ -3,7 +3,10 @@ package org.example.shopping.util.common;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import org.example.shopping.user.dto.User;
+import org.example.shopping.util.exception.CustomException;
+import org.example.shopping.util.exception.enums.ErrorCode;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -56,17 +59,21 @@ public class JwtUtil {
 
         ObjectMapper obj = new ObjectMapper();
 
-        // jwt 분해해서 String으로 변환.
-        String userJson = Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-
         try {
+            // jwt 분해해서 String으로 변환.
+            String userJson = Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+
             // objectMapper로 객체로 변환 시켜서 리턴.
             return obj.readValue(userJson, User.class);
-        } catch(Exception e) {
+
+        } catch (SignatureException e) {
+            // 인증에 실패했을 때 핸들링.
+            throw new CustomException(ErrorCode.AUTH_SIGNATURE_FAIL_ERROR);
+        } catch (Exception e) {
             throw new RuntimeException("User object to JSON conversion failed", e);
         }
     }

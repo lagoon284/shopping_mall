@@ -22,51 +22,33 @@ public class ProtectedController {
     @PostMapping("/accData")
     public User getProtectedAccData(@RequestHeader("Authorization") String token) {
 
-        try {
-            if (token != null && token.startsWith("seokhoAccAuth ")) {
-                String jwt = token.substring(14);
-                if (!jwtUtil.isTokenExpired(jwt)) {
-                    return jwtUtil.extractUserObj(jwt);
-                }
+        if (token != null && token.startsWith("seokhoAccAuth ")) {
+            String jwt = token.substring(14);
+            if (!jwtUtil.isTokenExpired(jwt)) {
+                return jwtUtil.extractUserObj(jwt);
+            } else {
+                // 유효기간이 지났을 때 핸들링.
+                throw new CustomException(ErrorCode.AUTH_SIGNATURE_EXPIRED_ERROR);
             }
-        } catch (SignatureException e) {
-            // 인증에 실패했을 때 핸들링.
-            throw new CustomException(ErrorCode.AUTH_SIGNATURE_FAIL_ERROR);
-        } catch (ExpiredJwtException e) {
-            // 유효기간이 지났을 때 핸들링.
-            throw new CustomException(ErrorCode.AUTH_SIGNATURE_EXPIRED_ERROR);
+        } else {
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
-
-        throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/refData")
     public AuthToken getProtectRefData(@RequestHeader("Authorization") String token) {
 
-        try {
-            if (token != null && token.startsWith("seokhoRefAuth ")) {
-                String jwt = token.substring(14);
-                if (!jwtUtil.isTokenExpired(jwt)) {
-                    AuthToken getAuthInfo = userService.getAuthInfo(jwt);
-
-                    if (getAuthInfo == null || !getAuthInfo.getRefreshToken().equals(jwt)) {
-                        // 인증에 실패했을 때 핸들링.
-                        throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_FAIL_ERROR);
-                    }
-                    User getUserInfo = userService.oneUserSelect(getAuthInfo.getUserId());
-
-                    return userService.refLogin(getUserInfo);
-                }
+        if (token != null && token.startsWith("seokhoRefAuth ")) {
+            String jwt = token.substring(14);
+            if (!jwtUtil.isTokenExpired(jwt)) {
+                return userService.refLogin(userService.getAuthInfo(jwt));
+            } else {
+                // 유효기간이 지났을 때 핸들링.
+                throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_EXPIRED_ERROR);
             }
-        }   catch (SignatureException e) {
-            // 인증에 실패했을 때 핸들링.
-            throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_FAIL_ERROR);
-        } catch (ExpiredJwtException e) {
-            // 유효기간이 지났을 때 핸들링.
-            throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_EXPIRED_ERROR);
+        } else {
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
-
-        throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 }
 

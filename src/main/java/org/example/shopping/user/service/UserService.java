@@ -76,8 +76,16 @@ public class UserService {
         return authTokenMapper.getToken(newRefToken);
     }
 
-    public AuthToken getAuthInfo(String token) {
-        return authTokenMapper.getToken(token);
+    public User getAuthInfo(String token) {
+
+        AuthToken getAuthInfo = authTokenMapper.getToken(token);
+
+        if (getAuthInfo == null || !getAuthInfo.getRefreshToken().equals(token)) {
+            // 인증에 실패했을 때 핸들링.
+            throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_FAIL_ERROR);
+        }
+
+        return oneUserSelect(getAuthInfo.getUserId());
     }
 
     @Transactional
