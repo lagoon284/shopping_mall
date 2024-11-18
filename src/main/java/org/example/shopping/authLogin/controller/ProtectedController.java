@@ -1,7 +1,5 @@
 package org.example.shopping.authLogin.controller;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.authLogin.dto.AuthToken;
 import org.example.shopping.user.dto.User;
@@ -24,7 +22,7 @@ public class ProtectedController {
 
         if (token != null && token.startsWith("seokhoAccAuth ")) {
             String jwt = token.substring(14);
-            if (!jwtUtil.isTokenExpired(jwt)) {
+            if (jwtUtil.isTokenExpired(jwt)) {
                 return jwtUtil.extractUserObj(jwt);
             } else {
                 // 유효기간이 지났을 때 핸들링.
@@ -40,7 +38,7 @@ public class ProtectedController {
 
         if (token != null && token.startsWith("seokhoRefAuth ")) {
             String jwt = token.substring(14);
-            if (!jwtUtil.isTokenExpired(jwt)) {
+            if (jwtUtil.isTokenExpired(jwt)) {
                 return userService.refLogin(userService.getAuthInfo(jwt));
             } else {
                 // 유효기간이 지났을 때 핸들링.
