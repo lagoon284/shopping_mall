@@ -43,12 +43,7 @@ public class DeliveryAddrService {
 
         // 배송지는 하나의 ID당 5개로 제한.
         if (deliInfo.size() < 5) {
-            // 5개 이상일때 리턴이 없고 sql exception을 띄움. 그래서 try-catch로 감싸줌.
-            try {
-                if (deliAddrMapper.insDeliAddr(deliAddr) != 1) {
-                    throw new CustomException(ErrorCode.INSERT_FAIL_DELIVERY_ERROR);
-                }
-            } catch (Exception e) {
+            if (deliAddrMapper.insDeliAddr(deliAddr) != 1) {
                 throw new CustomException(ErrorCode.INSERT_FAIL_DELIVERY_ERROR);
             }
         } else {
@@ -66,16 +61,13 @@ public class DeliveryAddrService {
 
 //        deliAddr.setRegDate(TimeConverter.toDayToString());
 
-        if (deliAddrMapper.updDeliAddr(deliAddr) != 1) {
-            throw new CustomException(ErrorCode.CONFLICT_REQUEST_DELIVERY);
-        }
+       deliAddrMapper.updDeliAddr(deliAddr);
     }
 
     public void updDefDeliAddr(DeliveryAddrDefUpdate deliAddr) {
 
-        if (deliAddrMapper.updAllDefDeliAddr(deliAddr) < 1 || deliAddrMapper.updDefDeliAddr(deliAddr) < 1) {
-            throw new CustomException(ErrorCode.CONFLICT_REQUEST_DELIVERY);
-        };
+        deliAddrMapper.updAllDefDeliAddr(deliAddr);
+        deliAddrMapper.updDefDeliAddr(deliAddr);
     }
 
     public void delDeliAddr(DeliveryAddrDelete deliAddr) {
@@ -92,8 +84,7 @@ public class DeliveryAddrService {
             throw new CustomException(ErrorCode.DELIVERY_ADDR_NOT_FOUND);
         }
 
-        if (deliAddrMapper.delDeliAddr(deliAddr) != 1 || deliAddrMapper.updDeliAddrNo(deliAddr) < 1) {
-            throw new CustomException(ErrorCode.DELETE_REQUEST_DELIVERY_ERROR);
-        }
+        deliAddrMapper.delDeliAddr(deliAddr);
+        deliAddrMapper.updDeliAddrNo(deliAddr);
     }
 }

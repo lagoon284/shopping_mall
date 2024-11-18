@@ -22,11 +22,7 @@ public class ProductService {
 
         productInfo.setRegDate(TimeConverter.toDayToString());
 
-        int retVal = productMapper.insertProduct(productInfo);
-
-        if (retVal != 1) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
+        productMapper.insertProduct(productInfo);
     }
 
     public void multiInsertProdct(List<ProductInsertReq> productInfos) {
@@ -35,43 +31,23 @@ public class ProductService {
             prod.setRegDate(TimeConverter.toDayToString());
         }
 
-        int retVal = productMapper.multiInsertProduct(productInfos);
-
-        if (productInfos.size() != retVal) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
+        productMapper.multiInsertProduct(productInfos);
     }
 
     public ProductInfo getOneProd(Long prodSeqNo) {
 
-        ProductInfo prodInfo = productMapper.getOneProd(prodSeqNo);
-
-        if (prodInfo == null) {
-            throw new CustomException(ErrorCode.PRODUCT_NOT_FOUND);
-        }
-
-        return prodInfo;
+        return productMapper.getOneProd(prodSeqNo);
     }
 
     public List<ProductInfo> getQuanProd() {
 
-        List<ProductInfo> prodInfos = productMapper.getQuanProd();
-
-        if (prodInfos.isEmpty()) {
-            throw new CustomException(ErrorCode.SELECT_FAIL_PRODUCT_ERROR);
-        }
-
-        return prodInfos;
+        return productMapper.getQuanProd();
     }
 
     public void updateProd(ProductUpdateReq productInfo) {
 
         productInfo.setUpdDate(TimeConverter.toDayToString());
 
-        int retVal = productMapper.updateProd(productInfo);
-
-        if (retVal != 1) {
-            throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        }
+        productMapper.updateProd(productInfo);
     }
 }

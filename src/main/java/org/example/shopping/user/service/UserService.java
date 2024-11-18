@@ -67,11 +67,7 @@ public class UserService {
         String newAccToken = jwtUtil.generateAccToken(user);
         String newRefToken = jwtUtil.generateRefToken(user.getId());
 
-        int retVal = authTokenMapper.updToken(user.getId(), newAccToken, newRefToken);
-
-        if (retVal != 1) {
-            throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_UPDATE_ERROR);
-        }
+        authTokenMapper.updToken(user.getId(), newAccToken, newRefToken);
 
         return authTokenMapper.getToken(newRefToken);
     }
@@ -88,7 +84,6 @@ public class UserService {
         return oneUserSelect(getAuthInfo.getUserId());
     }
 
-    @Transactional
     public void signupUser(UserInsertReq user) {
 
         // 등록일시 set.
@@ -100,10 +95,6 @@ public class UserService {
     public User oneUserSelect(String id) {
 
         User userInfo = userMapper.selectUserById(id);
-
-        if (ObjectUtils.isEmpty(userInfo)) {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
-        }
 
         // pw 값 가리기
         // 자리수를 알려주면 안될거 같음...그냥 고정 자리로 해야겠음.
@@ -117,10 +108,6 @@ public class UserService {
     public List<User> allUserSelect() {
 
         List<User> userInfos = userMapper.selectAllUsers();
-
-        if (ObjectUtils.isEmpty(userInfos)) {
-            throw new CustomException(ErrorCode.NOT_READY_SERVICE_ERROR);
-        }
 
         // pw 값 가리기
         for (User userInfo : userInfos) {
@@ -139,17 +126,13 @@ public class UserService {
         // 수정일시 set.
         user.setUpdDate(TimeConverter.toDayToString());
 
-        if (userMapper.updateUserInfo(user) != 1) {
-            throw new CustomException(ErrorCode.CONFLICT_REQUEST_USER);
-        }
+        userMapper.updateUserInfo(user);
     }
 
     public void goToSleep(UserDormencyReq user) {
 
         user.setUpdDate(TimeConverter.toDayToString());
 
-        if (userMapper.dormencyFlag(user.getId()) != 1) {
-            throw new CustomException(ErrorCode.CONFLICT_REQUEST_DORMENCY);
-        }
+        userMapper.dormencyFlag(user.getId());
     }
 }
