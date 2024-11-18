@@ -38,15 +38,15 @@ public class ProtectedController {
 
         if (token != null && token.startsWith("seokhoRefAuth ")) {
             String jwt = token.substring(14);
-            if (jwtUtil.isTokenExpired(jwt)) {
-                return userService.refLogin(userService.getAuthInfo(jwt));
-            } else {
-                // 유효기간이 지났을 때 핸들링.
+            try {
+                if (jwtUtil.isTokenExpired(jwt)) {
+                    return userService.refLogin(userService.getAuthInfo(jwt));
+                }
+            } catch (Exception e) {
                 throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_EXPIRED_ERROR);
             }
-        } else {
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
+        throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 }
 

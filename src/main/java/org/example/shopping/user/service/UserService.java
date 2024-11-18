@@ -97,8 +97,11 @@ public class UserService {
         // pw 값 가리기
         // 자리수를 알려주면 안될거 같음...그냥 고정 자리로 해야겠음.
 //        String pwHide = String.valueOf('*').repeat(userInfo.getPw().length());
-        // 13개
-        userInfo.setPw("*************");
+        if (userInfo != null) {
+            // 13개
+            userInfo.setPw("*************");
+        }
+
 
         return userInfo;
     }
@@ -107,13 +110,15 @@ public class UserService {
 
         List<User> userInfos = userMapper.selectAllUsers();
 
-        // pw 값 가리기
-        for (User userInfo : userInfos) {
-            // 자리수를 알려주면 안될거 같음...그냥 고정 자리로 해야겠음.
-//            String pwHide = String.valueOf('*').repeat(userInfo.getPw().length());
+        if (userInfos != null) {
+            // pw 값 가리기
+            for (User userInfo : userInfos) {
+                // 자리수를 알려주면 안될거 같음...그냥 고정 자리로 해야겠음.
+    //            String pwHide = String.valueOf('*').repeat(userInfo.getPw().length());
 
-            // 13개
-            userInfo.setPw("*************");
+                // 13개
+                userInfo.setPw("*************");
+            }
         }
 
         return userInfos;
