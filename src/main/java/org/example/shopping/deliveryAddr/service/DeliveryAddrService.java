@@ -20,8 +20,6 @@ public class DeliveryAddrService {
 
     public void insDeliAddr(DeliveryAddrInsert deliAddr) {
 
-//        deliAddr.setRegDate(TimeConverter.toDayToString());
-
         List<DeliveryAddr> deliInfo = deliAddrMapper.getDeliInfo(deliAddr.getUserId());
 
         // 배송지는 하나의 ID당 5개로 제한.
@@ -56,8 +54,6 @@ public class DeliveryAddrService {
     }
 
     public void updDeliAddr(DeliveryAddrUpdate deliAddr) {
-
-//        deliAddr.setRegDate(TimeConverter.toDayToString());
 
        deliAddrMapper.updDeliAddr(deliAddr);
     }

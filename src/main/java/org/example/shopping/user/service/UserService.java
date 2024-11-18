@@ -85,7 +85,7 @@ public class UserService {
     public void signupUser(UserInsertReq user) {
 
         // 등록일시 set.
-        user.setRegDate(TimeConverter.toDayToString());
+//        user.setRegDate(TimeConverter.toDayToString());
 
         userMapper.insertUser(user);
     }
@@ -122,14 +122,14 @@ public class UserService {
     public void updateUserInfo(UserUpdateReq user) {
 
         // 수정일시 set.
-        user.setUpdDate(TimeConverter.toDayToString());
+//        user.setUpdDate(TimeConverter.toDayToString());
 
         userMapper.updateUserInfo(user);
     }
 
     public void goToSleep(UserDormencyReq user) {
 
-        user.setUpdDate(TimeConverter.toDayToString());
+//        user.setUpdDate(TimeConverter.toDayToString());
 
         userMapper.dormencyFlag(user.getId());
     }

@@ -18,16 +18,10 @@ public class ProductService {
 
     public void insertProduct(ProductInsertReq productInfo) {
 
-        productInfo.setRegDate(TimeConverter.toDayToString());
-
         productMapper.insertProduct(productInfo);
     }
 
     public void multiInsertProdct(List<ProductInsertReq> productInfos) {
-
-        for (ProductInsertReq prod : productInfos) {
-            prod.setRegDate(TimeConverter.toDayToString());
-        }
 
         productMapper.multiInsertProduct(productInfos);
     }
@@ -43,8 +37,6 @@ public class ProductService {
     }
 
     public void updateProd(ProductUpdateReq productInfo) {
-
-        productInfo.setUpdDate(TimeConverter.toDayToString());
 
         productMapper.updateProd(productInfo);
     }

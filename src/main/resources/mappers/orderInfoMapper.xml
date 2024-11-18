@@ -21,7 +21,7 @@
                 #{prodSeqNo},
                 #{prodName},
                 #{prodPrice},
-                #{regDate}
+                FORMATDATETIME(NOW(), 'yyyy-MM-dd hh:mm:ss')
                );
     </insert>
 

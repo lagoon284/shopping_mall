@@ -5,7 +5,7 @@
     <!-- 회원가입 -->
     <insert id = "insertUser" parameterType = "org.example.shopping.user.dto.User">
         INSERT INTO users (id, pw, name, addr, regdate)
-        VALUES (#{id}, #{pw}, #{name}, #{addr}, #{regDate})
+        VALUES (#{id}, #{pw}, #{name}, #{addr}, FORMATDATETIME(NOW(), 'yyyy-MM-dd hh:mm:ss'))
     </insert>
 
     <!-- select문 조회 업무 -->
@@ -42,7 +42,7 @@
         SET     name    = #{name} ,
                 pw      = #{pw},
                 addr    = #{addr} ,
-                upddate = #{updDate}
+                upddate = FORMATDATETIME(NOW(), 'yyyy-MM-dd hh:mm:ss')
         WHERE   id      = #{id}
     </update>
 
@@ -50,6 +50,7 @@
     <update id="dormencyFlag" parameterType="String">
         UPDATE  users
         SET     sleepflag   = NOT (SELECT sleepflag FROM users WHERE id = #{id})
+                , UPDDATE   = FORMATDATETIME(NOW(), 'yyyy-MM-dd hh:mm:ss')
         WHERE   id          = #{id}
     </update>
 </mapper>
