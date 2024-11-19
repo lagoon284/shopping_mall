@@ -55,6 +55,10 @@ public class ValidationUtil {
                     // A 객체의 값이 null이면 B 객체의 값을 사용.
                     if (fieldA.get(objectA) == null) {
                         fieldA.set(objectA, fieldB.get(objectB));
+                    } else if (fieldA.get(objectA) instanceof Integer) {
+                        if ((Integer) fieldA.get(objectA) == 0) {
+                            fieldA.set(objectA, fieldB.get(objectB));
+                        }
                     }
                 }
             } catch (IllegalAccessException e) {

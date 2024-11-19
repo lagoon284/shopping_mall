@@ -20,7 +20,7 @@
                 , ACCESSTOKEN
                 , REFRESHTOKEN
         FROM    AUTHTOKEN
-        WHERE   REFRESHTOKEN  = #{token}
+        WHERE   ACCESSTOKEN  = #{token}
     </select>
 
     <!--  테이블에 해당하는 값이 있는지 true/false  -->
@@ -28,6 +28,14 @@
         SELECT  COUNT(1) > 0
         FROM    AUTHTOKEN
         WHERE   USERID      = #{userId}
+    </select>
+
+    <select id="getLoginInfo" resultType="org.example.shopping.authLogin.dto.LoginInfo">
+        SELECT    USERNO
+                , ID
+                , NAME
+        FROM    USERS
+        WHERE   ID          = #{userId}
     </select>
 
 

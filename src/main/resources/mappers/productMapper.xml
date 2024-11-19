@@ -42,7 +42,7 @@
                  , REGDATE
                  , UPDDATE
         FROM   PRODUCTINFO
-        WHERE           USEFLAG    = TRUE
+        WHERE    USEFLAG    = TRUE
     </select>
 
     <!-- 상품 수정 -->

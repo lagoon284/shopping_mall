@@ -4,7 +4,7 @@
 <mapper namespace = "org.example.shopping.user.mapper.UserMapper">
     <!-- 회원가입 -->
     <insert id = "insertUser" parameterType = "org.example.shopping.user.dto.User">
-        INSERT INTO users (id, pw, name, addr, regdate)
+        INSERT INTO USERS (id, pw, name, addr, regdate)
         VALUES (#{id}, #{pw}, #{name}, #{addr}, FORMATDATETIME(NOW(), 'yyyy-MM-dd hh:mm:ss'))
     </insert>
 
@@ -18,8 +18,8 @@
                 , SLEEPFLAG
                 , REGDATE
                 , UPDDATE
-        FROM users
-        WHERE   id = #{id}
+        FROM      USERS
+        WHERE     id = #{id}
           AND     SLEEPFLAG = FALSE
     </select>
 
@@ -32,13 +32,13 @@
                  , SLEEPFLAG
                  , REGDATE
                  , UPDDATE
-        FROM users
-        WHERE SLEEPFLAG = FALSE
+        FROM       USERS
+        WHERE      SLEEPFLAG = FALSE
     </select>
 
     <!-- update문 수정 업무 -->
     <update id="updateUserInfo" parameterType="org.example.shopping.user.dto.User">
-        UPDATE  users
+        UPDATE  USERS
         SET     name    = #{name} ,
                 pw      = #{pw},
                 addr    = #{addr} ,
@@ -48,7 +48,7 @@
 
     <!-- 휴면 계정 처리 -->
     <update id="dormencyFlag" parameterType="String">
-        UPDATE  users
+        UPDATE  USERS
         SET     sleepflag   = NOT (SELECT sleepflag FROM users WHERE id = #{id})
                 , UPDDATE   = FORMATDATETIME(NOW(), 'yyyy-MM-dd hh:mm:ss')
         WHERE   id          = #{id}

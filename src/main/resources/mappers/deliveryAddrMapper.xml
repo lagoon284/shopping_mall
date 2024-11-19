@@ -21,9 +21,8 @@
 
     <update id="updDefDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrDefUpdate">
         UPDATE DELIVERYADDR
-        SET DEFDELIADDR = true
-        WHERE DELIADDRNO = #{deliAddrNo}
-        AND #{defDeliAddr} = TRUE;
+        SET DEFDELIADDR = #{defDeliAddr}
+        WHERE DELIADDRNO = #{deliAddrNo};
     </update>
 
     <select id="getDeliInfo" parameterType="String">
@@ -33,7 +32,8 @@
                 , DELIADDR
                 , DEFDELIADDR
         FROM    DELIVERYADDR
-        WHERE   USERID = #{userId};
+        WHERE   USERID = #{userId}
+        ORDER BY DELIADDRNO;
     </select>
 
     <update id="updDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrUpdate">

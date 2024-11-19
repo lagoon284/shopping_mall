@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
+import org.example.shopping.authLogin.dto.LoginInfo;
 import org.example.shopping.user.dto.User;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.util.exception.enums.ErrorCode;
@@ -19,7 +20,7 @@ public class JwtUtil {
     private Long expiration = 60000L*10;  // 대충 10분 test 용.
 
     // 로그인 성공 여부 id 값으로 select 했을 때 계정 정보가 있으면 jwt에 유저 정보를 담음.
-    public String generateAccToken(User user) {
+    public String generateAccToken(LoginInfo user) {
 
         ObjectMapper obj = new ObjectMapper();
 
@@ -55,7 +56,7 @@ public class JwtUtil {
 //        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
 //    }
 
-    public User extractUserObj(String token) {
+    public LoginInfo extractUserObj(String token) {
 
         ObjectMapper obj = new ObjectMapper();
 
@@ -68,7 +69,7 @@ public class JwtUtil {
                     .getSubject();
 
             // objectMapper로 객체로 변환 시켜서 리턴.
-            return obj.readValue(userJson, User.class);
+            return obj.readValue(userJson, LoginInfo.class);
 
         } catch (SignatureException e) {
             // 인증에 실패했을 때 핸들링.

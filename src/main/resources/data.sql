@@ -1,36 +1,36 @@
 -- 회원 테이블 생성.
-CREATE TABLE IF NOT EXISTS users (
-    userno          BIGINT  PRIMARY KEY AUTO_INCREMENT,
-    id              NVARCHAR(30)    NOT NULL    UNIQUE ,
-    pw              NVARCHAR(30)    NOT NULL ,
-    name            NVARCHAR(30)     NOT NULL ,
-    addr            NVARCHAR(255)    NOT NULL ,
-    sleepflag       BOOLEAN         NOT NULL    DEFAULT FALSE ,
+CREATE TABLE IF NOT EXISTS USERS (
+    USERNO          BIGINT  PRIMARY KEY AUTO_INCREMENT,
+    ID              NVARCHAR(30)    NOT NULL    UNIQUE ,
+    PW              NVARCHAR(30)    NOT NULL ,
+    NAME            NVARCHAR(30)     NOT NULL ,
+    ADDR            NVARCHAR(255)    NOT NULL ,
+    SLEEPFLAG       BOOLEAN         NOT NULL    DEFAULT FALSE ,
 
-    regdate         VARCHAR(19)     NOT NULL ,
-    upddate         VARCHAR(19)
+    REGDATE         VARCHAR(19)     NOT NULL ,
+    UPDDATE         VARCHAR(19)
 );
 
 -- jwt 토큰 테이블 생성.
 CREATE TABLE IF NOT EXISTS AUTHTOKEN (
-    userid          NVARCHAR(30) UNIQUE ,
-    accesstoken     varchar(1000) ,
-    refreshtoken    varchar(1000),
+    USERID          NVARCHAR(30) UNIQUE ,
+    ACCESSTOKEN     varchar(1000) ,
+    REFRESHTOKEN    varchar(1000),
 
-    FOREIGN KEY (userid) REFERENCES USERS(id)
+    FOREIGN KEY (USERID) REFERENCES USERS(ID)
 );
 
 -- 상품 테이블 생성.
-CREATE TABLE IF NOT EXISTS productinfo (
-    prodseqno   BIGINT  PRIMARY KEY AUTO_INCREMENT,
-    prodname    NVARCHAR(255)   NOT NULL ,
-    price       NVARCHAR(255)   NOT NULL ,
-    provider    NVARCHAR(255)   NOT NULL ,
-    info        NVARCHAR(MAX) ,
+CREATE TABLE IF NOT EXISTS PRODUCTINFO (
+    PRODSEQNO   BIGINT  PRIMARY KEY AUTO_INCREMENT,
+    PRODNAME    NVARCHAR(255)   NOT NULL ,
+    PRICE       NVARCHAR(255)   NOT NULL ,
+    PROVIDER    NVARCHAR(255)   NOT NULL ,
+    INFO        NVARCHAR(MAX) ,
 
-    useflag     BOOLEAN         NOT NULL ,
-    regdate     VARCHAR(19)     NOT NULL ,
-    upddate     VARCHAR(19)
+    USEFLAG     BOOLEAN         NOT NULL ,
+    REGDATE     VARCHAR(19)     NOT NULL ,
+    UPDDATE     VARCHAR(19)
 );
 
 -- 주문 테이블 생성.
@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS ORDERINFO (
     REGDATE     VARCHAR(19)     NOT NULL ,
     UPDDATE     VARCHAR(19) ,
 
-    FOREIGN KEY (USERID) REFERENCES USERS(id),
-    FOREIGN KEY (PRODSEQNO) REFERENCES productinfo(prodseqno)
+    FOREIGN KEY (USERID) REFERENCES USERS(ID),
+    FOREIGN KEY (PRODSEQNO) REFERENCES productinfo(PRODSEQNO)
 );
 
 -- 배송지 테이블 생성.
@@ -62,21 +62,21 @@ CREATE TABLE IF NOT EXISTS DELIVERYADDR (
 );
 
 -- 회원 데이터 삽입.
-INSERT INTO users (id, PW, name, addr, regdate)
+INSERT INTO USERS (ID, PW, NAME, ADDR, REGDATE)
 SELECT *
-FROM (SELECT 'test1' AS id, '1234' AS PW, 'John Doe' AS name, '경기도 용인시 어쩌구 저쩌구' AS addr, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') AS REGDATE UNION ALL
+FROM (SELECT 'test1' AS ID, '1234' AS PW, 'John Doe' AS NAME, '경기도 용인시 어쩌구 저쩌구' AS ADDR, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') AS REGDATE UNION ALL
       SELECT 'test2', '1234', 'Jane Smith', '경기도 화성시 어쩌구 저쩌구', FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
       SELECT 'test3', '1234', 'Alice Johnson', '경기도 성남시 어쩌구 저쩌구', FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
       SELECT 'test4', '1234', 'Bob Brown', '서울 중랑구 어쩌구 저쩌구', FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
-      SELECT 'test5', '1234', 'Charlie Green', '경기도 구리시 어쩌구 저쩌구', FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss')) AS temp
-WHERE NOT EXISTS (SELECT 1 FROM users);
+      SELECT 'test5', '1234', 'Charlie Green', '경기도 구리시 어쩌구 저쩌구', FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss')) AS TEMP
+WHERE NOT EXISTS (SELECT 1 FROM USERS);
 
 -- 상품 데이터 삽입.
-INSERT INTO productinfo (prodname, price, provider, info, useflag, regdate)
+INSERT INTO PRODUCTINFO (PRODNAME, PRICE, PROVIDER, INFO, USEFLAG, REGDATE)
 SELECT *
-FROM (SELECT '티셔츠' AS prodname, '25000' AS price, '마프' AS provider, '평범한 티 입니다.' AS info, true as useflag, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') AS regdate UNION ALL
+FROM (SELECT '티셔츠' AS PRODNAME, '25000' AS PRICE, '마프' AS PROVIDER, '평범한 티 입니다.' AS INFO, true as USEFLAG, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') AS REGDATE UNION ALL
       SELECT '티셔츠1', '25000', '마프', '평범한 티 입니다.', true, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
       SELECT '티셔츠2', '25000', '마프', '평범한 티 입니다.', true, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
       SELECT '티셔츠3', '25000', '마프', '평범한 티 입니다.', true, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
-      SELECT '티셔츠4', '25000', '마프', '평범한 티 입니다.', true, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss')) AS temp
-WHERE NOT EXISTS (SELECT 1 FROM productinfo);
+      SELECT '티셔츠4', '25000', '마프', '평범한 티 입니다.', true, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss')) AS TEMP
+WHERE NOT EXISTS (SELECT 1 FROM PRODUCTINFO);

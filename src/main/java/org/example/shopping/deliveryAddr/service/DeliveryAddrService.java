@@ -1,9 +1,11 @@
 package org.example.shopping.deliveryAddr.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.deliveryAddr.dto.*;
 import org.example.shopping.deliveryAddr.mapper.DeliveryAddrMapper;
+import org.example.shopping.util.common.ValidationUtil;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.springframework.stereotype.Service;
@@ -64,9 +66,25 @@ public class DeliveryAddrService {
         deliAddrMapper.updDefDeliAddr(deliAddr);
     }
 
-    public void delDeliAddr(int deliAddrNo) {
+    @Transactional
+    public void delDeliAddr(DeliveryAddrDelete deliAddr) {
 
-        deliAddrMapper.delDeliAddr(deliAddrNo);
-//        deliAddrMapper.updDeliAddrNo(deliAddr);
+        // 삭제하려는 행 삭제.
+        deliAddrMapper.delDeliAddr(deliAddr);
+
+        try {
+            // 새로운 기본 배송지 지정을 위해
+            List<DeliveryAddr> deliInfos = deliAddrMapper.getDeliInfo(deliAddr.getUserId());
+
+            DeliveryAddrDefUpdate defObj = new DeliveryAddrDefUpdate();
+
+            ValidationUtil.mergeObject(defObj, deliInfos.get(0));
+
+            defObj.setDefDeliAddr(true);
+
+            deliAddrMapper.updDefDeliAddr(defObj);
+        } catch (IndexOutOfBoundsException e) {
+            throw new CustomException(ErrorCode.DELETE_REQUEST_DELIVERY_ERROR);
+        }
     }
 }

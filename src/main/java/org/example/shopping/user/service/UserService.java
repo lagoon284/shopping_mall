@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.authLogin.dto.AuthToken;
 import org.example.shopping.authLogin.dto.Login;
+import org.example.shopping.authLogin.dto.LoginInfo;
 import org.example.shopping.authLogin.mapper.AuthTokenMapper;
 import org.example.shopping.user.dto.User;
 import org.example.shopping.user.dto.UserDormencyReq;
@@ -11,7 +12,6 @@ import org.example.shopping.user.dto.UserInsertReq;
 import org.example.shopping.user.dto.UserUpdateReq;
 import org.example.shopping.user.mapper.UserMapper;
 import org.example.shopping.util.common.JwtUtil;
-import org.example.shopping.util.common.TimeConverter;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.springframework.stereotype.Service;
@@ -31,11 +31,13 @@ public class UserService {
         // 받은 id 값으로 조회.
         User user = userMapper.selectUserById(loginReq.getUserId());
 
+        LoginInfo loginInfo = authTokenMapper.getLoginInfo(loginReq.getUserId());
+
         // 조회한 pw 값으로 밉력받은 pw 와 비교하여 검증.
         if (user != null && user.getPw().equals(loginReq.getPw())) {
             // 검증에 이상없으면 계속 진행 ㄱㄱ.
-            String jwtAccToken = jwtUtil.generateAccToken(user);
-            String jwtRefToken = jwtUtil.generateRefToken(user.getId());
+            String jwtAccToken = jwtUtil.generateAccToken(loginInfo);
+            String jwtRefToken = jwtUtil.generateRefToken(loginInfo.getId());
 
             if (authTokenMapper.getTokenToId(user.getId())) {
                 if (authTokenMapper.updToken(user.getId(), jwtAccToken, jwtRefToken) != 1) {
@@ -62,10 +64,12 @@ public class UserService {
 
     public AuthToken refLogin(User user) {
 
-        String newAccToken = jwtUtil.generateAccToken(user);
-        String newRefToken = jwtUtil.generateRefToken(user.getId());
+        LoginInfo loginInfo = authTokenMapper.getLoginInfo(user.getId());
 
-        authTokenMapper.updToken(user.getId(), newAccToken, newRefToken);
+        String newAccToken = jwtUtil.generateAccToken(loginInfo);
+        String newRefToken = jwtUtil.generateRefToken(loginInfo.getId());
+
+        authTokenMapper.updToken(loginInfo.getId(), newAccToken, newRefToken);
 
         return authTokenMapper.getToken(newRefToken);
     }
@@ -83,9 +87,6 @@ public class UserService {
     }
 
     public void signupUser(UserInsertReq user) {
-
-        // 등록일시 set.
-//        user.setRegDate(TimeConverter.toDayToString());
 
         userMapper.insertUser(user);
     }
@@ -126,15 +127,10 @@ public class UserService {
 
     public void updateUserInfo(UserUpdateReq user) {
 
-        // 수정일시 set.
-//        user.setUpdDate(TimeConverter.toDayToString());
-
         userMapper.updateUserInfo(user);
     }
 
     public void goToSleep(UserDormencyReq user) {
-
-//        user.setUpdDate(TimeConverter.toDayToString());
 
         userMapper.dormencyFlag(user.getId());
     }

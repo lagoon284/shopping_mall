@@ -1,6 +1,7 @@
 package org.example.shopping.authLogin.mapper;
 
 import org.example.shopping.authLogin.dto.AuthToken;
+import org.example.shopping.authLogin.dto.LoginInfo;
 
 public interface  AuthTokenMapper {
 
@@ -11,4 +12,6 @@ public interface  AuthTokenMapper {
     AuthToken getToken(String token);
 
     boolean getTokenToId(String userId);
+
+    LoginInfo getLoginInfo(String userId);
 }

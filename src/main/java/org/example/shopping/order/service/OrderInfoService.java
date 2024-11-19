@@ -16,8 +16,6 @@ public class OrderInfoService {
 
     public void insPurchase(OrderInsertReq order) {
 
-//        order.setRegDate(TimeConverter.toDayToString());
-
         orderInfoMapper.insPurchase(order);
     }
 
@@ -27,8 +25,6 @@ public class OrderInfoService {
     }
 
     public void updateOrder(OrderUpdateReq order) {
-
-//        order.setUpdDate(TimeConverter.toDayToString());
 
         // 상태값 수정으로 생각중임.
         orderInfoMapper.updateOrder(order);

@@ -8,17 +8,17 @@ import java.util.List;
 @Mapper
 public interface DeliveryAddrMapper {
 
-    int insDeliAddr(DeliveryAddrInsert deliAddr);
+    void insDeliAddr(DeliveryAddrInsert deliAddr);
 
     int updAllDefDeliAddr(DeliveryAddrDefUpdate deliAddr);
 
-    int updDefDeliAddr(DeliveryAddrDefUpdate deliAddr);
+    void updDefDeliAddr(DeliveryAddrDefUpdate deliAddr);
 
     List<DeliveryAddr> getDeliInfo(String userId);
 
-    int updDeliAddr(DeliveryAddrUpdate deliAddr);
+    void updDeliAddr(DeliveryAddrUpdate deliAddr);
 
-    int delDeliAddr(int deliAddrNo);
+    void delDeliAddr(DeliveryAddrDelete deliAddr);
 
 //    int updDeliAddrNo(DeliveryAddrDelete deliAddr);
 }

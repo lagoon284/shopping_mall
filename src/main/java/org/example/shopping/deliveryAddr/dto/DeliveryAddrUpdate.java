@@ -17,8 +17,6 @@ public class DeliveryAddrUpdate {
     @NotBlank
     private String addrAlias;
 
-    @Min(value = 1)
-    @Max(value = 5)
     private int deliAddrNo;
 
     @NotBlank

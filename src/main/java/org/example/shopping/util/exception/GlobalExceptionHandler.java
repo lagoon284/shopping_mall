@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({Exception.class})
     protected ResponseEntity<?> handleServerException(Exception ex) {
 
-        log.info("----- THROW EXCEPTION!!! : MESSAGE = {}", ex.getMessage());
+        log.info("----- THROW EXCEPTION!!! : {}, MESSAGE = {}", ex.getClass(), ex.getMessage());
 
         return new ResponseEntity<>(new ErrorDto(
                 INTERNAL_SERVER_ERROR.getStatus()

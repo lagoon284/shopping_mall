@@ -2,6 +2,7 @@ package org.example.shopping.authLogin.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.authLogin.dto.AuthToken;
+import org.example.shopping.authLogin.dto.LoginInfo;
 import org.example.shopping.user.dto.User;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
@@ -18,33 +19,29 @@ public class ProtectedController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/accData")
-    public User getProtectedAccData(@RequestHeader("Authorization") String token) {
+    public LoginInfo getProtectedAccData(@RequestHeader("Authorization") String token) {
 
         if (token != null && token.startsWith("seokhoAccAuth ")) {
             String jwt = token.substring(14);
-            if (jwtUtil.isTokenExpired(jwt)) {
-                return jwtUtil.extractUserObj(jwt);
-            } else {
+            try {
+                if (jwtUtil.isTokenExpired(jwt)) {
+                    return jwtUtil.extractUserObj(jwt);
+                }
+            } catch (Exception e) {
                 // 유효기간이 지났을 때 핸들링.
                 throw new CustomException(ErrorCode.AUTH_SIGNATURE_EXPIRED_ERROR);
             }
-        } else {
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
+        throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+
     }
 
     @PutMapping("/refData")
     public AuthToken getProtectRefData(@RequestHeader("Authorization") String token) {
 
-        if (token != null && token.startsWith("seokhoRefAuth ")) {
+        if (token != null && token.startsWith("seokhoAccAuth ")) {
             String jwt = token.substring(14);
-            try {
-                if (jwtUtil.isTokenExpired(jwt)) {
-                    return userService.refLogin(userService.getAuthInfo(jwt));
-                }
-            } catch (Exception e) {
-                throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_EXPIRED_ERROR);
-            }
+            return userService.refLogin(userService.getAuthInfo(jwt));
         }
         throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
     }
