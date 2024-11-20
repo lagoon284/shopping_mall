@@ -6,29 +6,22 @@ import org.example.shopping.util.common.dto.RetAttributes;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class OrderInfo extends RetAttributes {
+public class OrderInfo extends RetAttributes {          // 주문정보.
 
-    //-------------------- 주문 정보 -------------------//
-    // 주문 번호. auto increment 값.
-    private Long orderNo;
+    //------------------------- 주문 정보 -------------------------//
+    private Long orderNo;           // 주문 번호. auto increment 값.
 
-    //-------------------- 주문자 정보 -------------------//
-    // 주문한 회원 아이디.
-    private String userId;
-    // 주문한 회원 이름.
-    private String userName;
-    // 회원이 설정한 주소.
-    private String userAddr;
+    //------------------------- 주문자 정보 -----------------------//
+    private String userId;          // 주문한 회원 아이디.
+    private String userName;        // 주문한 회원 이름.
+    private String userAddr;        // 회원이 설정한 주소.
 
-    //------------------ 판매자/상품 정보 -----------------//
-    // 상품 번호.
-    private Long prodSeqNo;
-    // 상품 이름.
-    private String prodName;
-    // 상품 가격.
-    private int prodPrice;
+    //---------------------- 판매자/상품 정보 ---------------------//
+    private Long prodSeqNo;         // 상품 번호.
+    private String prodName;        // 상품 이름.
+    private int prodPrice;          // 상품 가격.
 
-    //------------- orderNo 생성을 위한 param ------------//
+    //----------------- orderNo 생성을 위한 param ----------------//
     // mapper.xml 에 today 지정 쿼리 작성해둠.
 //    private String today;
 

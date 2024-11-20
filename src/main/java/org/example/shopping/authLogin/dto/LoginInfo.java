@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 //@Builder
-public class LoginInfo {
+public class LoginInfo {                            // 로그인 후 정보.
 
-    private String userNo;
-    private String id;
-    private String name;
+    private String userNo;                          // 유저 번호.
+    private String id;                              // 유저 아이디.
+    private String name;                            // 유저 네임.
 
 }

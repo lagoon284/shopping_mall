@@ -12,23 +12,23 @@ import org.example.shopping.util.common.dto.RetAttributes;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class OrderInsertReq extends RetAttributes {
+public class OrderInsertReq extends RetAttributes {         // 주문정보 인서트 요청 모델.
 
-    private Long orderNo;
+    private Long orderNo;                                   // 주문번호.
 
-    @NotBlank(message = "아이디는 Null일 수 없습니다.")
-    private String userId;
+    @NotBlank
+    private String userId;                                  // 유저 아이디.
 
-    @NotBlank(message = "사용자 이름은 Null일 수 없습니다.")
-    private String userName;
+    @NotBlank
+    private String userName;                                // 유저네임.
 
-    @NotBlank(message = "사용자 주소는 Null일 수 없습니다.")
-    private String userAddr;
+    @NotBlank
+    private String userAddr;                                // 유저 주소.
 
-    private Long prodSeqNo;
+    private Long prodSeqNo;                                 // 상품번호.
 
-    @NotBlank(message = "상품 이름은 Null일 수 없습니다.")
-    private String prodName;
+    @NotBlank
+    private String prodName;                                // 상품 이름.
 
-    private int prodPrice;
+    private int prodPrice;                                  // 상품 가격.
 }

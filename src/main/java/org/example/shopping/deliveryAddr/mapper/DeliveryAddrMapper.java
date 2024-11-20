@@ -14,6 +14,8 @@ public interface DeliveryAddrMapper {
 
     void updDefDeliAddr(DeliveryAddrDefUpdate deliAddr);
 
+    DeliveryAddr getOneDeliAddr(DeliveryAddrDelete deliAddr);
+
     List<DeliveryAddr> getDeliInfo(String userId);
 
     void updDeliAddr(DeliveryAddrUpdate deliAddr);

@@ -5,13 +5,10 @@ import lombok.ToString;
 
 @Data
 @ToString(exclude = "retVal")
-public class AuthToken {
+public class AuthToken {                            // 인증 토큰 모델.
 
-    // user id
-    private String userId;
 
-    // jwt 로그인 토큰
-    private String accessToken;
-    // jwt 재로그인 토큰
-    private String refreshToken;
+    private String userId;                          // user id.
+    private String accessToken;                     // jwt 로그인 토큰.
+    private String refreshToken;                    // jwt 재로그인 토큰.
 }

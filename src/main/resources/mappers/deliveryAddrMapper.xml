@@ -36,6 +36,16 @@
         ORDER BY DELIADDRNO;
     </select>
 
+    <select id="getOneDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrDelete">
+        SELECT DELIADDRNO
+             , USERID
+             , ADDRALIAS
+             , DELIADDR
+             , DEFDELIADDR
+        FROM   DELIVERYADDR
+        WHERE  DELIADDRNO = #{deliAddrNo};
+    </select>
+
     <update id="updDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrUpdate">
         UPDATE  DELIVERYADDR
         SET     ADDRALIAS   = #{addrAlias},

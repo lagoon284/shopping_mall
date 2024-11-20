@@ -6,11 +6,11 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Login {
+public class Login {                            // 로그인 요청 파라미터.
 
     @NotBlank
-    private String userId;
+    private String userId;                      // user id.
 
     @NotBlank
-    private String pw;
+    private String pw;                          // 패스워드.
 }

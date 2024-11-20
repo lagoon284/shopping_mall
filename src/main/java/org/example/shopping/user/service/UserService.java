@@ -35,7 +35,7 @@ public class UserService {
 
         // 조회한 pw 값으로 밉력받은 pw 와 비교하여 검증.
         if (user != null && user.getPw().equals(loginReq.getPw())) {
-            // 검증에 이상없으면 계속 진행 ㄱㄱ.
+
             String jwtAccToken = jwtUtil.generateAccToken(loginInfo);
             String jwtRefToken = jwtUtil.generateRefToken(loginInfo.getId());
 

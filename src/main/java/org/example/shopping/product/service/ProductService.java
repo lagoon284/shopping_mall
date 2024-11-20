@@ -7,6 +7,7 @@ import org.example.shopping.product.dto.ProductUpdateReq;
 import org.example.shopping.product.mapper.ProductMapper;
 import org.example.shopping.util.common.TimeConverter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class ProductService {
         productMapper.insertProduct(productInfo);
     }
 
+    @Transactional
     public void multiInsertProdct(List<ProductInsertReq> productInfos) {
 
         productMapper.multiInsertProduct(productInfos);
