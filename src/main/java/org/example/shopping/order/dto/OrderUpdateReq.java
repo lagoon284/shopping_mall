@@ -8,23 +8,22 @@ import lombok.EqualsAndHashCode;
 import org.example.shopping.util.common.dto.RetAttributes;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
-public class OrderUpdateReq extends RetAttributes {         // 업데이트요청 모델.
+public class OrderUpdateReq {         // 업데이트요청 모델.
 
     @NotBlank
-    private String userId;                                  // 유저 아이디.
+    private String userId;            // 유저 아이디.
 
     @NotBlank
-    private String userName;                                // 유저 네임.
+    private String userName;          // 유저 네임.
 
     @NotBlank
-    private String userAddr;                                // 유저 주소.
+    private String userAddr;          // 유저 주소.
 
-    private Long prodSeqNo;                                 // 상품 번호.
+    private Long prodSeqNo;           // 상품 번호.
 
     @NotBlank
-    private String prodName;                                // 상품 네임.
+    private String prodName;          // 상품 네임.
 
-    private int prodPrice;                                  // 상품 가격.
+    private int prodPrice;            // 상품 가격.
 }

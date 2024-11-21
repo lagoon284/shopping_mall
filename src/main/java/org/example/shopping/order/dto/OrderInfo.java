@@ -1,12 +1,13 @@
 package org.example.shopping.order.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.example.shopping.util.common.dto.RetAttributes;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class OrderInfo extends RetAttributes {          // 주문정보.
+@AllArgsConstructor
+public class OrderInfo {          // 주문정보.
 
     //------------------------- 주문 정보 -------------------------//
     private Long orderNo;           // 주문 번호. auto increment 값.

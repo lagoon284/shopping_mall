@@ -4,8 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.deliveryAddr.dto.*;
 import org.example.shopping.deliveryAddr.service.DeliveryAddrService;
-import org.example.shopping.util.exception.enums.ErrorCode;
-import org.example.shopping.util.exception.CustomException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +16,7 @@ public class DeliveryAddrController {
     private final DeliveryAddrService deliAddrService;
 
     @PostMapping("/insert")
-    public void insertDeliAddr(@RequestBody @Valid DeliveryAddrInsert deliAddr) {
+    public void insertDeliAddr(@RequestBody @Valid DeliveryAddrInsertReq deliAddr) {
 
         deliAddrService.insDeliAddr(deliAddr);
     }
@@ -30,19 +28,19 @@ public class DeliveryAddrController {
     }
 
     @PutMapping("/update")
-    public void updDeliAddr(@RequestBody @Valid DeliveryAddrUpdate deliAddr) {
+    public void updDeliAddr(@RequestBody @Valid DeliveryAddrUpdateReq deliAddr) {
 
         deliAddrService.updDeliAddr(deliAddr);
     }
 
     @PutMapping("/defUpdate")
-    public void updDefDeliAddr(@RequestBody @Valid DeliveryAddrDefUpdate deliAddr) {
+    public void updDefDeliAddr(@RequestBody @Valid DeliveryAddrDefUpdateReq deliAddr) {
 
         deliAddrService.updDefDeliAddr(deliAddr);
     }
 
     @DeleteMapping("/delete")
-    public void delDeliAddr(@RequestBody @Valid DeliveryAddrDelete deliAddr) {
+    public void delDeliAddr(@RequestBody @Valid DeliveryAddrDeleteReq deliAddr) {
 
         deliAddrService.delDeliAddr(deliAddr);
     }

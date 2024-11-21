@@ -7,21 +7,20 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.example.shopping.util.common.dto.RetAttributes;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
-public class ProductInsertReq extends RetAttributes {
+public class ProductInsertReq {       // 상품 INSERT.
 
     @NotBlank
-    private String prodName;
+    private String prodName;          // 상품 네임.
 
-    private int price;
-
-    @NotBlank
-    private String provider;
+    private int price;                // 상품 가격.
 
     @NotBlank
-    private String info;
+    private String provider;          // 판매처.
 
-    private boolean useFlag;
+    @NotBlank
+    private String info;              // 상품 정보.
+
+    private boolean useFlag;          // 판매/미판매 여부.
 }

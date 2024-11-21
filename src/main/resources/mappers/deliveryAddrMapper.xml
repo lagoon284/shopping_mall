@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="org.example.shopping.deliveryAddr.mapper.DeliveryAddrMapper">
-    <insert id="insDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrInsert">
+    <insert id="insDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrInsertReq">
         INSERT INTO DELIVERYADDR(USERID, ADDRALIAS, DELIADDR, DEFDELIADDR)
         VALUES (
                 #{userId},
@@ -12,14 +12,14 @@
                );
     </insert>
 
-    <update id="updAllDefDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrDefUpdate">
+    <update id="updAllDefDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrDefUpdateReq">
         UPDATE DELIVERYADDR
         SET DEFDELIADDR = FALSE
         WHERE USERID = #{userId}
         AND #{defDeliAddr} = TRUE;
     </update>
 
-    <update id="updDefDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrDefUpdate">
+    <update id="updDefDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrDefUpdateReq">
         UPDATE DELIVERYADDR
         SET DEFDELIADDR = #{defDeliAddr}
         WHERE DELIADDRNO = #{deliAddrNo};
@@ -36,7 +36,7 @@
         ORDER BY DELIADDRNO;
     </select>
 
-    <select id="getOneDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrDelete">
+    <select id="getOneDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrDeleteReq">
         SELECT DELIADDRNO
              , USERID
              , ADDRALIAS
@@ -46,7 +46,7 @@
         WHERE  DELIADDRNO = #{deliAddrNo};
     </select>
 
-    <update id="updDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrUpdate">
+    <update id="updDeliAddr" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrUpdateReq">
         UPDATE  DELIVERYADDR
         SET     ADDRALIAS   = #{addrAlias},
                 DELIADDR    = #{deliAddr}
@@ -58,7 +58,7 @@
                 WHERE   DELIADDRNO  = #{deliAddrNo};
     </delete>
 
-<!--    <update id="updDeliAddrNo" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrDelete">
+<!--    <update id="updDeliAddrNo" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrDeleteReq">
         UPDATE  DELIVERYADDR
         SET     DELIADDRNO = DELIADDRNO - 1
         WHERE   USERID = #{userId}
@@ -66,7 +66,7 @@
     </update>-->
 
     <!-- default 설정된 배송지는 지울 수 없도록 해야할거 같음. 시도시 예외 처리 및 alert으로 유도? -->
-    <!--<update id="updDefDeliNoOne" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrDelete">
+    <!--<update id="updDefDeliNoOne" parameterType="org.example.shopping.deliveryAddr.dto.DeliveryAddrDeleteReq">
         UPDATE DELIVERYADDR
         SET DEFDELIADDR = TRUE
         WHERE USERID = #{userId}

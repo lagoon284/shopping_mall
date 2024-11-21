@@ -20,7 +20,7 @@ public class DeliveryAddrService {
 
     private final DeliveryAddrMapper deliAddrMapper;
 
-    public void insDeliAddr(DeliveryAddrInsert deliAddr) {
+    public void insDeliAddr(DeliveryAddrInsertReq deliAddr) {
 
         // 유저당 배송지 갯수 확인용.
         List<DeliveryAddr> deliInfo = deliAddrMapper.getDeliInfo(deliAddr.getUserId());
@@ -37,7 +37,7 @@ public class DeliveryAddrService {
             }
         }
 
-        DeliveryAddrDefUpdate updDefAddr = new DeliveryAddrDefUpdate();
+        DeliveryAddrDefUpdateReq updDefAddr = new DeliveryAddrDefUpdateReq();
 
         updDefAddr.setUserId(deliAddr.getUserId());
         updDefAddr.setDefDeliAddr(deliAddr.isDefDeliAddr());
@@ -56,13 +56,13 @@ public class DeliveryAddrService {
         return deliAddrMapper.getDeliInfo(userId);
     }
 
-    public void updDeliAddr(DeliveryAddrUpdate deliAddr) {
+    public void updDeliAddr(DeliveryAddrUpdateReq deliAddr) {
 
        deliAddrMapper.updDeliAddr(deliAddr);
     }
 
     @Transactional
-    public void updDefDeliAddr(DeliveryAddrDefUpdate deliAddr) {
+    public void updDefDeliAddr(DeliveryAddrDefUpdateReq deliAddr) {
 
         // 해당 아이디의 모든 배송지의 기본 배송지 여부를 false로 바꿈
         deliAddrMapper.updAllDefDeliAddr(deliAddr);
@@ -73,7 +73,7 @@ public class DeliveryAddrService {
 
     // 삭제하고 나서 기본배송지를 재지정할때 배송지가 없으면 catch 하는데 오류가 나면 삭제가 되면 안됨.
     @Transactional
-    public void delDeliAddr(DeliveryAddrDelete deliAddr) {
+    public void delDeliAddr(DeliveryAddrDeleteReq deliAddr) {
 
         // 삭제하려는 배송지가 기본 배송지로 설정되어 있는지.
         boolean defDeliAddr = deliAddrMapper.getOneDeliAddr(deliAddr).isDefDeliAddr();
@@ -87,7 +87,7 @@ public class DeliveryAddrService {
                 // 새로운 기본 배송지 지정을 위해
                 List<DeliveryAddr> deliInfos = deliAddrMapper.getDeliInfo(deliAddr.getUserId());
 
-                DeliveryAddrDefUpdate defObj = new DeliveryAddrDefUpdate();
+                DeliveryAddrDefUpdateReq defObj = new DeliveryAddrDefUpdateReq();
 
                 ValidationUtil.mergeObject(defObj, deliInfos.get(0));
 

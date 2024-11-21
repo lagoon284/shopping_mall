@@ -8,19 +8,19 @@ import java.util.List;
 @Mapper
 public interface DeliveryAddrMapper {
 
-    void insDeliAddr(DeliveryAddrInsert deliAddr);
+    void insDeliAddr(DeliveryAddrInsertReq deliAddr);
 
-    int updAllDefDeliAddr(DeliveryAddrDefUpdate deliAddr);
+    int updAllDefDeliAddr(DeliveryAddrDefUpdateReq deliAddr);
 
-    void updDefDeliAddr(DeliveryAddrDefUpdate deliAddr);
+    void updDefDeliAddr(DeliveryAddrDefUpdateReq deliAddr);
 
-    DeliveryAddr getOneDeliAddr(DeliveryAddrDelete deliAddr);
+    DeliveryAddr getOneDeliAddr(DeliveryAddrDeleteReq deliAddr);
 
     List<DeliveryAddr> getDeliInfo(String userId);
 
-    void updDeliAddr(DeliveryAddrUpdate deliAddr);
+    void updDeliAddr(DeliveryAddrUpdateReq deliAddr);
 
-    void delDeliAddr(DeliveryAddrDelete deliAddr);
+    void delDeliAddr(DeliveryAddrDeleteReq deliAddr);
 
 //    int updDeliAddrNo(DeliveryAddrDelete deliAddr);
 }

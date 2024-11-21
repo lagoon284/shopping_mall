@@ -10,9 +10,8 @@ import org.example.shopping.util.common.dto.RetAttributes;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor          // 빼면 오류...?  JSON parse error: Cannot construct instance of `org.example.shopping.user.dto.UserDormancyReq` (although at least one Creator exists): cannot deserialize from Object value (no delegate- or property-based Creator)
-@EqualsAndHashCode(callSuper = false)
-public class UserDormencyReq extends RetAttributes {
+public class UserDormencyReq {        // 유저 휴면전환 요청 모델.
 
     @NotBlank
-    private String id;
+    private String id;                // 유저 아이디.
 }
