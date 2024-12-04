@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@ToString(exclude = "retVal")
 public class AuthToken {                            // 인증 토큰 모델.
 
 

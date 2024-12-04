@@ -20,6 +20,7 @@ public class DeliveryAddrService {
 
     private final DeliveryAddrMapper deliAddrMapper;
 
+    // insert 배송지
     public void insDeliAddr(DeliveryAddrInsertReq deliAddr) {
 
         // 유저당 배송지 갯수 확인용.
@@ -50,17 +51,20 @@ public class DeliveryAddrService {
         deliAddrMapper.insDeliAddr(deliAddr);
     }
 
+    // select 배송지
     public List<DeliveryAddr> getDeliInfo(String userId) {
 
         // 배송지가 없어도 return.
         return deliAddrMapper.getDeliInfo(userId);
     }
 
+    // update 배송지.
     public void updDeliAddr(DeliveryAddrUpdateReq deliAddr) {
 
        deliAddrMapper.updDeliAddr(deliAddr);
     }
 
+    // 해당 유저의 모든 배송지 기본배송지 해제 + 지정한 배송지를 기본배송지로 설정.
     @Transactional
     public void updDefDeliAddr(DeliveryAddrDefUpdateReq deliAddr) {
 

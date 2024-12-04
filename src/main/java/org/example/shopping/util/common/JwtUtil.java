@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
+import org.example.shopping.authLogin.dto.AuthToken;
 import org.example.shopping.authLogin.dto.LoginInfo;
 import org.example.shopping.user.dto.User;
+import org.example.shopping.user.service.UserService;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.springframework.stereotype.Component;
@@ -17,7 +19,7 @@ public class JwtUtil {
 
     private String secret = "lunchfairy";
 //    private Long expiration = 12000L*60*60;  // 대충 12시간.
-    private Long expiration = 60000L*10;  // 대충 10분 test 용.
+    private Long expiration = 120000L;  // 대충 10분 test 용.
 
     // 로그인 성공 여부 id 값으로 select 했을 때 계정 정보가 있으면 jwt에 유저 정보를 담음.
     public String generateAccToken(LoginInfo user) {

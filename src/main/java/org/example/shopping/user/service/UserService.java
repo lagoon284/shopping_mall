@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.authLogin.dto.AuthToken;
 import org.example.shopping.authLogin.dto.Login;
+import org.example.shopping.authLogin.dto.LoginAuthToken;
 import org.example.shopping.authLogin.dto.LoginInfo;
 import org.example.shopping.authLogin.mapper.AuthTokenMapper;
 import org.example.shopping.user.dto.User;
@@ -27,7 +28,7 @@ public class UserService {
     private final AuthTokenMapper authTokenMapper;
     private final JwtUtil jwtUtil;
 
-    public AuthToken login(Login loginReq) {
+    public LoginAuthToken login(Login loginReq) {
         // 받은 id 값으로 조회.
         User user = userMapper.selectUserById(loginReq.getUserId());
 
@@ -49,11 +50,10 @@ public class UserService {
                 };
             }
 
-            AuthToken token = new AuthToken();
+            LoginAuthToken token = new LoginAuthToken();
 
             token.setUserId(loginReq.getUserId());
             token.setAccessToken("seokhoAccAuth " + jwtAccToken);
-            token.setRefreshToken("seokhoRefAuth " + jwtRefToken);
 
             return token;
         } else {
@@ -71,14 +71,35 @@ public class UserService {
 
         authTokenMapper.updToken(loginInfo.getId(), newAccToken, newRefToken);
 
-        return authTokenMapper.getToken(newRefToken);
+        return authTokenMapper.getToken(newAccToken);
+    }
+
+    public AuthToken checkAuth(String token) {
+
+        AuthToken authToken = null;
+
+        if (token != null && token.startsWith("seokhoAccAuth ")) {
+            String jwt = token.substring(14);
+            try {
+                jwtUtil.isTokenExpired(jwt);
+            } catch (Exception e) {
+                // 유효기간이 지났을 때 핸들링.
+                authToken = refLogin(getAuthInfo(jwt));
+
+//                throw new CustomException(ErrorCode.AUTH_SIGNATURE_EXPIRED_ERROR);
+            }
+        } else {
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+
+        return authToken;
     }
 
     public User getAuthInfo(String token) {
 
         AuthToken getAuthInfo = authTokenMapper.getToken(token);
 
-        if (getAuthInfo == null || !getAuthInfo.getRefreshToken().equals(token)) {
+        if (getAuthInfo == null || !getAuthInfo.getAccessToken().equals(token)) {
             // 인증에 실패했을 때 핸들링.
             throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_FAIL_ERROR);
         }
