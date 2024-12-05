@@ -62,38 +62,58 @@ public class UserService {
         }
     }
 
-    public AuthToken refLogin(User user) {
+    public LoginAuthToken refLogin(User user) {
 
+        LoginAuthToken retToken = new LoginAuthToken();
         LoginInfo loginInfo = authTokenMapper.getLoginInfo(user.getId());
 
         String newAccToken = jwtUtil.generateAccToken(loginInfo);
         String newRefToken = jwtUtil.generateRefToken(loginInfo.getId());
 
+        retToken.setUserId(user.getId());
+        retToken.setAccessToken(newAccToken);
+
         authTokenMapper.updToken(loginInfo.getId(), newAccToken, newRefToken);
 
-        return authTokenMapper.getToken(newAccToken);
+        return retToken;
     }
 
-    public AuthToken checkAuth(String token) {
 
-        AuthToken authToken = null;
-
-        if (token != null && token.startsWith("seokhoAccAuth ")) {
-            String jwt = token.substring(14);
-            try {
-                jwtUtil.isTokenExpired(jwt);
-            } catch (Exception e) {
-                // 유효기간이 지났을 때 핸들링.
-                authToken = refLogin(getAuthInfo(jwt));
-
+//  클라이언트가 '무언가를 할때' auth token을 갱신하도록 하는 메소드. 프론트에서 책임지는게 맞는거 같아서 주석처리.
+//    public AuthToken checkAuth(String token) {
+//
+//        AuthToken authToken = null;
+//
+//        if (token != null && token.startsWith("seokhoAccAuth ")) {
+//            String jwt = token.substring(14);
+//
+//            // acc token 유효기간 지났을 때,
+//            if (!jwtUtil.isTokenExpired(jwt)) {
+//                AuthToken authTokenData = authTokenMapper.getToken(jwt);
+//
+//                if (authTokenData == null || authTokenData.getRefreshToken() == null || authTokenData.getRefreshToken().isEmpty()) {
+//                    throw new CustomException(ErrorCode.AUTH_SIGNATURE_EXPIRED_ERROR);
+//                }
+//
+//                String getRefToken = authTokenData.getRefreshToken();
+//
+//                // ref token 유효기간 확인.
+//                if (!jwtUtil.isTokenExpired(getRefToken)) {
+//                    throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_EXPIRED_ERROR);
+//                }
+//
+//                // ref token 유효기간이 유효할 때 token 갱신.
+//                authToken = refLogin(getAuthInfo(jwt));
+//            } else {
+//                // 유효기간이 지났을 때 핸들링.
 //                throw new CustomException(ErrorCode.AUTH_SIGNATURE_EXPIRED_ERROR);
-            }
-        } else {
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
-        }
-
-        return authToken;
-    }
+//            }
+//        } else {
+//            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+//        }
+//
+//        return authToken;
+//    }
 
     public User getAuthInfo(String token) {
 

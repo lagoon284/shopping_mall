@@ -2,7 +2,9 @@ package org.example.shopping.authLogin.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.authLogin.dto.AuthToken;
+import org.example.shopping.authLogin.dto.LoginAuthToken;
 import org.example.shopping.authLogin.dto.LoginInfo;
+import org.example.shopping.authLogin.mapper.AuthTokenMapper;
 import org.example.shopping.user.dto.User;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
@@ -17,17 +19,18 @@ public class ProtectedController {
 
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final AuthTokenMapper authTokenMapper;
 
     @PostMapping("/accData")
     public LoginInfo getProtectedAccData(@RequestHeader("Authorization") String token) {
 
         if (token != null && token.startsWith("seokhoAccAuth ")) {
             String jwt = token.substring(14);
-            try {
-                if (jwtUtil.isTokenExpired(jwt)) {
-                    return jwtUtil.extractUserObj(jwt);
-                }
-            } catch (Exception e) {
+
+            // acc token이 만료되지 않았을 때.
+            if (jwtUtil.isTokenExpired(jwt)) {
+                return jwtUtil.extractUserObj(jwt);
+            } else {
                 // 유효기간이 지났을 때 핸들링.
                 throw new CustomException(ErrorCode.AUTH_SIGNATURE_EXPIRED_ERROR);
             }
@@ -37,11 +40,29 @@ public class ProtectedController {
     }
 
     @PutMapping("/refData")
-    public AuthToken getProtectRefData(@RequestHeader("Authorization") String token) {
+    public LoginAuthToken getProtectRefData(@RequestHeader("Authorization") String token) {
 
         if (token != null && token.startsWith("seokhoAccAuth ")) {
             String jwt = token.substring(14);
-            return userService.refLogin(userService.getAuthInfo(jwt));
+
+            // acc token 유효기간 지났을 때,
+            if (!jwtUtil.isTokenExpired(jwt)) {
+                AuthToken authTokenData = authTokenMapper.getToken(jwt);
+
+                if (authTokenData == null || authTokenData.getRefreshToken() == null || authTokenData.getRefreshToken().isEmpty()) {
+                    throw new CustomException(ErrorCode.AUTH_SIGNATURE_EXPIRED_ERROR);
+                }
+
+                String getRefToken = authTokenData.getRefreshToken();
+
+                // ref token 유효기간 확인.
+                if (!jwtUtil.isTokenExpired(getRefToken)) {
+                    throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_EXPIRED_ERROR);
+                }
+
+                // ref token 유효기간이 유효할 때 token 갱신.
+                return userService.refLogin(userService.getAuthInfo(jwt));
+            }
         }
         throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
     }

@@ -54,6 +54,7 @@ public enum ErrorCode {
     INSERT_FAIL_DELIVERY_OVER_ERROR(500, "배송지는 5개까지 등록이 가능합니다."),
     SELECT_FAIL_PRODUCT_ERROR(500, "상품 테이블에 데이터가 없습니다."),
     SELECT_FAIL_ORDER_ERROR(500, "주문 인서트 작업에 실패하였습니다."),
+    USER_ERROR(500, "유저 SERVICE에서 에러가 발생했습니다.")
 
     ;
 

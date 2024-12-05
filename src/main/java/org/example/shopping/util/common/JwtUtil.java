@@ -1,6 +1,7 @@
 package org.example.shopping.util.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
@@ -58,6 +59,7 @@ public class JwtUtil {
 //        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
 //    }
 
+    // String 인 토큰의 payLoad 값을 모델로 변환해줌.
     public LoginInfo extractUserObj(String token) {
 
         ObjectMapper obj = new ObjectMapper();
@@ -89,12 +91,17 @@ public class JwtUtil {
 //    }
 
     // 토큰이 아직 유효기간이 남았는지 체크. 지나면 로그인 안됨.
+    // 토큰이 유효하면 true, 만료되었으면 false.
     public boolean isTokenExpired(String token) {
-        return !Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token)
-                .getBody()
-                .getExpiration()
-                .before(new Date());
+        try {
+           return   !Jwts.parser()
+                        .setSigningKey(secret)
+                        .parseClaimsJws(token)
+                        .getBody()
+                        .getExpiration()
+                        .before(new Date());
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
