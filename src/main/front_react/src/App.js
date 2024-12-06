@@ -1,27 +1,21 @@
-import {useEffect, useState} from "react";
-import axios from "axios";
+import React, {useEffect, useState} from "react";
+import RouterDOM, {Route, Routes} from "react-router-dom";
+import Home from "./components/Home";
+import UserInfo from "./components/user/UserInfo";
+import ProductInfo from "./components/product/ProductInfo";
+import ProductInfos from "./components/product/ProductInfos";
 
 function App() {
-  const [hello, setHello] = useState('');
-
-  useEffect(() => {
-    axios.get('http://localhost:8080/api/user/allUserSelect')
-        .then(res => {
-          console.log(res.data);
-          setHello(res.data);
-        })
-        .catch(error => {
-            console.log('Error fetching data:', error);
-        })
-
-  }, []);
-
-
   return (
       <div className="App">
-          hello, react!!<br/>
-          <p></p>
-          회원데이터 : {JSON.stringify(hello)}
+          <Home />
+          <Routes>
+              <Route path={"/"} element={null}/>
+              <Route path={"/api/user/allUserSelect"} element={<UserInfo />} />
+              <Route path={"/api/product/infoProds"} element={<ProductInfos />} />
+              <Route path={"/api/product/:prodSeqNo"} element={<ProductInfo />} />
+          </Routes>
+          {/*<a href={'http://localhost:8080/api/product/2'}> 2번 상품 정보 호출</a>*/}
       </div>
   );
 }
