@@ -1,27 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
+import {useParams} from "react-router-dom";
 
 function UserInfo() {
-    const [users, setUsers] = useState('');
+    const [ user, setUser ] = useState([]);
+
+    const { id } = useParams();
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/user/allUserSelect')
+        axios.get(`http://localhost:8080/api/user/${id}`)
             .then(res => {
-                console.log(res.data.data);
-                setUsers(res.data.data);
+                setUser(res.data.data);
             })
             .catch(error => {
-                console.log('Error fetching data:', error);
+                console.log(`Error fetching data:`, error);
             })
     }, []);
 
     return (
-        <div className="UserInfo">
-            <h2>회원 정보</h2>
-            회원데이터 :
-            <pre>{JSON.stringify(users, null, 4)}</pre>
+        <div className={"UserInfo"}>
+            <h2>{id} 회원 상세 정보</h2>
+            유저번호 : {user.userNo}<br/>
+            유저아이디 : {user.id}<br/>
+            패스워드 : {user.pw}<br/>
+            유저네임 : {user.name}<br/>
+            주소 : {user.addr}
         </div>
-    );
+    )
 }
 
 export default UserInfo;

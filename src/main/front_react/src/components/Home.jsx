@@ -21,7 +21,7 @@ function Home() {
                     </Link>
                 </li>
             </ul>
-
+            <h1>메인 화면 입니다.</h1>
         </div>
     )
 }
