@@ -23,7 +23,7 @@ function UserInfos() {
             <ul>
                 {users.map((user, index) => {
                     return (
-                        <li>
+                        <li key={user.id}>
                             <Link to={`/api/user/${user.id}`}>{user.id} 회원 상세보기</Link><br/>
                             유저번호 : {user.userNo}<br/>
                             유저아이디 : {user.id}<br/>

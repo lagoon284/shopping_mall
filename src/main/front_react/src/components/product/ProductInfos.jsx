@@ -23,15 +23,15 @@ function ProductInfos() {
             <p></p>
             <h3>상품데이터 :</h3>
             <ul>
-            {prods.map((el, index) => {
+            {prods.map((prod, index) => {
                 return (
-                    <li>
-                        <Link to={`/api/product/${el.prodSeqNo}`}>{el.prodSeqNo}번 상품 상세보기!!</Link><br/>
-                        상품 번호 : {el.prodSeqNo}<br/>
-                        상품이름 : {el.prodName}<br/>
-                        상품가격 : {el.price}<br/>
-                        판매사 : {el.provider}<br/>
-                        상품 정보 : {el.info}
+                    <li key={prod.prodSeqNo}>
+                        <Link to={`/api/product/${prod.prodSeqNo}`}>{prod.prodSeqNo}번 상품 상세보기!!</Link><br/>
+                        상품 번호 : {prod.prodSeqNo}<br/>
+                        상품이름 : {prod.prodName}<br/>
+                        상품가격 : {prod.price}<br/>
+                        판매사 : {prod.provider}<br/>
+                        상품 정보 : {prod.info}
                         <p></p>
                     </li>
                 );

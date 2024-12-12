@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios, {get} from "axios";
-import {useLocation, useParams} from "react-router-dom";
+import axios from "axios";
+import {useParams} from "react-router-dom";
 
 function ProductInfo() {
     const [ prod, setProd ] = useState('');
@@ -15,7 +15,7 @@ function ProductInfo() {
             .catch(error => {
                 console.log('Error fetching data:', error);
             })
-    }, []);
+    }, [prodSeqNo]);
 
     return (
         <div className={"ProductInfo"}>
