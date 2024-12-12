@@ -11,6 +11,8 @@ function Home() {
         const lastSlashIndex = pathName.lastIndexOf('/');
         const substrPath = lastSlashIndex > 5 ? pathName.substring(0, lastSlashIndex) : pathName;
 
+        console.log(substrPath);
+
         if (substrPath === '/user/signup') {
             setTitle('회원가입 페이지');
         } else if (substrPath === '/api/user') {
@@ -26,7 +28,7 @@ function Home() {
         <div className={"Home"}>
             <h1>
                 <Link to={"/"}>
-                    REACT TEST (GET)
+                    REACT TEST
                 </Link>
             </h1>
             <ul>
