@@ -28,6 +28,7 @@ public class ResponseWrapper implements ResponseBodyAdvice<Object> {
     private final ObjectMapper objectMapper;
 
     // wrapper 클래스로 감쌀지 말지 명확하게 결정하는 메소드.
+    // ResponseEntity 타입 return 인지 / ApiRes 타입 return 인지 확인.
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
 
@@ -35,19 +36,18 @@ public class ResponseWrapper implements ResponseBodyAdvice<Object> {
 
         // type이 ResponseEntity 클래스에서 상속/구현 되었는지? isAssignnableFrom은 instanceof와 비슷하지만 instanceof는 인스턴스 화 되었는지가 다름.
         if (ResponseEntity.class.isAssignableFrom(type)) {
+            // ResponseEntity 타입일 경우, 실행.
             try {
+                // ResponseEntity<T> 일때 T 타입이 뭔지 가져옴.
                 ParameterizedType parameterizedType = (ParameterizedType) returnType.getGenericParameterType();
                 type = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             } catch (ClassCastException | ArrayIndexOutOfBoundsException ex) {
                 return false;
             }
         }
-
-        // type이 ApiRes 클래스에서 상속/구현 되었는지?
+        // type이 ApiRes 클래스에서 상속/구현 되었는지? / 해당 클래스로 변환이 가능한지??
         // return false가 되면 감싸지 않겠다는 의미.
         return !ApiRes.class.isAssignableFrom(type);
-
-
     }
 
     // 감싸줄때 어떨게 구성할지 짜는 메소드.

@@ -153,6 +153,7 @@ function Signup() {
                    maxLength={15}
             />
             <br/>
+            {/* idMsg 값이 있어야만(true)(falsy한 값이라면 태그는 렌더링 되지 않음.) && 를 기준으로 오른쪽 값을 반환함. */}
             {idMsg && <small style={{color: isId ? "green" : "red"}}>{idMsg}</small>}<br/>
             <p/>
 
