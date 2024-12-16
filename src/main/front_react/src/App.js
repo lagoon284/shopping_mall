@@ -7,12 +7,26 @@ import UserInfo from "./components/user/UserInfo";
 import UserInfos from "./components/user/UserInfos";
 import ProductInfo from "./components/product/ProductInfo";
 import ProductInfos from "./components/product/ProductInfos";
+import axios from "axios";
 import {useEffect, useState} from "react";
+import userInfo from "./components/user/UserInfo";
 
 function App() {
+    const getJwt = localStorage.getItem('jwt');
+
+    if (getJwt) {
+        axios.post('http://localhost:8080/api/protected/accData', {}, { headers: {'Authorization': getJwt} })
+            .then(res => {
+                const userInfo = res.data.data;
+            })
+            .catch(err => {
+                console.log('err fetch message: ', err);
+            })
+    }
+
     return (
         <div className="App">
-            <Home />
+            <Home props={userInfo}/>
             <Routes>
                 <Route path={"/"} element={null} />
                 <Route path={"/example"} element={<ExampleLifeCycle />} />

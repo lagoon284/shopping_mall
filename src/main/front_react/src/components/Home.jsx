@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {Link, useLocation} from "react-router-dom";
 
-function Home() {
+function Home(props) {
     const location = useLocation();
     const [ title, setTitle ] = useState('');
 
     useEffect(() => {
+        console.log('user info props :', props);
+
         const pathName = location.pathname;
 
         const lastSlashIndex = pathName.lastIndexOf('/');
@@ -31,6 +33,7 @@ function Home() {
                     REACT TEST
                 </Link>
             </h1>
+            {props.id && <p>{props.id} 님, 환영합니다.</p>}
             <ul>
                 <li>
                     <Link to={"/api/user/allUserSelect"}>
