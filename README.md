@@ -3,38 +3,44 @@
 	- openJDK 17
 	- h2 - data base
 	- mybatis 사용.
+	- React
 
    
 - new project setting
-	- Spring boot 3.3.4
+	- Spring boot 3.2.2
 		- Spring Boot DevTools
 		- Lombok
 		- Spring web
 		- H2 Database
 		
 	- 최종 dependencies
-		- dependencies {  
-		    implementation 'org.springframework.boot:spring-boot-starter-web'  
-		    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'  
-		    implementation 'org.springframework.boot:spring-boot-starter-jdbc'  
-		    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.17.2'  
-		    implementation 'org.apache.logging.log4j:log4j-api:2.17.2'  
-		    implementation 'org.apache.logging.log4j:log4j-core:2.17.2'  
-		    implementation group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'  
-		  
-		    developmentOnly 'org.springframework.boot:spring-boot-devtools'  
-		  
-		    compileOnly 'org.projectlombok:lombok'  
-		  
-		    runtimeOnly 'com.h2database:h2'  
-		  
-		    annotationProcessor 'org.projectlombok:lombok'  
-		  
-		    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'  
-		  
-		    testImplementation 'org.springframework.boot:spring-boot-starter-test'  
-		    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-		    }
+		- dependencies {
+			implementation 'org.springframework.boot:spring-boot-starter-web'
+			implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+			implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+			implementation 'ch.qos.logback:logback-classic'
+			implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+			implementation 'org.slf4j:slf4j-api'
+			implementation 'org.springframework.boot:spring-boot-starter-aop' // AOP 추가
+			implementation 'org.springframework.boot:spring-boot-starter-validation'		// validation 의존성 추가.
+		
+			implementation 'io.jsonwebtoken:jjwt:0.9.1'
+			implementation 'com.fasterxml.jackson.core:jackson-databind'
+			implementation 'javax.xml.bind:jaxb-api:2.3.1'
+			implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+		
+		
+			compileOnly 'org.projectlombok:lombok'
+		
+			runtimeOnly 'com.h2database:h2'
+		
+			annotationProcessor 'org.projectlombok:lombok'
+		
+			providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+		
+			testImplementation 'org.springframework.boot:spring-boot-starter-test'
+			testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+		}
 
 
 - 백앤드
@@ -48,7 +54,7 @@
 
 
 - 프론트
-	- 아직 미정. (api 방식이기 때문에 아무거나 상관없긴 함.)
+	- React 사용.
 
 
 - 발생했던 오류
