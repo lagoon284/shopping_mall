@@ -3,10 +3,11 @@
 	- openJDK 17
 	- h2 - data base
 	- mybatis 사용.
+	- React
 
    
 - new project setting
-	- Spring boot 3.3.4
+	- Spring boot 3.2.2
 		- Spring Boot DevTools
 		- Lombok
 		- Spring web
@@ -53,7 +54,7 @@
 
 
 - 프론트
-	- 아직 미정. (api 방식이기 때문에 아무거나 상관없긴 함.)
+	- React 사용.
 
 
 - 발생했던 오류
