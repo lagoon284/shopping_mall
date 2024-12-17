@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from "react";
-import {Link, useLocation} from "react-router-dom";
+import {Link, Location, useLocation} from "react-router-dom";
 
-function Home(props) {
-    const location = useLocation();
-    const [ title, setTitle ] = useState('');
+function Home(props: {id?: string}): React.JSX.Element {
+    const location: Location<string> = useLocation();
+    const [ title, setTitle ] = useState<string>('');
 
     useEffect(() => {
         console.log('user info props :', props);
 
-        const pathName = location.pathname;
+        const pathName: string = location.pathname;
 
-        const lastSlashIndex = pathName.lastIndexOf('/');
-        const substrPath = lastSlashIndex > 5 ? pathName.substring(0, lastSlashIndex) : pathName;
+        const lastSlashIndex: number = pathName.lastIndexOf('/');
+        const substrPath: string = lastSlashIndex > 5 ? pathName.substring(0, lastSlashIndex) : pathName;
 
         console.log(substrPath);
 
