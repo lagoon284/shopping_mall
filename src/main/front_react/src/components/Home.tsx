@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {Link, Location, useLocation} from "react-router-dom";
+import {PropsType} from "../TypeInterface";
 
-function Home(props: {id?: string}): React.JSX.Element {
+function Home({ propLoginInfo, propUserInfo }: PropsType) {
     const location: Location<string> = useLocation();
     const [ title, setTitle ] = useState<string>('');
 
     useEffect(() => {
-        console.log('user info props :', props);
+        console.log('user info props :');
 
         const pathName: string = location.pathname;
 
@@ -33,7 +34,7 @@ function Home(props: {id?: string}): React.JSX.Element {
                     REACT TEST
                 </Link>
             </h1>
-            {props.id && <p>{props.id} 님, 환영합니다.</p>}
+            {propLoginInfo.id && <p>{propLoginInfo.id} 님, 환영합니다.</p>}
             <ul>
                 <li>
                     <Link to={"/api/user/allUserSelect"}>
