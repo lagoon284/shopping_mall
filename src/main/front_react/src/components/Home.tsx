@@ -7,7 +7,7 @@ function Home({ propLoginInfo, propUserInfo }: PropsType) {
     const [ title, setTitle ] = useState<string>('');
 
     useEffect(() => {
-        console.log('user info props :');
+        console.log('user info props :', propLoginInfo);
 
         const pathName: string = location.pathname;
 

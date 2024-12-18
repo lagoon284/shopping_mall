@@ -5,45 +5,57 @@ import axios from "axios";
 function Signup() {
     const navigate = useNavigate();
 
+    // 로딩 상태 관리
+    const [ loading, setLoading ] = useState<boolean>(true);
+
     // 사용할 상태변수 초기화.
-    const [id, setId] = useState("");
-    const [pw, setPw] = useState("");
-    const [confirmPw, setConfirmPw] = useState("");
-    const [name, setName] = useState("");
-    const [addr, setAddr] = useState("");
+    const [id, setId] = useState<string>("");
+    const [pw, setPw] = useState<string>("");
+    const [confirmPw, setConfirmPw] = useState<string>("");
+    const [name, setName] = useState<string>("");
+    const [addr, setAddr] = useState<string>("");
 
     // 사용할 메세지 상태변수 초기화.
-    const [idMsg, setIdMsg] = useState("");
-    const [pwMsg, setPwMsg] = useState("");
-    const [confirmMsg, setConfirmMsg] = useState("");
-    const [nameMsg, setNameMsg] = useState("");
-    const [addrMsg, setAddrMsg] = useState("");
+    const [idMsg, setIdMsg] = useState<string>("");
+    const [pwMsg, setPwMsg] = useState<string>("");
+    const [confirmMsg, setConfirmMsg] = useState<string>("");
+    const [nameMsg, setNameMsg] = useState<string>("");
+    const [addrMsg, setAddrMsg] = useState<string>("");
 
     // 유효성 상태변수 초기화.
-    const [isId, setIsId] = useState(false);
-    const [isPw, setIsPw] = useState(false);
-    const [isConfirm, setIsConfirm] = useState(false);
-    const [isName, setIsName] = useState(false);
-    const [isAddr, setIsAddr] = useState(false);
+    const [isId, setIsId] = useState<boolean>(false);
+    const [isPw, setIsPw] = useState<boolean>(false);
+    const [isConfirm, setIsConfirm] = useState<boolean>(false);
+    const [isName, setIsName] = useState<boolean>(false);
+    const [isAddr, setIsAddr] = useState<boolean>(false);
 
 
-    const blurIdHandler = (event) => {
+    const blurIdHandler = (event: React.FocusEvent<HTMLInputElement>) => {
         const currentId = event.currentTarget.value;
 
         if (currentId !== '' && currentId !== null) {
             // 아이디 중복확인 true = 중복되지 않음, false = 중복됨.
-            axios.get(`http://localhost:8080/api/user/${id}`)
-                .then(res => {
-                    if (res.data.data !== null) {
-                        setIdMsg("이미 사용중인 아이디 입니다. 새롭게 다시 입력해 주세요.");
-                        setIsId(false);
-                    }
-                })
+            const fetchIdCheck = async () => {
+                await axios.get(`http://localhost:8080/api/user/${id}`)
+                    .then(res => {
+                        if (res.data.data !== null) {
+                            setIdMsg("이미 사용중인 아이디 입니다. 새롭게 다시 입력해 주세요.");
+                            setIsId(false);
+                        }
+                    })
+                    .catch(error => {
+                        console.log('Error fetching data:', error);
+                    })
+                    .finally(() => {
+                        setLoading(false);
+                    })
+            }
+            fetchIdCheck();
         }
     }
 
 
-    const onIdHandler = (event) => {
+    const onIdHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentId = event.currentTarget.value;
 
         setId(currentId);
@@ -58,7 +70,7 @@ function Signup() {
             setIsId(false);
         }
     }
-    const onPwHandler = (event) => {
+    const onPwHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentPw = event.currentTarget.value;
 
         setPw(currentPw);
@@ -73,7 +85,7 @@ function Signup() {
             setIsPw(false);
         }
     }
-    const onConfirmPwHandler = (event) => {
+    const onConfirmPwHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentConfirmPw = event.currentTarget.value;
 
         setConfirmPw(currentConfirmPw);
@@ -86,7 +98,7 @@ function Signup() {
             setIsConfirm(false);
         }
     }
-    const onNameHandler = (event) => {
+    const onNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentName = event.currentTarget.value;
 
         setName(currentName);
@@ -99,7 +111,7 @@ function Signup() {
             setIsName(false);
         }
     }
-    const onAddrHandler = (event) => {
+    const onAddrHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentAddr = event.currentTarget.value;
 
         setAddr(currentAddr);
@@ -112,7 +124,7 @@ function Signup() {
             setIsAddr(false);
         }
     }
-    const onSubmitHandler = (event) => {
+    const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         if (isId && isPw && isConfirm && isName && isAddr) {
@@ -123,20 +135,25 @@ function Signup() {
                 addr: addr
             }
 
-            axios.post('http://localhost:8080/api/user/signup', reqData)
-                .then(res => {
-                    if (res.data.statCode === 'success') {
-                        console.log("if inner : " + res);
-                        navigate('/');
-                    }
-                    console.log(res);
-                })
-                .catch(err => {
-                    console.log('Error fetching data:', err);
-                })
-
+            const fetchSignup = async () => {
+                await axios.post('http://localhost:8080/api/user/signup', reqData)
+                    .then(res => {
+                        if (res.data.statCode === 'success') {
+                            console.log("if inner : " + res);
+                            navigate('/');
+                        }
+                        console.log(res);
+                    })
+                    .catch(err => {
+                        console.log('Error fetching data:', err);
+                    })
+                    .finally(() => {
+                        setLoading(false);
+                    })
+            }
+            fetchSignup();
         } else {
-            alert("회원가입 양식이 무언가 잘못되었습니다. 확인해주세요.");
+            alert("회원가입 양식이 잘못되었습니다. 확인해주세요.");
         }
     }
 
@@ -208,7 +225,7 @@ function Signup() {
             {addrMsg && <small style={{color: isAddr ? "green" : "red"}}>{addrMsg}</small>}<br/>
             <p/>
 
-            <button onClick={onSubmitHandler} disabled= {!(isId && isPw && isConfirm && isName)}>가입하기</button>
+            <button type={'submit'} disabled= {!(isId && isPw && isConfirm && isName)}>가입하기</button>
         </form>
     )
 }

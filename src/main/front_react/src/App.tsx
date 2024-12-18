@@ -29,12 +29,10 @@ function App() {
     const [ error, setError ] = useState<String |null>(null);
 
     useEffect(() => {
-        const fatchUserInfo = async () => {
+        const fetchUserInfo = async () => {
             if (getJwt) {
                 try {
-                    const response = await axios.post('http://localhost:8080/api/protected/accData',
-                        {},
-                        {
+                    const response = await axios.post('http://localhost:8080/api/protected/accData', {}, {
                             headers: {
                                 'Authorization': getJwt
                             }
@@ -49,8 +47,7 @@ function App() {
                 setLoading(false);
             }
         };
-
-        fatchUserInfo();
+        fetchUserInfo();
     }, [getJwt]);
 
     const props: PropsType = {
