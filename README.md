@@ -1,9 +1,19 @@
+- 실행할때 주의점...!!
+	- 인텔리 기반이라서 인텔리에서 하시거나 이클립스로 변환 하시는걸 추천합니다.
+ 	- react 실행은 아직 연동하지 않아서 터미널에서
+	  'shopping_mall\shopping\src\main\front_react'
+	  경로로 가셔서
+	  npm start
+	  해주셔야 리엑트가 실행됩니다.
+	- 자바 에플리케이션 실행 따로, react 실행 따로해주셔야 합니다. (순서는 상관 없습니다.)
+	- 모르겠으면 직접 물어보시는게 편하실 겁니다...
+
 - 사용할 스택
 	- Spring boot
 	- openJDK 17
 	- h2 - data base
 	- mybatis 사용.
-	- React
+	- React & typeScript
 
    
 - new project setting
