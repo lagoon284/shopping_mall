@@ -1,17 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Route, Routes, useLocation} from "react-router-dom";
-// @ts-ignore
-import Home from "./components/Home.tsx";
-// @ts-ignore
-import Signup from "./components/user/Signup.tsx";
-// @ts-ignore
-import UserInfo from "./components/user/UserInfo.tsx";
-// @ts-ignore
+import Home from "./components/Home";
+import Signup from "./components/user/Signup";
+import UserInfo from "./components/user/UserInfo";
 import UserInfos from "./components/user/UserInfos";
-// @ts-ignore
-import ProductInfo from "./components/product/ProductInfo.tsx";
-// @ts-ignore
-import ProductInfos from "./components/product/ProductInfos.tsx";
+import ProductInfo from "./components/product/ProductInfo";
+import ProductInfos from "./components/product/ProductInfos";
 import axios from "axios";
 import userInfo from "./components/user/UserInfo";
 
