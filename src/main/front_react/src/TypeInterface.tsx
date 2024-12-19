@@ -21,3 +21,12 @@ export interface UserInfoType {
     sleepFlag : boolean
 }
 
+export interface ProdInfoType {
+    prodSeqNo : number
+    prodName : string
+    price : number
+    provider : string
+    info : string
+    useFlag : boolean
+}
+

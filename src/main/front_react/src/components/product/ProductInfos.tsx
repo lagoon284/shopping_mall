@@ -2,8 +2,13 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 
+import { ProdInfoType } from "../../TypeInterface";
+
 function ProductInfos() {
-    const [prods, setProds] = useState([]);
+    const [prods, setProds] = useState<ProdInfoType[]>([]);
+
+    // 로딩 상태 관리
+    const [ loading, setLoading ] = useState<boolean>(true);
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/product/infoProds')
@@ -14,7 +19,18 @@ function ProductInfos() {
             .catch(error => {
                 console.log('Error fetching data:', error);
             })
+            .finally(() => {
+                setLoading(false);
+            })
     }, []);
+
+    if (loading) {
+        return (
+            <div className={'loading'}>
+                <h1>로딩 중 입니다. 기다리세요. </h1>
+            </div>
+        )
+    }
 
     return (
         <div className="ProductInfos">
@@ -23,7 +39,7 @@ function ProductInfos() {
             <p></p>
             <h3>상품데이터 :</h3>
             <ul>
-            {prods.map((prod, index) => {
+            {prods.map((prod) => {
                 return (
                     <li key={prod.prodSeqNo}>
                         <Link to={`/api/product/${prod.prodSeqNo}`}>{prod.prodSeqNo}번 상품 상세보기!!</Link><br/>

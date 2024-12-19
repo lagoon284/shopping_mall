@@ -1,0 +1,55 @@
+
+노드, 리엑트, 타입스크립트 등 뭔가 설치한게 많아서 정리를 해보려함.
+
+    1. 노드 설치 확인
+        - 터미널에서 노드가 설치 되었는지 확인함.
+          (터미널) 'node -v' 혹은 'node --version'
+          버전 정보가 표기되는 경우에는 설치가 된 것. 혹시 14버전 이하라면
+          업데이트 하기를 추천함.
+          해당 프로젝트? 현재 로컬? 기준으로는 v20.17.0 버전을 사용 중.
+          혹시 버전 정보가 나오지 않는다면 설치를 진행.
+
+    2. npm 리엑트 설치 확인    // npm 은 node package manager 의 약자로 리엑트가 node 의 하나의 패키지 모듈임을 알 수 있음... 아님말고...
+        - node가 설치되었다면 아마 리엑트도 그냥 가능할 것으로 보임.
+          그래도 모르니까 버전을 확인해봄.
+          (터미널) 'npm -v' 혹은 'npm --version'
+          혹시 버전이 나오지 않는다면 npm 설치를 해주자 보통은 node.js 에 내장되어 있다고 함.
+          해당 프로젝트? 로컬? 기준으로는 10.8.2 버전을 사용 중.
+
+    3. typeScript 설치 확인
+        - 터미널에서 typeScript 가 설치 되었는지 확인함.
+          (터미널) 'tsc -version'
+          보통은 설치되지 않았을 가능성이 높음. 그치만 버전이 나온다면 개이득이라 생각해보자.
+          버전이 정상적으로 표기되지 않는 경우, 터미널에 설치 명령을 해야함.
+          (터미널) 'npm install -g typescript'
+          명령어 입력하면 알아서 설치가 되는거 같음.
+          다 설치되고 나서 다시 'tsc -version' 을 하면 버전 나올거임.
+          안나오면 나도 모름... 구글이나 AI 한테 물어볼 것..
+          아 참고로 해당 프로젝트/로컬 환경은 Version 5.7.2 버전임.
+
+        - 하.... react-router-dom 을 typeScript 가 못써서 한참 해맸음...
+          npm install @types/react-router-dom --save-dev
+          npm install typescript @types/react @types/react-dom
+          이걸 따로 해줘야 먹히는 듯....ㅠㅠ
+
+        - 리엑트와 타입스크립트의 버전 차이로 안되는 듯함.
+          리엑트의 버전은 5.0.1이고 호환 가능한 타입스크립트 버전은 4.x버전임
+          그래서 타입스크립트를 4.9.5버전으로 재설치 함.
+
+        - 모든 버전 다 최신버전으로 바꿔줌... 버전 호환문제가 아니었을까 함.
+          "@testing-library/jest-dom": "^5.17.0",
+          "@testing-library/user-event": "^13.5.0",
+          "axios": "^1.7.9",
+          "http-proxy-middleware": "^3.0.3",
+          "react": "^19.0.0",
+          "react-dom": "^19.0.0",
+          "react-router-dom": "^7.0.2",
+          "react-scripts": "5.0.1",
+          "web-vitals": "^2.1.4"
+          "@testing-library/react": "^16.1.0",
+          "@types/react": "^19.0.2",
+          "@types/react-dom": "^19.0.2",
+          "@types/react-router-dom": "^5.3.3",
+          "typescript": "^5.7.2"
+
+          보고 참고... 하셈...

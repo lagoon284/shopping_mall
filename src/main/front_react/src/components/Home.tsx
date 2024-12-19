@@ -3,7 +3,7 @@ import {Link, Location, useLocation} from "react-router-dom";
 import {PropsType} from "../TypeInterface";
 
 function Home({ propLoginInfo, propUserInfo }: PropsType) {
-    const location: Location<string> = useLocation();
+    const location = useLocation();
     const [ title, setTitle ] = useState<string>('');
 
     useEffect(() => {

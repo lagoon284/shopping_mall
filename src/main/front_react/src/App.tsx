@@ -3,13 +3,11 @@ import {Route, Routes, useLocation} from "react-router-dom";
 // @ts-ignore
 import Home from "./components/Home.tsx";
 // @ts-ignore
-import ExampleLifeCycle from "./components/example/ExampleLifeCycle.tsx";
-// @ts-ignore
 import Signup from "./components/user/Signup.tsx";
 // @ts-ignore
 import UserInfo from "./components/user/UserInfo.tsx";
 // @ts-ignore
-import UserInfos from "./components/user/UserInfos.tsx";
+import UserInfos from "./components/user/UserInfos";
 // @ts-ignore
 import ProductInfo from "./components/product/ProductInfo.tsx";
 // @ts-ignore
@@ -89,7 +87,6 @@ function App() {
             <Home {...props}/>
             <Routes>
                 <Route path={"/"} element={null} />
-                <Route path={"/example"} element={<ExampleLifeCycle />} />
                 <Route path={"/user/signup"} element={<Signup />} />
                 <Route path={"/api/user/allUserSelect"} element={<UserInfos />} />
                 <Route path={"/api/user/:id"} element={<UserInfo />} />
