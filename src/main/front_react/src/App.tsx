@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Route, Routes, useLocation} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import Home from "./components/Home";
 import Signup from "./components/user/Signup";
 import UserInfo from "./components/user/UserInfo";
@@ -7,9 +7,8 @@ import UserInfos from "./components/user/UserInfos";
 import ProductInfo from "./components/product/ProductInfo";
 import ProductInfos from "./components/product/ProductInfos";
 import axios from "axios";
-import userInfo from "./components/user/UserInfo";
 
-import {PropsType, LoginInfoType, UserInfoType} from "./TypeInterface";
+import {PropsType, UserInfoType} from "./TypeInterface";
 
 function App() {
     const getJwt = localStorage.getItem('jwt');
