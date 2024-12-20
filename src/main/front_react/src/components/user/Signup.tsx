@@ -62,13 +62,18 @@ function Signup() {
 
         const idRegExp = /^[a-zA-Z0-9]{4,12}$/;
 
-        if (idRegExp.test(currentId)) {
-            setIdMsg("사용가능한 아이디 입니다.");
-            setIsId(true);
+        if(currentId !== "") {
+            if (idRegExp.test(currentId)) {
+                setIdMsg("사용가능한 아이디 입니다.");
+                setIsId(true);
+            } else {
+                setIdMsg("4~12자리 대소문자 또는 숫자만 입력할 수 있습니다.");
+                setIsId(false);
+            }
         } else {
-            setIdMsg("4~12자리 대소문자 또는 숫자만 입력할 수 있습니다.");
-            setIsId(false);
+            setIdMsg("");
         }
+
     }
     const onPwHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentPw = event.currentTarget.value;
@@ -77,52 +82,61 @@ function Signup() {
 
         const pwRegExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
 
-        if (pwRegExp.test(currentPw)) {
-            setPwMsg("사용가능한 비밀번호 입니다.");
-            setIsPw(true);
-        } else {
-            setPwMsg("숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!");
-            setIsPw(false);
-        }
+        if(currentPw !== "") {
+            if (pwRegExp.test(currentPw)) {
+                setPwMsg("사용가능한 비밀번호 입니다.");
+                setIsPw(true);
+            } else {
+                setPwMsg("숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!");
+                setIsPw(false);
+            }
+        } else { setPwMsg(""); }
     }
     const onConfirmPwHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentConfirmPw = event.currentTarget.value;
 
         setConfirmPw(currentConfirmPw);
 
-        if (isPw && pw === currentConfirmPw) {
-            setConfirmMsg("비밀번호와 동일합니다.")
-            setIsConfirm(true);
-        } else {
-            setConfirmMsg("비밀번호와 일치하지 않습니다. 재입력 해주세요.");
-            setIsConfirm(false);
-        }
+        if (currentConfirmPw !== "") {
+            if (isPw && pw === currentConfirmPw) {
+                setConfirmMsg("비밀번호와 동일합니다.")
+                setIsConfirm(true);
+            } else {
+                setConfirmMsg("비밀번호와 일치하지 않습니다. 재입력 해주세요.");
+                setIsConfirm(false);
+            }
+        } else { setConfirmMsg(""); }
+
     }
     const onNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentName = event.currentTarget.value;
 
         setName(currentName);
 
-        if (currentName.length > 2 && currentName.length < 6) {
-            setNameMsg(`${currentName} 님, 안녕하세요.`);
-            setIsName(true);
-        } else {
-            setNameMsg("이름은 2글자 이상, 5글자 이하여야 합니다. 제 맘 입니다.");
-            setIsName(false);
-        }
+        if (currentName !== "") {
+            if (currentName.length > 2 && currentName.length < 6) {
+                setNameMsg(`${currentName} 님, 안녕하세요.`);
+                setIsName(true);
+            } else {
+                setNameMsg("이름은 2글자 이상, 5글자 이하여야 합니다. 제 맘 입니다.");
+                setIsName(false);
+            }
+        } else { setNameMsg(""); }
     }
     const onAddrHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentAddr = event.currentTarget.value;
 
         setAddr(currentAddr);
 
-        if (currentAddr.length > 3) {
-            setAddrMsg("일단은 뭔가를 적긴 했군요. 합격입니다.");
-            setIsAddr(true);
-        } else {
-            setAddrMsg("주소가 없거나 너무 짧네요. 다시 적으세요. 당장.");
-            setIsAddr(false);
-        }
+        if(currentAddr !== "") {
+            if (currentAddr.length > 3) {
+                setAddrMsg("일단은 뭔가를 적긴 했군요. 합격입니다.");
+                setIsAddr(true);
+            } else {
+                setAddrMsg("주소가 없거나 너무 짧네요. 다시 적으세요. 당장.");
+                setIsAddr(false);
+            }
+        } else { setAddrMsg(""); }
     }
     const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
