@@ -41,7 +41,7 @@ function UserInfos() {
                 {users && users.map((user) => {
                     return (
                         <li key={user.id}>
-                            <Link to={`/api/user/${user.id}`}>{user.id} 회원 상세보기</Link><br/>
+                            <Link to={`/user/${user.id}`}>{user.id} 회원 상세보기</Link><br/>
                             유저번호 : {user.userNo}<br/>
                             유저아이디 : {user.id}<br/>
                             패스워드 : {user.pw}<br/>

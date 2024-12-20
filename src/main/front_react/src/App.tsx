@@ -81,10 +81,10 @@ function App() {
             <Routes>
                 <Route path={"/"} element={null} />
                 <Route path={"/user/signup"} element={<Signup />} />
-                <Route path={"/api/user/allUserSelect"} element={<UserInfos />} />
-                <Route path={"/api/user/:id"} element={<UserInfo />} />
-                <Route path={"/api/product/infoProds"} element={<ProductInfos />} />
-                <Route path={"/api/product/:prodSeqNo"} element={<ProductInfo />} />
+                <Route path={"/user/allUserSelect"} element={<UserInfos />} />
+                <Route path={"/user/:id"} element={<UserInfo />} />
+                <Route path={"/product/infoProds"} element={<ProductInfos />} />
+                <Route path={"/product/:prodSeqNo"} element={<ProductInfo />} />
             </Routes>
         </div>
     );

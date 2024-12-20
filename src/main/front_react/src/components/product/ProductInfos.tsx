@@ -42,7 +42,7 @@ function ProductInfos() {
             {prods.map((prod) => {
                 return (
                     <li key={prod.prodSeqNo}>
-                        <Link to={`/api/product/${prod.prodSeqNo}`}>{prod.prodSeqNo}번 상품 상세보기!!</Link><br/>
+                        <Link to={`/product/${prod.prodSeqNo}`}>{prod.prodSeqNo}번 상품 상세보기!!</Link><br/>
                         상품 번호 : {prod.prodSeqNo}<br/>
                         상품이름 : {prod.prodName}<br/>
                         상품가격 : {prod.price}<br/>
