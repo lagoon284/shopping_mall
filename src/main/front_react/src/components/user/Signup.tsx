@@ -2,33 +2,24 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
+import {FormDataType} from "../../TypeInterface";
+
 function Signup() {
     const navigate = useNavigate();
 
     // 로딩 상태 관리
     const [ loading, setLoading ] = useState<boolean>();
 
-    // 사용할 상태변수 초기화.
-    const [id, setId] = useState<string>("");
-    const [pw, setPw] = useState<string>("");
-    const [confirmPw, setConfirmPw] = useState<string>("");
-    const [name, setName] = useState<string>("");
-    const [addr, setAddr] = useState<string>("");
+    const [ formData, setFormData ] = useState<FormDataType>({
+        // 사용할 상태변수 초기화.
+        id: "", pw: "", confirmPw: "", name: "", addr: "",
 
-    // 사용할 메세지 상태변수 초기화.
-    const [idMsg, setIdMsg] = useState<string>("");
-    const [pwMsg, setPwMsg] = useState<string>("");
-    const [confirmMsg, setConfirmMsg] = useState<string>("");
-    const [nameMsg, setNameMsg] = useState<string>("");
-    const [addrMsg, setAddrMsg] = useState<string>("");
+        // 사용할 메세지 상태변수 초기화.
+        idMsg: "", pwMsg: "", confirmMsg: "", nameMsg: "", addrMsg: "",
 
-    // 유효성 상태변수 초기화.
-    const [isId, setIsId] = useState<boolean>(false);
-    const [isPw, setIsPw] = useState<boolean>(false);
-    const [isConfirm, setIsConfirm] = useState<boolean>(false);
-    const [isName, setIsName] = useState<boolean>(false);
-    const [isAddr, setIsAddr] = useState<boolean>(false);
-
+        // 유효성 상태변수 초기화.
+        isId: false, isPw: false, isConfirm: false, isName: false, isAddr: false
+    });
 
     const blurIdHandler = (event: React.FocusEvent<HTMLInputElement>) => {
         const currentId : string = event.currentTarget.value;
@@ -36,11 +27,14 @@ function Signup() {
         if (currentId !== '' && currentId !== null) {
             // 아이디 중복확인 true = 중복되지 않음, false = 중복됨.
             const fetchIdCheck = async () => {
-                await axios.get(`http://localhost:8080/api/user/${id}`)
+                await axios.get(`http://localhost:8080/api/user/${formData.id}`)
                     .then(res => {
                         if (res.data.data !== null) {
-                            setIdMsg("이미 사용중인 아이디 입니다. 새롭게 다시 입력해 주세요.");
-                            setIsId(false);
+                            setFormData(prvData => ({
+                                ...prvData,
+                                idMsg : "이미 사용중인 아이디 입니다. 새롭게 다시 입력해 주세요.",
+                                isId : false
+                            }));
                         }
                     })
                     .catch(error => {
@@ -54,99 +48,139 @@ function Signup() {
         }
     }
 
-
     const onIdHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentId : string = event.currentTarget.value;
 
-        setId(currentId);
-
         const idRegExp : RegExp = /^[a-zA-Z0-9]{4,12}$/;
+
+        let msg : string = "";
+        let flag : boolean = false;
 
         if(currentId !== "") {
             if (idRegExp.test(currentId)) {
-                setIdMsg("사용가능한 아이디 입니다.");
-                setIsId(true);
+                msg = "사용가능한 아이디 입니다.";
+                flag = true;
             } else {
-                setIdMsg("4~12자리 대소문자 또는 숫자만 입력할 수 있습니다.");
-                setIsId(false);
+                msg = "4~12자리 대소문자 또는 숫자만 입력할 수 있습니다.";
+                flag = false;
             }
-        } else {
-            setIdMsg("");
-        }
+        } else { flag = false }
 
+        setFormData(prvData => ({
+            ...prvData,
+            id : currentId,
+            idMsg : msg,
+            isId : flag
+        }))
     }
+
     const onPwHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentPw : string = event.currentTarget.value;
 
-        setPw(currentPw);
-
         const pwRegExp : RegExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+
+        let msg : string = "";
+        let flag : boolean = false;
 
         if(currentPw !== "") {
             if (pwRegExp.test(currentPw)) {
-                setPwMsg("사용가능한 비밀번호 입니다.");
-                setIsPw(true);
+                msg = "사용가능한 비밀번호 입니다.";
+                flag = true;
             } else {
-                setPwMsg("숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!");
-                setIsPw(false);
+                msg = "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!";
+                flag = false;
             }
-        } else { setPwMsg(""); }
+        } else { flag = false }
+
+        setFormData(prvData => ({
+            ...prvData,
+            pw : currentPw,
+            pwMsg : msg,
+            isPw : flag
+        }))
     }
+
     const onConfirmPwHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentConfirmPw : string = event.currentTarget.value;
 
-        setConfirmPw(currentConfirmPw);
+        let msg : string = "";
+        let flag : boolean = false;
 
         if (currentConfirmPw !== "") {
-            if (isPw && pw === currentConfirmPw) {
-                setConfirmMsg("비밀번호와 동일합니다.")
-                setIsConfirm(true);
+            if (formData.isPw && formData.pw === currentConfirmPw) {
+                msg = "비밀번호와 동일합니다.";
+                flag = true;
             } else {
-                setConfirmMsg("비밀번호와 일치하지 않습니다. 재입력 해주세요.");
-                setIsConfirm(false);
+                msg = "비밀번호와 일치하지 않습니다. 재입력 해주세요.";
+                flag = false;
             }
-        } else { setConfirmMsg(""); }
+        } else { flag = false }
+
+        setFormData(prvData => ({
+            ...prvData,
+            confirmPw : currentConfirmPw,
+            confirmMsg : msg,
+            isConfirm : flag
+        }))
 
     }
+
     const onNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentName : string = event.currentTarget.value;
 
-        setName(currentName);
+        let msg : string = "";
+        let flag : boolean = false;
 
         if (currentName !== "") {
             if (currentName.length > 2 && currentName.length < 6) {
-                setNameMsg(`${currentName} 님, 안녕하세요.`);
-                setIsName(true);
+                msg = `${currentName} 님, 안녕하세요.`;
+                flag = true;
             } else {
-                setNameMsg("이름은 2글자 이상, 5글자 이하여야 합니다. 제 맘 입니다.");
-                setIsName(false);
+                msg = "이름은 2글자 이상, 5글자 이하여야 합니다. 제 맘 입니다.";
+                flag = false;
             }
-        } else { setNameMsg(""); }
+        } else { flag = false }
+
+        setFormData(prvData => ({
+            ...prvData,
+            name : currentName,
+            nameMsg : msg,
+            isName : flag
+        }))
     }
+
     const onAddrHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentAddr : string = event.currentTarget.value;
 
-        setAddr(currentAddr);
+        let msg : string = "";
+        let flag : boolean = false;
 
         if(currentAddr !== "") {
             if (currentAddr.length > 3) {
-                setAddrMsg("일단은 뭔가를 적긴 했군요. 합격입니다.");
-                setIsAddr(true);
+                msg = "일단은 뭔가를 적긴 했군요. 합격입니다.";
+                flag = true;
             } else {
-                setAddrMsg("주소가 없거나 너무 짧네요. 다시 적으세요. 당장.");
-                setIsAddr(false);
+                msg = "주소가 없거나 너무 짧네요. 다시 적으세요. 당장.";
+                flag = false;
             }
-        } else { setAddrMsg(""); }
+        } else { flag = false }
+
+        setFormData(prvData => ({
+            ...prvData,
+            addr : currentAddr,
+            addrMsg : msg,
+            isAddr : flag
+        }))
     }
     const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (isId && isPw && isConfirm && isName && isAddr) {
+        if (formData.isId && formData.isPw && formData.isConfirm && formData.isName && formData.isAddr) {
             let reqData = {
-                id: id,
-                pw: pw,
-                name: name,
-                addr: addr
+                id: formData.id,
+                pw: formData.pw,
+                name: formData.name,
+                addr: formData.addr
             }
 
             const fetchSignup = async () => {
@@ -188,13 +222,13 @@ function Signup() {
                    type={'text'}
                    id={'id'}
                    name={'id'}
-                   value={id}
+                   value={formData.id}
                    placeholder={'아이디 입력'}
                    maxLength={15}
             />
             <br/>
             {/* idMsg 값이 있어야만(true)(falsy한 값이라면 태그는 렌더링 되지 않음.) && 를 기준으로 오른쪽 값을 반환함. */}
-            {idMsg && <small style={{color: isId ? "green" : "red"}}>{idMsg}</small>}<br/>
+            {formData.idMsg && <small style={{color: formData.isId ? "green" : "red"}}>{formData.idMsg}</small>}<br/>
             <p/>
 
             <label htmlFor={'pw'}>비밀번호 </label>
@@ -202,12 +236,12 @@ function Signup() {
                    type={'password'}
                    id={'pw'}
                    name={'pw'}
-                   value={pw}
+                   value={formData.pw}
                    placeholder={'비밀번호 입력'}
                    maxLength={24}
             />
             <br/>
-            {pwMsg && <small style={{color: isPw ? "green" : "red"}}>{pwMsg}</small>}<br/>
+            {formData.pwMsg && <small style={{color: formData.isPw ? "green" : "red"}}>{formData.pwMsg}</small>}<br/>
             <p/>
 
             <label htmlFor={'confirmPw'}>비밀번호 확인 </label>
@@ -215,12 +249,12 @@ function Signup() {
                    type={'password'}
                    id={'confirmPw'}
                    name={'confirmPw'}
-                   value={confirmPw}
+                   value={formData.confirmPw}
                    placeholder={'비밀번호 재입력'}
                    maxLength={24}
             />
             <br/>
-            {confirmMsg && <small style={{color: isConfirm ? "green" : "red"}}>{confirmMsg}</small>}<br/>
+            {formData.confirmMsg && <small style={{color: formData.isConfirm ? "green" : "red"}}>{formData.confirmMsg}</small>}<br/>
             <p/>
 
             <label htmlFor={'name'}>이름 </label>
@@ -228,12 +262,12 @@ function Signup() {
                    type={'name'}
                    id={'name'}
                    name={'name'}
-                   value={name}
+                   value={formData.name}
                    placeholder={'이름 입력'}
                    maxLength={6}
             />
             <br/>
-            {nameMsg && <small style={{color: isName ? "green" : "red"}}>{nameMsg}</small>}<br/>
+            {formData.nameMsg && <small style={{color: formData.isName ? "green" : "red"}}>{formData.nameMsg}</small>}<br/>
             <p/>
 
             <label htmlFor={'addr'}>주소 </label>
@@ -241,14 +275,14 @@ function Signup() {
                    type={'text'}
                    id={'addr'}
                    name={'addr'}
-                   value={addr}
+                   value={formData.addr}
                    placeholder={'주소를 적어주세요.'}
             />
             <br/>
-            {addrMsg && <small style={{color: isAddr ? "green" : "red"}}>{addrMsg}</small>}<br/>
+            {formData.addrMsg && <small style={{color: formData.isAddr ? "green" : "red"}}>{formData.addrMsg}</small>}<br/>
             <p/>
 
-            <button type={'submit'} disabled= {!(isId && isPw && isConfirm && isName)}>가입하기</button>
+            <button type={'submit'} disabled= {!(formData.isId && formData.isPw && formData.isConfirm && formData.isName && formData.isAddr)}>가입하기</button>
         </form>
     )
 }

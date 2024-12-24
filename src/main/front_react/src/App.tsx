@@ -13,7 +13,7 @@ import {PropsType, UserInfoType} from "./TypeInterface";
 
 function App() {
     const getJwt = localStorage.getItem('seokho_jwt');
-
+    // 로그인시 유저 정보 (props)
     const [ userInfo, setUserInfo ] = useState<UserInfoType | null>(null);
     // 로딩 상태 관리
     const [ loading, setLoading ] = useState<boolean>(true);
@@ -24,13 +24,12 @@ function App() {
 
     useEffect(() => {
         const fetchUserInfo = async () => {
+            setLoading(true);
             if (getJwt) {
                 try {
                     // console.log('자동 로그인 시도 중.');
                     const response = await axios.post('http://localhost:8080/api/protected/accData', {}, {
-                        headers: {
-                            'Authorization': 'seokhoAccAuth ' + getJwt
-                        }
+                        headers: { 'Authorization': 'seokhoAccAuth ' + getJwt }
                     });
                     setUserInfo(response.data.data);
                     // console.log('자동로그인 완료.');
@@ -75,7 +74,7 @@ function App() {
     // 로딩중일때 표시할 내용.
     if (loading) {
         return (
-            <div className={'loading'}>
+            <div className={'Loading'}>
                 <h1>로딩 중 입니다. 기다리세요. </h1>
             </div>
         )
@@ -83,7 +82,7 @@ function App() {
 
     if (error) {
         return (
-            <div className={'error'}>
+            <div className={'Error'}>
                 <h1>error message : {error}</h1>
             </div>
         )

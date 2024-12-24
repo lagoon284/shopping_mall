@@ -52,28 +52,30 @@ export default function Login() {
 
 
     return (
-        <form onSubmit={onSubmitHandler}>
-            <label htmlFor={'userId'}>아이디 </label>
-            <input onChange={onIdHandler}
-                   type={'text'}
-                   id={'userId'}
-                   name={'userId'}
-                   value={userId}
-                   placeholder={'아이디 입력'}
-                   maxLength={15}
-            /><br />
-            <label htmlFor={'pw'}>비밀번호 </label>
-            <input onChange={onPwHandler}
-                   type={'password'}
-                   id={'pw'}
-                   name={'pw'}
-                   value={pw}
-                   placeholder={'비밀번호 입력'}
-                   maxLength={24}
-            /><br />
-            {loginMsg && <small style={{color: "red"}}>{loginMsg}</small>}<br/>
-            <p/>
-            <button type={'submit'} disabled={!(isUserId && isPw)}>로그인</button>
-        </form>
+        <div className={'Signup'}>
+            <form onSubmit={onSubmitHandler}>
+                <label htmlFor={'userId'}>아이디 </label>
+                <input onChange={onIdHandler}
+                       type={'text'}
+                       id={'userId'}
+                       name={'userId'}
+                       value={userId}
+                       placeholder={'아이디 입력'}
+                       maxLength={15}
+                /><br />
+                <label htmlFor={'pw'}>비밀번호 </label>
+                <input onChange={onPwHandler}
+                       type={'password'}
+                       id={'pw'}
+                       name={'pw'}
+                       value={pw}
+                       placeholder={'비밀번호 입력'}
+                       maxLength={24}
+                /><br />
+                {loginMsg && <small style={{color: "red"}}>{loginMsg}</small>}<br/>
+                <p/>
+                <button type={'submit'} disabled={!(isUserId && isPw)}>로그인</button>
+            </form>
+        </div>
     )
 }

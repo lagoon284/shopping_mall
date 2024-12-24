@@ -26,7 +26,7 @@ function ProductInfos() {
 
     if (loading) {
         return (
-            <div className={'loading'}>
+            <div className={'Loading'}>
                 <h1>로딩 중 입니다. 기다리세요. </h1>
             </div>
         )
