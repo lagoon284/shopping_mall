@@ -1,25 +1,15 @@
 package org.example.shopping.user.controller;
 
 
-import ch.qos.logback.core.model.Model;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.authLogin.dto.AuthToken;
-import org.example.shopping.authLogin.dto.LoginAuthToken;
 import org.example.shopping.user.dto.User;
 import org.example.shopping.user.dto.UserDormencyReq;
 import org.example.shopping.user.dto.UserInsertReq;
 import org.example.shopping.user.dto.UserUpdateReq;
 import org.example.shopping.user.service.UserService;
-import org.example.shopping.util.common.JwtUtil;
-import org.example.shopping.util.common.ValidationUtil;
-import org.example.shopping.util.exception.enums.ErrorCode;
-import org.example.shopping.util.exception.CustomException;
-import org.example.shopping.util.common.TimeConverter;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 
 @RestController

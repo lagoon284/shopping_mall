@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.authLogin.dto.AuthToken;
 import org.example.shopping.authLogin.dto.Login;
-import org.example.shopping.authLogin.dto.LoginAuthToken;
 import org.example.shopping.authLogin.dto.LoginInfo;
 import org.example.shopping.authLogin.mapper.AuthTokenMapper;
 import org.example.shopping.user.dto.User;
@@ -28,43 +27,53 @@ public class UserService {
     private final AuthTokenMapper authTokenMapper;
     private final JwtUtil jwtUtil;
 
-    public LoginAuthToken login(Login loginReq) {
-        // 받은 id 값으로 조회.
+    public AuthToken login(Login loginReq) {
+        // 받은 id 값으로 조회. 전체 데이터. pw포함.
         User user = userMapper.selectUserById(loginReq.getUserId());
 
-        LoginInfo loginInfo = authTokenMapper.getLoginInfo(loginReq.getUserId());
+        if (user == null) {
+            // 검증 실패시 null 리턴, 컨트롤러에서 핸들링 함.
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        // 일부 데이터 userNo, id, name
+        LoginInfo loginInfo = new LoginInfo(user.getUserNo(), user.getId(), user.getName());
 
         // 조회한 pw 값으로 밉력받은 pw 와 비교하여 검증.
-        if (user != null && user.getPw().equals(loginReq.getPw())) {
+        if (user.getPw().equals(loginReq.getPw())) {
 
             String jwtAccToken = jwtUtil.generateAccToken(loginInfo);
             String jwtRefToken = jwtUtil.generateRefToken(loginInfo.getId());
 
+            // 입력된 아이디 회원 정보에 AUTHTOKEN이 존재하는지?
             if (authTokenMapper.getTokenToId(user.getId())) {
+                // 존재하면 업데이트.
                 if (authTokenMapper.updToken(user.getId(), jwtAccToken, jwtRefToken) != 1) {
                     throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_UPDATE_ERROR);
                 };
             } else {
+                // 존재하지 않으면 인서트.
                 if (authTokenMapper.insertToken(user.getId(), jwtAccToken, jwtRefToken) != 1) {
                     throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_INSERT_ERROR);
                 };
             }
 
-            LoginAuthToken token = new LoginAuthToken();
+            AuthToken token = new AuthToken();
 
             token.setUserId(loginReq.getUserId());
-            token.setAccessToken("seokhoAccAuth " + jwtAccToken);
+            token.setAccessToken(jwtAccToken);
+            token.setRefreshToken(jwtRefToken);
 
             return token;
         } else {
             // 검증 실패시 null 리턴, 컨트롤러에서 핸들링 함.
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+            throw new CustomException(ErrorCode.USER_NOT_EQUALS_PASSWORD);
         }
     }
 
-    public LoginAuthToken refLogin(User user) {
+    public AuthToken refLogin(User user) {
 
-        LoginAuthToken retToken = new LoginAuthToken();
+        AuthToken retToken = new AuthToken();
         LoginInfo loginInfo = authTokenMapper.getLoginInfo(user.getId());
 
         String newAccToken = jwtUtil.generateAccToken(loginInfo);
@@ -72,6 +81,7 @@ public class UserService {
 
         retToken.setUserId(user.getId());
         retToken.setAccessToken(newAccToken);
+        retToken.setRefreshToken(newRefToken);
 
         authTokenMapper.updToken(loginInfo.getId(), newAccToken, newRefToken);
 
@@ -119,7 +129,7 @@ public class UserService {
 
         AuthToken getAuthInfo = authTokenMapper.getToken(token);
 
-        if (getAuthInfo == null || !getAuthInfo.getAccessToken().equals(token)) {
+        if (getAuthInfo == null || !getAuthInfo.getRefreshToken().equals(token)) {
             // 인증에 실패했을 때 핸들링.
             throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_FAIL_ERROR);
         }

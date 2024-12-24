@@ -10,11 +10,14 @@ public enum ErrorCode {
     // 400 BAD_REQUEST 잘못된 요청.
     INVALID_PARAMETER(400, "요청 값이 적절하지 않습니다."),
 
+    // 401 Unauthorized
+    USER_NOT_EQUALS_PASSWORD(401, "입력하신 아이디 혹은 비밀번호가 일치하지 않습니다."),
+
     // 404 NOT_FOUND 잘못된 리소스 접근
     USER_NOT_FOUND(404, "존재하지 않는 회원 ID 입니다."),
     PRODUCT_NOT_FOUND(404, "존재하지 않는 상품 ID 입니다."),
     ORDER_NOT_FOUND(404, "존재하지 않는 주문 ID 입니다."),
-    DELIVERY_ADDR_NOT_FOUND(404, "존재하지 않는 배송지 입니다."),        // 일단 넣어놓은 추후 빠질 수 있음...
+    DELIVERY_ADDR_NOT_FOUND(404, "존재하지 않는 배송지 입니다."),   // 일단 넣어놓은 추후 빠질 수 있음...
 
     // 403 FORBIDDEN 지정한 리소스에 대한 엑세스가 금지됨.
     AUTH_SIGNATURE_FAIL_ERROR(403, "엑세스 토큰이 일치하지 않습니다."),

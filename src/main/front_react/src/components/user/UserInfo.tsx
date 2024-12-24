@@ -6,7 +6,7 @@ import { UserInfoType } from "../../TypeInterface";
 function UserInfo() {
     const [ user, setUser ] = useState<UserInfoType | null>(null);
 
-    const { id } = useParams();
+    const { id } = useParams<string>();
 
     // 로딩 상태 관리
     const [ loading, setLoading ] = useState<boolean>(true);

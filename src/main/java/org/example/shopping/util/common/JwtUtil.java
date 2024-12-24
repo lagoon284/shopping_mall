@@ -20,7 +20,7 @@ public class JwtUtil {
 
     private String secret = "lunchfairy";
 //    private Long expiration = 12000L*60*60;  // 대충 12시간.
-    private Long expiration = 120000L;  // 대충 10분 test 용.
+    private Long expiration = 120000L;  // 대충 2분 test 용.
 
     // 로그인 성공 여부 id 값으로 select 했을 때 계정 정보가 있으면 jwt에 유저 정보를 담음.
     public String generateAccToken(LoginInfo user) {

@@ -3,7 +3,6 @@
 * */
 export interface PropsType {
     propLoginInfo : LoginInfoType
-    propUserInfo : UserInfoType
 }
 
 export interface LoginInfoType {

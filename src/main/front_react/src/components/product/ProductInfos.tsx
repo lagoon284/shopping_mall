@@ -13,7 +13,7 @@ function ProductInfos() {
     useEffect(() => {
         axios.get('http://localhost:8080/api/product/infoProds')
             .then(res => {
-                console.log(res.data.data);
+                // console.log(res.data.data);
                 setProds(res.data.data);
             })
             .catch(error => {

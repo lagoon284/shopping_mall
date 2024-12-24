@@ -2,10 +2,8 @@ package org.example.shopping.authLogin.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.authLogin.dto.AuthToken;
-import org.example.shopping.authLogin.dto.LoginAuthToken;
 import org.example.shopping.authLogin.dto.LoginInfo;
 import org.example.shopping.authLogin.mapper.AuthTokenMapper;
-import org.example.shopping.user.dto.User;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.user.service.UserService;
@@ -40,13 +38,13 @@ public class ProtectedController {
     }
 
     @PutMapping("/refData")
-    public LoginAuthToken getProtectRefData(@RequestHeader("Authorization") String token) {
+    public AuthToken getProtectRefData(@RequestHeader("Authorization") String token) {
 
-        if (token != null && token.startsWith("seokhoAccAuth ")) {
+        if (token != null && token.startsWith("seokhoRefAuth ")) {
             String jwt = token.substring(14);
 
-            // acc token 유효기간 지났을 때,
-            if (!jwtUtil.isTokenExpired(jwt)) {
+            // ref token 유효기간 지났을 때,
+            if (jwtUtil.isTokenExpired(jwt)) {
                 AuthToken authTokenData = authTokenMapper.getToken(jwt);
 
                 if (authTokenData == null || authTokenData.getRefreshToken() == null || authTokenData.getRefreshToken().isEmpty()) {

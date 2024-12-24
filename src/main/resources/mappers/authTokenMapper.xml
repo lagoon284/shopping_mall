@@ -20,7 +20,7 @@
                 , ACCESSTOKEN
                 , REFRESHTOKEN
         FROM    AUTHTOKEN
-        WHERE   ACCESSTOKEN  = #{token}
+        WHERE   REFRESHTOKEN  = #{token}
     </select>
 
     <!--  테이블에 해당하는 값이 있는지 true/false  -->

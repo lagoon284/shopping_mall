@@ -4,13 +4,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.shopping.authLogin.dto.AuthToken;
 import org.example.shopping.authLogin.dto.Login;
-import org.example.shopping.authLogin.dto.LoginAuthToken;
-import org.example.shopping.util.exception.enums.ErrorCode;
-import org.example.shopping.util.exception.CustomException;
 import org.example.shopping.user.service.UserService;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -22,7 +20,7 @@ public class LoginController {
     // 로그인 하는 컨트롤러... service는 userService를 사용함....
     // 걍 유저 컨트롤러에 만들까...
     @PutMapping("/login")
-    public LoginAuthToken login(@RequestBody @Valid Login loginRequest) {
+    public AuthToken login(@RequestBody @Valid Login loginRequest) {
 
         return userService.login(loginRequest);
     }

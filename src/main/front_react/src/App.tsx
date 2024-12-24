@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import Home from "./components/Home";
 import Signup from "./components/user/Signup";
+import Login from "./components/login/Login";
 import UserInfo from "./components/user/UserInfo";
 import UserInfos from "./components/user/UserInfos";
 import ProductInfo from "./components/product/ProductInfo";
@@ -11,7 +12,7 @@ import axios from "axios";
 import {PropsType, UserInfoType} from "./TypeInterface";
 
 function App() {
-    const getJwt = localStorage.getItem('jwt');
+    const getJwt = localStorage.getItem('seokho_jwt');
 
     const [ userInfo, setUserInfo ] = useState<UserInfoType | null>(null);
     // 로딩 상태 관리
@@ -19,27 +20,48 @@ function App() {
     // 오류 상태 관리
     const [ error, setError ] = useState<String |null>(null);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchUserInfo = async () => {
             if (getJwt) {
                 try {
+                    // console.log('자동 로그인 시도 중.');
                     const response = await axios.post('http://localhost:8080/api/protected/accData', {}, {
-                            headers: {
-                                'Authorization': getJwt
-                            }
-                        });
+                        headers: {
+                            'Authorization': 'seokhoAccAuth ' + getJwt
+                        }
+                    });
                     setUserInfo(response.data.data);
+                    // console.log('자동로그인 완료.');
                 } catch (err) {
-                    setError('사용자 정보를 가져오는 데 실패했습니다.');
+                    const getRefJwt = localStorage.getItem('seokho_ref_jwt');
+                    await axios.put('http://localhost:8080/api/protected/refData', {}, {
+                        headers: { "Authorization": 'seokhoRefAuth ' + getRefJwt }
+                    })
+                        .then(res => {
+                            localStorage.setItem('id', res.data.data.userId);
+                            localStorage.setItem('seokho_jwt', res.data.data.accessToken);
+                            localStorage.setItem('seokho_ref_jwt', res.data.data.refreshToken);
+                            setError('');
+                        })
+                        .catch(() => {
+                            setError('');
+                            localStorage.setItem('id', '');
+                            localStorage.setItem('seokho_jwt', '');
+                            localStorage.setItem('seokho_ref_jwt', '');
+                            navigate('/login');
+                        })
                 } finally {
                     setLoading(false);
                 }
             } else {
+                setUserInfo(null);
                 setLoading(false);
             }
         };
         fetchUserInfo();
-    }, [getJwt]);
+    }, [getJwt, navigate]);
 
     const props: PropsType = {
         propLoginInfo: {
@@ -47,14 +69,6 @@ function App() {
             userNo: userInfo?.userNo || 0,
             id : userInfo?.id || '',
             name : userInfo?.name || ''
-        },
-        propUserInfo: {
-            userNo : 0,
-            id : '',
-            pw : '',
-            name : '',
-            addr : '',
-            sleepFlag : false
         }
     }
 
@@ -80,7 +94,8 @@ function App() {
             <Home {...props}/>
             <Routes>
                 <Route path={"/"} element={null} />
-                <Route path={"/user/signup"} element={<Signup />} />
+                <Route path={"/login"} element={<Login />} />
+                {props.propLoginInfo.id === '' && <Route path={"/user/signup"} element={<Signup />} />}
                 <Route path={"/user/allUserSelect"} element={<UserInfos />} />
                 <Route path={"/user/:id"} element={<UserInfo />} />
                 <Route path={"/product/infoProds"} element={<ProductInfos />} />

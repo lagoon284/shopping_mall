@@ -12,7 +12,7 @@ function UserInfos() {
     useEffect(() => {
         const fetchUserInfo = async () => {await axios.get('http://localhost:8080/api/user/allUserSelect')
             .then(res => {
-                console.log(res.data.data);
+                // console.log(res.data.data);
                 setUsers(res.data.data);
             })
             .catch(error => {
@@ -34,7 +34,7 @@ function UserInfos() {
     }
 
     return (
-        <div className="UserInfo">
+        <div className="UserInfos">
             <h2>회원 정보</h2>
             <h3>회원데이터 :</h3>
             <ul>

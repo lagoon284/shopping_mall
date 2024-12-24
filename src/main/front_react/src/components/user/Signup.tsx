@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
@@ -6,7 +6,7 @@ function Signup() {
     const navigate = useNavigate();
 
     // 로딩 상태 관리
-    const [ loading, setLoading ] = useState<boolean>(true);
+    const [ loading, setLoading ] = useState<boolean>();
 
     // 사용할 상태변수 초기화.
     const [id, setId] = useState<string>("");
@@ -31,7 +31,7 @@ function Signup() {
 
 
     const blurIdHandler = (event: React.FocusEvent<HTMLInputElement>) => {
-        const currentId = event.currentTarget.value;
+        const currentId : string = event.currentTarget.value;
 
         if (currentId !== '' && currentId !== null) {
             // 아이디 중복확인 true = 중복되지 않음, false = 중복됨.
@@ -56,11 +56,11 @@ function Signup() {
 
 
     const onIdHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const currentId = event.currentTarget.value;
+        const currentId : string = event.currentTarget.value;
 
         setId(currentId);
 
-        const idRegExp = /^[a-zA-Z0-9]{4,12}$/;
+        const idRegExp : RegExp = /^[a-zA-Z0-9]{4,12}$/;
 
         if(currentId !== "") {
             if (idRegExp.test(currentId)) {
@@ -76,11 +76,11 @@ function Signup() {
 
     }
     const onPwHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const currentPw = event.currentTarget.value;
+        const currentPw : string = event.currentTarget.value;
 
         setPw(currentPw);
 
-        const pwRegExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+        const pwRegExp : RegExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
 
         if(currentPw !== "") {
             if (pwRegExp.test(currentPw)) {
@@ -93,7 +93,7 @@ function Signup() {
         } else { setPwMsg(""); }
     }
     const onConfirmPwHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const currentConfirmPw = event.currentTarget.value;
+        const currentConfirmPw : string = event.currentTarget.value;
 
         setConfirmPw(currentConfirmPw);
 
@@ -109,7 +109,7 @@ function Signup() {
 
     }
     const onNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const currentName = event.currentTarget.value;
+        const currentName : string = event.currentTarget.value;
 
         setName(currentName);
 
@@ -124,7 +124,7 @@ function Signup() {
         } else { setNameMsg(""); }
     }
     const onAddrHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const currentAddr = event.currentTarget.value;
+        const currentAddr : string = event.currentTarget.value;
 
         setAddr(currentAddr);
 
@@ -150,13 +150,14 @@ function Signup() {
             }
 
             const fetchSignup = async () => {
+                setLoading(true);
                 await axios.post('http://localhost:8080/api/user/signup', reqData)
                     .then(res => {
                         if (res.data.statCode === 'success') {
-                            console.log("if inner : " + res);
+                            // console.log("if inner : " + res.data.statCode);
+                            alert("회원가입이 완료되었습니다. 메인화면으로 이동합니다.");
                             navigate('/');
                         }
-                        console.log(res);
                     })
                     .catch(err => {
                         console.log('Error fetching data:', err);
@@ -169,6 +170,14 @@ function Signup() {
         } else {
             alert("회원가입 양식이 잘못되었습니다. 확인해주세요.");
         }
+    }
+
+    if (loading) {
+        return (
+            <div className={'loading'}>
+                <h1>로딩 중 입니다. 기다리세요. </h1>
+            </div>
+        )
     }
 
     return (
