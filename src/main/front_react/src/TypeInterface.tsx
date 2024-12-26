@@ -34,6 +34,11 @@ export interface FormDataType {
     isAddr : boolean
 }
 
+export interface FormDataRegExpType {
+    id : RegExp
+    pw : RegExp
+}
+
 export interface UserInfoType {
     userNo : number
     id : string

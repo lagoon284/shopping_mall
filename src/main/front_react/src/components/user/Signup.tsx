@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
-import {FormDataType} from "../../TypeInterface";
+import {FormDataRegExpType, FormDataType} from "../../TypeInterface";
 
-function Signup() {
+export default function Signup() {
     const navigate = useNavigate();
 
     // 로딩 상태 관리
@@ -48,130 +48,127 @@ function Signup() {
         }
     }
 
-    const onIdHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const currentId : string = event.currentTarget.value;
+    const onChangeEventHandler = (event : React.ChangeEvent<HTMLInputElement>, strVal : string) => {
+        const currentVal : string = event.currentTarget.value;
 
-        const idRegExp : RegExp = /^[a-zA-Z0-9]{4,12}$/;
+        const regExp : FormDataRegExpType = {
+            id : /^[a-zA-Z0-9]{4,12}$/,
+            pw : /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
+        }
 
+        // updateFormData 매개변수 초기화.
+        let key : string = "";
+        let value : string = "";
+        let msgKey : string = "";
         let msg : string = "";
+        let flagKey : string = "";
         let flag : boolean = false;
 
-        if(currentId !== "") {
-            if (idRegExp.test(currentId)) {
-                msg = "사용가능한 아이디 입니다.";
-                flag = true;
-            } else {
-                msg = "4~12자리 대소문자 또는 숫자만 입력할 수 있습니다.";
-                flag = false;
-            }
-        } else { flag = false }
+        // 케이스별 updateFormData 매개변수 세팅.
+        switch (strVal) {
+            case 'id':
+                key = "id";
+                value = currentVal;
+                msgKey = "idMsg";
+                flagKey = "isId";
 
+                if (currentVal !== "") {
+                    if (regExp.id.test(currentVal)) {
+                        msg = "사용가능한 아이디 입니다.";
+                        flag = true;
+                    } else {
+                        msg = "4~12자리 대소문자 또는 숫자만 입력할 수 있습니다.";
+                        flag = false;
+                    }
+                } else { flag = false; }
+
+                break;
+
+            case 'pw':
+                key = "pw";
+                value = currentVal;
+                msgKey = "pwMsg";
+                flagKey = "isPw";
+
+                if (currentVal !== "") {
+                    if (regExp.pw.test(currentVal)) {
+                        msg = "사용가능한 비밀번호 입니다.";
+                        flag = true;
+                    } else {
+                        msg = "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!";
+                        flag = false;
+                    }
+                } else { flag = false; }
+
+                break;
+
+            case 'confirmPw':
+                key = "confirmPw";
+                value = currentVal;
+                msgKey = "confirmMsg";
+                flagKey = "isConfirm";
+
+                if (currentVal !== "") {
+                    if (formData.isPw && formData.pw === currentVal) {
+                        msg = "비밀번호와 동일합니다.";
+                        flag = true;
+                    } else {
+                        msg = "비밀번호와 일치하지 않습니다. 재입력 해주세요.";
+                        flag = false;
+                    }
+                } else { flag = false; }
+
+                break;
+
+            case 'name':
+                key = "name";
+                value = currentVal;
+                msgKey = "nameMsg";
+                flagKey = "isName";
+
+                if (currentVal !== "") {
+                    if (currentVal.length > 2 && currentVal.length < 6) {
+                        msg = `${currentVal} 님, 안녕하세요.`;
+                        flag = true;
+                    } else {
+                        msg = "이름은 2글자 이상, 5글자 이하여야 합니다. 제 맘 입니다.";
+                        flag = false;
+                    }
+                } else { flag = false; }
+
+                break;
+
+            case 'addr':
+                key = "addr";
+                value = currentVal;
+                msgKey = "addrMsg";
+                flagKey = "isAddr";
+
+                if (currentVal !== "") {
+                    if (currentVal.length > 3) {
+                        msg = "일단은 뭔가를 적긴 했군요. 합격입니다.";
+                        flag = true;
+                    } else {
+                        msg = "주소가 없거나 너무 짧네요. 다시 적으세요. 당장.";
+                        flag = false;
+                    }
+                } else { flag = false; }
+
+                break;
+        }
+
+        updateFormData(key, value, msgKey, msg, flagKey, flag);
+    }
+
+    const updateFormData = (key : string, value : string, msgKey : string, msg : string, flagKey : string, flag : boolean) => {
         setFormData(prvData => ({
             ...prvData,
-            id : currentId,
-            idMsg : msg,
-            isId : flag
+            [key] : value,
+            [msgKey] : msg,
+            [flagKey] : flag
         }))
     }
 
-    const onPwHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const currentPw : string = event.currentTarget.value;
-
-        const pwRegExp : RegExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-
-        let msg : string = "";
-        let flag : boolean = false;
-
-        if(currentPw !== "") {
-            if (pwRegExp.test(currentPw)) {
-                msg = "사용가능한 비밀번호 입니다.";
-                flag = true;
-            } else {
-                msg = "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!";
-                flag = false;
-            }
-        } else { flag = false }
-
-        setFormData(prvData => ({
-            ...prvData,
-            pw : currentPw,
-            pwMsg : msg,
-            isPw : flag
-        }))
-    }
-
-    const onConfirmPwHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const currentConfirmPw : string = event.currentTarget.value;
-
-        let msg : string = "";
-        let flag : boolean = false;
-
-        if (currentConfirmPw !== "") {
-            if (formData.isPw && formData.pw === currentConfirmPw) {
-                msg = "비밀번호와 동일합니다.";
-                flag = true;
-            } else {
-                msg = "비밀번호와 일치하지 않습니다. 재입력 해주세요.";
-                flag = false;
-            }
-        } else { flag = false }
-
-        setFormData(prvData => ({
-            ...prvData,
-            confirmPw : currentConfirmPw,
-            confirmMsg : msg,
-            isConfirm : flag
-        }))
-
-    }
-
-    const onNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const currentName : string = event.currentTarget.value;
-
-        let msg : string = "";
-        let flag : boolean = false;
-
-        if (currentName !== "") {
-            if (currentName.length > 2 && currentName.length < 6) {
-                msg = `${currentName} 님, 안녕하세요.`;
-                flag = true;
-            } else {
-                msg = "이름은 2글자 이상, 5글자 이하여야 합니다. 제 맘 입니다.";
-                flag = false;
-            }
-        } else { flag = false }
-
-        setFormData(prvData => ({
-            ...prvData,
-            name : currentName,
-            nameMsg : msg,
-            isName : flag
-        }))
-    }
-
-    const onAddrHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const currentAddr : string = event.currentTarget.value;
-
-        let msg : string = "";
-        let flag : boolean = false;
-
-        if(currentAddr !== "") {
-            if (currentAddr.length > 3) {
-                msg = "일단은 뭔가를 적긴 했군요. 합격입니다.";
-                flag = true;
-            } else {
-                msg = "주소가 없거나 너무 짧네요. 다시 적으세요. 당장.";
-                flag = false;
-            }
-        } else { flag = false }
-
-        setFormData(prvData => ({
-            ...prvData,
-            addr : currentAddr,
-            addrMsg : msg,
-            isAddr : flag
-        }))
-    }
     const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -215,10 +212,10 @@ function Signup() {
     }
 
     return (
-        <form onSubmit={onSubmitHandler}>
+        <form onSubmit={(event) => onSubmitHandler(event)}>
             <label htmlFor={'id'}>아이디 </label>
-            <input onChange={onIdHandler}
-                   onBlur={blurIdHandler}
+            <input onChange={(event) => onChangeEventHandler(event, 'id')}
+                   onBlur={(event) => blurIdHandler(event)}
                    type={'text'}
                    id={'id'}
                    name={'id'}
@@ -232,7 +229,7 @@ function Signup() {
             <p/>
 
             <label htmlFor={'pw'}>비밀번호 </label>
-            <input onChange={onPwHandler}
+            <input onChange={(event) => onChangeEventHandler(event, 'pw')}
                    type={'password'}
                    id={'pw'}
                    name={'pw'}
@@ -245,7 +242,7 @@ function Signup() {
             <p/>
 
             <label htmlFor={'confirmPw'}>비밀번호 확인 </label>
-            <input onChange={onConfirmPwHandler}
+            <input onChange={(event) => onChangeEventHandler(event, 'confirmPw')}
                    type={'password'}
                    id={'confirmPw'}
                    name={'confirmPw'}
@@ -258,7 +255,7 @@ function Signup() {
             <p/>
 
             <label htmlFor={'name'}>이름 </label>
-            <input onChange={onNameHandler}
+            <input onChange={(event) => onChangeEventHandler(event, 'name')}
                    type={'name'}
                    id={'name'}
                    name={'name'}
@@ -271,7 +268,7 @@ function Signup() {
             <p/>
 
             <label htmlFor={'addr'}>주소 </label>
-            <input onChange={onAddrHandler}
+            <input onChange={(event) => onChangeEventHandler(event, 'addr')}
                    type={'text'}
                    id={'addr'}
                    name={'addr'}
@@ -286,5 +283,3 @@ function Signup() {
         </form>
     )
 }
-
-export default Signup;
