@@ -12,7 +12,7 @@ import org.example.shopping.user.dto.UserInsertReq;
 import org.example.shopping.user.dto.UserUpdateReq;
 import org.example.shopping.user.mapper.UserMapper;
 import org.example.shopping.util.common.JwtUtil;
-import org.example.shopping.util.exception.CustomException;
+import org.example.shopping.util.exception.dto.CustomException;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.springframework.stereotype.Service;
 
@@ -116,13 +116,11 @@ public class UserService {
 
         if (userInfos != null) {
             // pw 값 가리기
-            for (User userInfo : userInfos) {
-                // 자리수를 알려주면 안될거 같음...그냥 고정 자리로 해야겠음.
-    //            String pwHide = String.valueOf('*').repeat(userInfo.getPw().length());
-
-                // 13개
-                userInfo.setPw("*************");
-            }
+            // 자리수를 알려주면 안될거 같음...그냥 고정 자리로 해야겠음.
+            // String pwHide = String.valueOf('*').repeat(userInfo.getPw().length());
+            // 13개
+            // 람다식 사용
+            userInfos.forEach(userInfo -> userInfo.setPw("*************"));
         }
 
         return userInfos;

@@ -1,15 +1,11 @@
 package org.example.shopping.util.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
-import org.example.shopping.authLogin.dto.AuthToken;
 import org.example.shopping.authLogin.dto.LoginInfo;
-import org.example.shopping.user.dto.User;
-import org.example.shopping.user.service.UserService;
-import org.example.shopping.util.exception.CustomException;
+import org.example.shopping.util.exception.dto.CustomException;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.springframework.stereotype.Component;
 

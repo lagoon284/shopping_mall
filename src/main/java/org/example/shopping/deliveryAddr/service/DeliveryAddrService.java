@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.shopping.deliveryAddr.dto.*;
 import org.example.shopping.deliveryAddr.mapper.DeliveryAddrMapper;
 import org.example.shopping.util.common.ValidationUtil;
-import org.example.shopping.util.exception.CustomException;
+import org.example.shopping.util.exception.dto.CustomException;
 import org.example.shopping.util.exception.enums.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,11 +32,16 @@ public class DeliveryAddrService {
         }
 
         // 배송지 별칭 중복 확인. (별칭 중복 허용하지 않음.)
-        for (DeliveryAddr userDeli : deliInfo) {
+        deliInfo.stream().filter(userDeli -> Objects.equals(userDeli.getAddrAlias(), deliAddr.getAddrAlias()))
+                .findAny().ifPresent(userDeli -> {
+                    throw new CustomException(ErrorCode.ALREADY_SAVED_DELIVERY_ALIAS);
+                });
+
+        /*for (DeliveryAddr userDeli : deliInfo) {
             if (Objects.equals(userDeli.getAddrAlias(), deliAddr.getAddrAlias())) {
                 throw new CustomException(ErrorCode.ALREADY_SAVED_DELIVERY_ALIAS);
             }
-        }
+        }*/
 
         DeliveryAddrDefUpdateReq updDefAddr = new DeliveryAddrDefUpdateReq();
 
@@ -87,21 +92,21 @@ public class DeliveryAddrService {
 
         // 기본 배송지일 때, 기본배송지를 재지정하는 로직.
         if (defDeliAddr) {
-            try {
-                // 새로운 기본 배송지 지정을 위해
-                List<DeliveryAddr> deliInfos = deliAddrMapper.getDeliInfo(deliAddr.getUserId());
+            // 새로운 기본 배송지 지정을 위해
+            List<DeliveryAddr> deliInfos = deliAddrMapper.getDeliInfo(deliAddr.getUserId());
 
-                DeliveryAddrDefUpdateReq defObj = new DeliveryAddrDefUpdateReq();
-
-                ValidationUtil.mergeObject(defObj, deliInfos.get(0));
-
-                defObj.setDefDeliAddr(true);
-
-                deliAddrMapper.updDefDeliAddr(defObj);
-            } catch (IndexOutOfBoundsException e) {
+            if (deliInfos.isEmpty()) {
                 // 배송지가 1개일때 삭제 시 defObj.get(0)에서 Exception 발생.
                 throw new CustomException(ErrorCode.DELETE_REQUEST_DELIVERY_ERROR);
             }
+
+            DeliveryAddrDefUpdateReq defObj = new DeliveryAddrDefUpdateReq();
+
+            ValidationUtil.mergeObject(defObj, deliInfos.get(0));
+
+            defObj.setDefDeliAddr(true);
+
+            deliAddrMapper.updDefDeliAddr(defObj);
         }
     }
 }

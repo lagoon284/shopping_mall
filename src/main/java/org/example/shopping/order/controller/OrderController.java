@@ -6,11 +6,6 @@ import org.example.shopping.order.dto.OrderInfo;
 import org.example.shopping.order.dto.OrderInsertReq;
 import org.example.shopping.order.dto.OrderUpdateReq;
 import org.example.shopping.order.service.OrderInfoService;
-import org.example.shopping.util.common.ValidationUtil;
-import org.example.shopping.util.exception.enums.ErrorCode;
-import org.example.shopping.util.exception.CustomException;
-import org.example.shopping.util.common.TimeConverter;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

@@ -5,7 +5,7 @@ import org.example.shopping.authLogin.dto.AuthToken;
 import org.example.shopping.authLogin.dto.LoginInfo;
 import org.example.shopping.authLogin.mapper.AuthTokenMapper;
 import org.example.shopping.util.exception.enums.ErrorCode;
-import org.example.shopping.util.exception.CustomException;
+import org.example.shopping.util.exception.dto.CustomException;
 import org.example.shopping.user.service.UserService;
 import org.example.shopping.util.common.JwtUtil;
 import org.springframework.web.bind.annotation.*;

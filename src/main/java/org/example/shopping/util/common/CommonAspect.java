@@ -8,6 +8,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 
 @Aspect
 @Component
@@ -44,6 +46,31 @@ public class CommonAspect {
 
         if (log.isWarnEnabled()) {
             String name = proceedingJoinPoint.getSignature().getName();
+            String[] pathStr = proceedingJoinPoint.getSignature().getDeclaringTypeName().split("\\.");
+
+            String splPath = Arrays.stream(pathStr)
+                    .skip(3)        // 3번째 인덱스부터 시작.
+                    .filter(i -> Arrays.asList(pathStr).indexOf(i) % 2 > 0)     // 홀수 인덱스만 필터링
+                    .reduce((first, second) -> first + "." + second)        // 문자열 결합.
+                    .orElse("");
+
+            log.warn("{} {} [{}] : {} {}",
+                    isController ? "--" : "  ┕",
+                    isController ? "Controller" : "Service",
+                    splPath, name,
+                    isController ? "-------------------------------------------" : "");
+        }
+
+        Object result = proceedingJoinPoint.proceed();
+
+        if (log.isWarnEnabled() && result != null) {
+            log.warn("{} {}RESULT : {}", logSpace,
+                    isController ? "┕ C => " : "┕ S => ", result);
+        }
+
+        return result;
+
+            /*String name = proceedingJoinPoint.getSignature().getName();
 
             String[] pathStr = proceedingJoinPoint.getSignature().getDeclaringTypeName().split("\\.");
 
@@ -74,7 +101,7 @@ public class CommonAspect {
                     isController ? "┕ C => " : "┕ S => ", result);
         }
 
-        return result;
+        return result;*/
     }
 
     @Around("execution(* org.example.shopping.util.wrapper..*(..)))")

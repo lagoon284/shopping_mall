@@ -1,6 +1,7 @@
 package org.example.shopping.util.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.shopping.util.exception.dto.CustomException;
 import org.example.shopping.util.exception.dto.ErrorDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +25,7 @@ public class GlobalExceptionHandler {
 
         log.info("----- THROW CUSTOM EXCEPTION!!! : STATUS = {}, MESSAGE = {}", ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage());
 
-        return new ResponseEntity<>(new ErrorDto(
-                ex.getErrorCode().getStatus()
-                , ex.getErrorCode().getMessage())
-                , HttpStatus.valueOf(ex.getErrorCode().getStatus())
-        );
+        return buildErrorResponse( ex.getErrorCode().getStatus(), ex.getErrorCode().getMessage());
     }
 
     // CustomException 에서 지정하지 않은 일반적인 오류일 경우.
@@ -37,11 +34,7 @@ public class GlobalExceptionHandler {
 
         log.info("----- THROW EXCEPTION!!! : {}, MESSAGE = {}", ex.getClass(), ex.getMessage());
 
-        return new ResponseEntity<>(new ErrorDto(
-                INTERNAL_SERVER_ERROR.getStatus()
-                , "예기치 못한 Exception 이 발생했습니다.")
-                , HttpStatus.INTERNAL_SERVER_ERROR
-        );
+        return buildErrorResponse( INTERNAL_SERVER_ERROR.getStatus(), "예기치 못한 Exception 이 발생했습니다.");
     }
 
     // request header 가 없을 때 리턴하는 에러.
@@ -50,11 +43,7 @@ public class GlobalExceptionHandler {
 
         log.info("----- THROW EXCEPTION!!! : MESSAGE = {}", ex.getMessage());
 
-        return new ResponseEntity<>(new ErrorDto(
-                ex.getStatusCode().value()
-                , "헤더 값이 적절하지 않습니다.")
-                , HttpStatus.BAD_REQUEST
-        );
+        return buildErrorResponse(  ex.getStatusCode().value(), "헤더 값이 적절하지 않습니다.");
     }
 
     // request parameter 가 적절하지 않을 때 리턴하는 에러.
@@ -83,7 +72,7 @@ public class GlobalExceptionHandler {
 
         log.info("----- THROW EXCEPTION!!! : MESSAGE = {}", ex.getMessage());
 
-        return new ResponseEntity<>(new ErrorDto(status.value(), message), status);
+        return buildErrorResponse(status.value(), message);
     }
 
     // 요청받은 본문의 데이터 타입이 JSON이 아닐때 리턴.
@@ -95,5 +84,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body("요청 본문이 적절한 JSON 형식이 아닙니다.");
+    }
+
+    // 공통 에러 응답 생성 메서드
+    private ResponseEntity<ErrorDto> buildErrorResponse(int status, String message) {
+        return new ResponseEntity<>(new ErrorDto(status, message), HttpStatus.valueOf(status));
     }
 }

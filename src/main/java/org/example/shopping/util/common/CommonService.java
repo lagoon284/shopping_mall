@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 public class CommonService {
 
+    // 지금은 사용하지 않음.
     // json 파일 test method
     public List<ProductInfo> jsonToProdInfo() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();

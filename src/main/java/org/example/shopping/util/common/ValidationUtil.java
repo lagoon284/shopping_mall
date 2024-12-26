@@ -3,11 +3,13 @@ package org.example.shopping.util.common;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 
 @Slf4j
 public class ValidationUtil {
 
+    // @valid 사용으로 지금은 사용하지 않음.
     public static boolean validateObject(Object obj) {
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
@@ -33,7 +35,40 @@ public class ValidationUtil {
 
     // 객체 병합 메서드.
     public static <T, U> void mergeObject(T objectA, U objectB) {
+
         // A 클래스의 모든 필드에 대해 반복.
+        Arrays.stream(objectA.getClass().getDeclaredFields())
+                .forEach(fieldA -> {
+                    try {
+                        // 필드의 이름 가져오기.
+                        String fieldName = fieldA.getName();
+
+                        // B 클래스에서 동일한 이름의 필드 찾기.
+                        Field fieldB = Arrays.stream(objectB.getClass().getDeclaredFields())
+                                .filter(declareField -> declareField.getName().equals(fieldName))
+                                .findFirst()
+                                .orElse(null);
+
+                        // 필드가 존재하는 경우에만 처리.
+                        if (fieldB != null) {
+                            fieldA.setAccessible(true);
+                            fieldB.setAccessible(true);
+
+                            // A 객체의 값이 null이면 B 객체의 값을 사용.
+                            if (fieldA.get(objectA) == null) {
+                                fieldA.set(objectA, fieldB.get(objectB));
+                            } else if (fieldA.get(objectA) instanceof Integer) {
+                                if ((Integer) fieldA.get(objectA) == 0) {
+                                    fieldA.set(objectA, fieldB.get(objectB));
+                                }
+                            }
+                        }
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+        /*// A 클래스의 모든 필드에 대해 반복.
         for (Field fieldA : objectA.getClass().getDeclaredFields()) {
             try {
                 // 필드의 이름 가져오기.
@@ -64,6 +99,6 @@ public class ValidationUtil {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 }
