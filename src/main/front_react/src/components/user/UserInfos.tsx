@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
-import { UserInfoType } from "../../TypeInterface";
+import { UserInfoType } from "../../interfaces/UserInterface";
 
 function UserInfos() {
     const [users, setUsers] = useState<UserInfoType[] | null>(null);

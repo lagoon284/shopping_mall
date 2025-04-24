@@ -7,9 +7,12 @@ import UserInfo from "./components/user/UserInfo";
 import UserInfos from "./components/user/UserInfos";
 import ProductInfo from "./components/product/ProductInfo";
 import ProductInfos from "./components/product/ProductInfos";
+import ProductReg from "./components/product/ProductReg";
 import axios from "axios";
 
-import {PropsType, UserInfoType} from "./TypeInterface";
+import {PropsType} from "./interfaces/PropsInterface";
+import { UserInfoType } from "./interfaces/UserInterface";
+
 
 function App() {
     const getJwt = localStorage.getItem('seokho_jwt');
@@ -98,6 +101,7 @@ function App() {
                 <Route path={"/user/allUserSelect"} element={<UserInfos />} />
                 <Route path={"/user/:id"} element={<UserInfo />} />
                 <Route path={"/product/infoProds"} element={<ProductInfos />} />
+                <Route path={"/product/insert"} element={<ProductReg />} />
                 <Route path={"/product/:prodSeqNo"} element={<ProductInfo />} />
             </Routes>
         </div>

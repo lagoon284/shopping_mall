@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
-import {FormDataRegExpType, FormDataType} from "../../TypeInterface";
+import {FormDataRegExpType, FormDataType} from "../../interfaces/UserInterface";
 
 export default function Signup() {
     const navigate = useNavigate();

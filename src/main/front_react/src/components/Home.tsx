@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {PropsType} from "../TypeInterface";
+import {PropsType} from "../interfaces/PropsInterface";
 
 function Home({ propLoginInfo }: PropsType) {
     const location = useLocation();

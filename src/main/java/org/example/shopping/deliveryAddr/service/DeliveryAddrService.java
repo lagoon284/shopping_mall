@@ -37,12 +37,6 @@ public class DeliveryAddrService {
                     throw new CustomException(ErrorCode.ALREADY_SAVED_DELIVERY_ALIAS);
                 });
 
-        /*for (DeliveryAddr userDeli : deliInfo) {
-            if (Objects.equals(userDeli.getAddrAlias(), deliAddr.getAddrAlias())) {
-                throw new CustomException(ErrorCode.ALREADY_SAVED_DELIVERY_ALIAS);
-            }
-        }*/
-
         DeliveryAddrDefUpdateReq updDefAddr = new DeliveryAddrDefUpdateReq();
 
         updDefAddr.setUserId(deliAddr.getUserId());

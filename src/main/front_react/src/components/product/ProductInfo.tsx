@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 
-import { ProdInfoType } from "../../TypeInterface";
+import { ProdInfoType } from "../../interfaces/ProdInterface";
 
 function ProductInfo() {
     const [ prod, setProd ] = useState<ProdInfoType | null >(null);

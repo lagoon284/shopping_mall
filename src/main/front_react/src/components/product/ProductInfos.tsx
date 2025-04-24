@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 
-import { ProdInfoType } from "../../TypeInterface";
+import { ProdInfoType } from "../../interfaces/ProdInterface";
 
 function ProductInfos() {
     const [prods, setProds] = useState<ProdInfoType[]>([]);
@@ -38,6 +38,9 @@ function ProductInfos() {
 
             <p></p>
             <h3>상품데이터 :</h3>
+            <div>
+                <Link to={"/product/insert"}>상품등록</Link>
+            </div>
             <ul>
             {prods.map((prod) => {
                 return (
