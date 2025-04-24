@@ -10,24 +10,26 @@ import ProductInfos from "./components/product/ProductInfos";
 import ProductReg from "./components/product/ProductReg";
 import axios from "axios";
 
-import {PropsType} from "./interfaces/PropsInterface";
+import { PropsType } from "./interfaces/PropsInterface";
 import { UserInfoType } from "./interfaces/UserInterface";
 
 
 function App() {
-    const getJwt = localStorage.getItem('seokho_jwt');
     // 로그인시 유저 정보 (props)
     const [ userInfo, setUserInfo ] = useState<UserInfoType | null>(null);
     // 로딩 상태 관리
     const [ loading, setLoading ] = useState<boolean>(true);
     // 오류 상태 관리
-    const [ error, setError ] = useState<String |null>(null);
+    const [ error, setError ] = useState<string |null>(null);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUserInfo = async () => {
             setLoading(true);
+
+            const getJwt = localStorage.getItem('seokho_jwt');
+
             if (getJwt) {
                 try {
                     // console.log('자동 로그인 시도 중.');
@@ -45,10 +47,10 @@ function App() {
                             localStorage.setItem('id', res.data.data.userId);
                             localStorage.setItem('seokho_jwt', res.data.data.accessToken);
                             localStorage.setItem('seokho_ref_jwt', res.data.data.refreshToken);
-                            setError('');
+                            setError(null);
                         })
                         .catch(() => {
-                            setError('');
+                            setError(null);     // 일단 null 처리.
                             localStorage.setItem('id', '');
                             localStorage.setItem('seokho_jwt', '');
                             localStorage.setItem('seokho_ref_jwt', '');
@@ -63,7 +65,7 @@ function App() {
             }
         };
         fetchUserInfo();
-    }, [getJwt, navigate]);
+    }, [navigate]);
 
     const props: PropsType = {
         propLoginInfo: {
@@ -95,7 +97,7 @@ function App() {
         <div className="App">
             <Home {...props}/>
             <Routes>
-                <Route path={"/"} element={null} />
+                {/*<Route path={"/"} element={null} />*/}
                 <Route path={"/login"} element={<Login />} />
                 {props.propLoginInfo.id === '' && <Route path={"/user/signup"} element={<Signup />} />}
                 <Route path={"/user/allUserSelect"} element={<UserInfos />} />
