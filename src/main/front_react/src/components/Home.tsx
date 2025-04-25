@@ -2,12 +2,12 @@ import React, {useEffect, useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {PropsType} from "../interfaces/PropsInterface";
 
-function Home({ propLoginInfo }: PropsType) {
+function Home({ propLoginInfo, setUserInfo }: PropsType) {
     const location = useLocation();
     const navigate = useNavigate();
     const [ title, setTitle ] = useState<string>('');
 
-
+    let loginFlag: boolean = propLoginInfo.id !== "";
 
     useEffect(() => {
         // console.log('user info props :', propLoginInfo);
@@ -27,17 +27,16 @@ function Home({ propLoginInfo }: PropsType) {
         }
     }, [location, propLoginInfo]);
 
-    function Logout(event:React.MouseEvent<HTMLButtonElement>) {
+    function Logout(event: React.MouseEvent<HTMLAnchorElement>) {
         event.preventDefault();
-
-        // console.log('로그아웃 시도');
 
         localStorage.setItem('id', '');
         localStorage.setItem('seokho_jwt', '');
         localStorage.setItem('seokho_ref_jwt', '');
 
+        setUserInfo(null);
+
         alert("정상적으로 로그아웃 되었습니다.");
-        navigate("/");
     }
 
 
@@ -49,7 +48,7 @@ function Home({ propLoginInfo }: PropsType) {
                     REACT TEST
                 </Link>
             </h1>
-            {propLoginInfo.id && <p>{propLoginInfo.name} 님, 환영합니다.</p>}
+            {loginFlag && <p>{propLoginInfo.name} 님, 환영합니다.</p>}
             <ul>
                 <li>
                     <Link to={"/user/allUserSelect"}>
@@ -61,13 +60,13 @@ function Home({ propLoginInfo }: PropsType) {
                         상품정보 확인하기
                     </Link>
                 </li>
-                {!propLoginInfo.id && <li>
+                {!loginFlag && <li>
                     <Link to={"/user/signup"}>
                         회원가입
                     </Link>
                 </li>}
                 <li>
-                    {propLoginInfo.id ? <button onClick={Logout} style={{ background: 'none', color: 'blue', textDecoration: 'underline', border: 'none' }}>로그아웃</button> :
+                    {loginFlag ? <a href={"/"} onClick={(event) => Logout(event)} >로그아웃</a> :
                         <Link to={"/login"}>로그인 </Link>}
                 </li>
             </ul>

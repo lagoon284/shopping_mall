@@ -8,7 +8,7 @@ export default function ProductReg() {
     const navigate = useNavigate();
 
     // 로딩 상태 관리
-    const [ loading, setLoading ] = useState<boolean>();
+    const [ loading, setLoading ] = useState<boolean>(false);
 
     const [ formData, setFormData ] = useState<ProdInsFormDataType>({
         // 사용할 상태변수 초기화.
@@ -22,18 +22,26 @@ export default function ProductReg() {
     });
 
     const blurIdHandler = (event: React.FocusEvent<HTMLInputElement>) => {
-        const currentId : string = event.currentTarget.value;
+        setLoading(true);
 
-        if (currentId !== '' && currentId !== null) {
+        const currentVal : string = event.currentTarget.value;
+
+        if (currentVal !== '' && currentVal !== null) {
             // 아이디 중복확인 true = 중복되지 않음, false = 중복됨.
             const fetchIdCheck = async () => {
-                await axios.get(`http://localhost:8080/api/product//insert`)
+                await axios.get(`http://localhost:8080/api/product/getByName/${currentVal}`)
                     .then(res => {
                         if (res.data.data !== null) {
                             setFormData(prvData => ({
                                 ...prvData,
-                                idMsg : "이미 사용중인 아이디 입니다. 새롭게 다시 입력해 주세요.",
-                                isId : false
+                                prodNameMsg : "이미 사용중인 상품이름 입니다. 새롭게 다시 입력해 주세요.",
+                                isProdName : false
+                            }));
+                        } else {
+                            setFormData(prvData => ({
+                                ...prvData,
+                                prodNameMsg : "사용 가능한 상품이름 입니다.",
+                                isProdName : true
                             }));
                         }
                     })
@@ -53,7 +61,7 @@ export default function ProductReg() {
 
         // updateFormData 매개변수 초기화.
         let key : string = "";
-        let value : string | number = "";
+        let value : string | number | boolean = "";
         let msgKey : string = "";
         let msg : string = "";
         let flagKey : string = "";
@@ -67,12 +75,12 @@ export default function ProductReg() {
                 msgKey = "prodNameMsg";
                 flagKey = "isProdName";
 
-                if (currentVal !== "") {
-                    msg = "사용가능한 상품이름 입니다.";
-                    flag = true;
-                } else {
-                    flag = false;
-                }
+                // if (currentVal !== "") {
+                //     msg = "사용가능한 상품이름 입니다.";
+                //     flag = true;
+                // } else {
+                //     flag = false;
+                // }
 
                 break;
 
@@ -83,7 +91,7 @@ export default function ProductReg() {
                 flagKey = "isPrice";
 
                 if (currentVal !== "") {
-                    if (value != 0 && value > 0 && value < 1000001) {
+                    if (value !== 0 && value > 0 && value < 1000001) {
                         msg = "등록 가능한 금액입니다.";
                         flag = true;
                     } else {
@@ -126,9 +134,8 @@ export default function ProductReg() {
 
             case 'useFlag':
                 key = "useFlag";
-                value = currentVal;
+                value = currentVal === "true";
                 msgKey = "useFlagMsg";
-                flagKey = "isInfo";
                 flag = true;
 
                 break;
@@ -137,7 +144,7 @@ export default function ProductReg() {
         updateFormData(key, value, msgKey, msg, flagKey, flag);
     }
 
-    const updateFormData = (key : string, value : string | number, msgKey : string, msg : string, flagKey : string, flag : boolean) => {
+    const updateFormData = (key : string, value : string | number | boolean, msgKey : string, msg : string, flagKey : string, flag : boolean) => {
         setFormData(prvData => ({
             ...prvData,
             [key] : value,
@@ -165,7 +172,7 @@ export default function ProductReg() {
                         if (res.data.statCode === 'success') {
                             // console.log("if inner : " + res.data.statCode);
                             alert("상품등록이 완료되었습니다. 상품정보 화면으로 이동합니다.");
-                            navigate('/api/product/infoProds');
+                            navigate('/product/infoProds');
                         }
                     })
                     .catch(err => {
@@ -195,8 +202,8 @@ export default function ProductReg() {
             <input onChange={(event) => onChangeEventHandler(event, 'prodName')}
                    onBlur={(event) => blurIdHandler(event)}
                    type={'text'}
-                   id={'id'}
-                   name={'id'}
+                   id={'prodName'}
+                   name={'prodName'}
                    value={formData.prodName}
                    placeholder={'상품이름 입력'}
                    maxLength={30}
@@ -213,7 +220,6 @@ export default function ProductReg() {
                    name={'price'}
                    value={formData.price}
                    placeholder={'상품가격 입력'}
-                   maxLength={24}
             />
             <br/>
             {formData.priceMsg && <small style={{color: formData.isPrice ? "green" : "red"}}>{formData.priceMsg}</small>}<br/>

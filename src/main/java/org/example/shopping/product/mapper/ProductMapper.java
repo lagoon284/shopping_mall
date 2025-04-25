@@ -16,8 +16,11 @@ public interface ProductMapper {
     // 다중 상품 등록
     int multiInsertProduct(List<ProductInsertReq> productInfos);
 
-    // 상품 한개 조회?? 검색어?? 일단 read 느낌으로
-    ProductInfo getOneProd(Long prodSeqNo);
+    // 상품 한개 조회?? 검색어?? 일단 read 느낌으로 (상품번호로 조회)
+    ProductInfo getProdInfoBySeqNo(Long prodSeqNo);
+
+    // 상품 한개 조회?? 검색어?? 일단 read 느낌으로 (상품이름으로 조회)
+    ProductInfo getProdInfoByName(String prodName);
 
     // 상품 전체 조회 일단은.
     List<ProductInfo> getQuanProd();

@@ -33,11 +33,18 @@ public class ProductController {
         productService.multiInsertProdct(productInfos);
     }
 
-    // 한개의 상품 정보 가져오기
+    // 한개의 상품 정보 가져오기 (상품 번호 기준)
     @GetMapping("/{prodSeqNo}")
-    public ProductInfo getOneProd(@PathVariable Long prodSeqNo) {
+    public ProductInfo getProdInfoBySeqNo(@PathVariable Long prodSeqNo) {
 
-        return productService.getOneProd(prodSeqNo);
+        return productService.getProdInfoBySeqNo(prodSeqNo);
+    }
+
+    // 한개의 상품 정보 가져오기 (상품 이름 기준)
+    @GetMapping("/getByName/{prodName}")
+    public ProductInfo getProdInfoByName(@PathVariable String prodName) {
+
+        return productService.getProdInfoByName(prodName);
     }
 
     // 일단 전체로 불러오기 (추후 수정 예정 - 지시된 수량 별 혹은 페이지 별.)

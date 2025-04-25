@@ -28,9 +28,14 @@ public class ProductService {
         productMapper.multiInsertProduct(productInfos);
     }
 
-    public ProductInfo getOneProd(Long prodSeqNo) {
+    public ProductInfo getProdInfoBySeqNo(Long prodSeqNo) {
 
-        return productMapper.getOneProd(prodSeqNo);
+        return productMapper.getProdInfoBySeqNo(prodSeqNo);
+    }
+
+    public ProductInfo getProdInfoByName(String prodName) {
+
+        return productMapper.getProdInfoByName(prodName);
     }
 
     public List<ProductInfo> getQuanProd() {

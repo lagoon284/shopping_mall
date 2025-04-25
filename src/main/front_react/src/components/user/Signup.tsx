@@ -27,7 +27,7 @@ export default function Signup() {
         if (currentId !== '' && currentId !== null) {
             // 아이디 중복확인 true = 중복되지 않음, false = 중복됨.
             const fetchIdCheck = async () => {
-                await axios.get(`http://localhost:8080/api/user/${formData.id}`)
+                await axios.get(`http://localhost:8080/api/user/${currentId}`)
                     .then(res => {
                         if (res.data.data !== null) {
                             setFormData(prvData => ({
@@ -39,6 +39,11 @@ export default function Signup() {
                     })
                     .catch(error => {
                         console.log('Error fetching data:', error);
+                        setFormData(prvData => ({
+                            ...prvData,
+                            idMsg: "사용가능한 아이디 입니다.",
+                            isId: true
+                        }));
                     })
                     .finally(() => {
                         setLoading(false);
@@ -71,16 +76,6 @@ export default function Signup() {
                 value = currentVal;
                 msgKey = "idMsg";
                 flagKey = "isId";
-
-                if (currentVal !== "") {
-                    if (regExp.id.test(currentVal)) {
-                        msg = "사용가능한 아이디 입니다.";
-                        flag = true;
-                    } else {
-                        msg = "4~12자리 대소문자 또는 숫자만 입력할 수 있습니다.";
-                        flag = false;
-                    }
-                } else { flag = false; }
 
                 break;
 
@@ -186,8 +181,8 @@ export default function Signup() {
                     .then(res => {
                         if (res.data.statCode === 'success') {
                             // console.log("if inner : " + res.data.statCode);
-                            alert("회원가입이 완료되었습니다. 메인화면으로 이동합니다.");
-                            navigate('/');
+                            alert("회원가입이 완료되었습니다. 로그인화면으로 이동합니다.");
+                            navigate('/login');
                         }
                     })
                     .catch(err => {

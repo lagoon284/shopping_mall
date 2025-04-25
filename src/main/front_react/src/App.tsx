@@ -4,7 +4,6 @@ import Home from "./components/Home";
 import Signup from "./components/user/Signup";
 import Login from "./components/login/Login";
 import UserInfo from "./components/user/UserInfo";
-import UserInfos from "./components/user/UserInfos";
 import ProductInfo from "./components/product/ProductInfo";
 import ProductInfos from "./components/product/ProductInfos";
 import ProductReg from "./components/product/ProductReg";
@@ -12,6 +11,8 @@ import axios from "axios";
 
 import { PropsType } from "./interfaces/PropsInterface";
 import { UserInfoType } from "./interfaces/UserInterface";
+import UserInfos from "./components/user/UserInfos";
+
 
 
 function App() {
@@ -73,7 +74,8 @@ function App() {
             userNo: userInfo?.userNo || 0,
             id : userInfo?.id || '',
             name : userInfo?.name || ''
-        }
+        },
+        setUserInfo
     }
 
     // 로딩중일때 표시할 내용.
@@ -94,12 +96,11 @@ function App() {
     }
 
     return (
-        <div className="App">
+        <div className="App" style={{ paddingLeft: '3%' }} >
             <Home {...props}/>
             <Routes>
-                {/*<Route path={"/"} element={null} />*/}
                 <Route path={"/login"} element={<Login />} />
-                {props.propLoginInfo.id === '' && <Route path={"/user/signup"} element={<Signup />} />}
+                {props.propLoginInfo.id === '' && (<Route path={"/user/signup"} element={<Signup />} />)}
                 <Route path={"/user/allUserSelect"} element={<UserInfos />} />
                 <Route path={"/user/:id"} element={<UserInfo />} />
                 <Route path={"/product/infoProds"} element={<ProductInfos />} />

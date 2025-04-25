@@ -17,8 +17,8 @@
         </foreach>
     </insert>
 
-    <!-- 상품 조회 -->
-    <select id="getOneProd" parameterType="org.example.shopping.product.dto.ProductInfo">
+    <!-- 상품 조회 (상품 번호 기준) -->
+    <select id="getProdInfoBySeqNo" parameterType="org.example.shopping.product.dto.ProductInfo">
         SELECT    PRODSEQNO
                 , PRODNAME
                 , PRICE
@@ -28,8 +28,23 @@
                 , REGDATE
                 , UPDDATE
         FROM   PRODUCTINFO
-        WHERE           PRODSEQNO  = #{prodSeqNo}
-        AND             USEFLAG = TRUE
+        WHERE   PRODSEQNO  = #{prodSeqNo}
+        AND     USEFLAG = TRUE
+    </select>
+
+    <!-- 상품 조회 (상품 이름 기준) -->
+    <select id="getProdInfoByName" parameterType="org.example.shopping.product.dto.ProductInfo">
+        SELECT    PRODSEQNO
+             , PRODNAME
+             , PRICE
+             , PROVIDER
+             , INFO
+             , USEFLAG
+             , REGDATE
+             , UPDDATE
+        FROM   PRODUCTINFO
+        WHERE   PRODNAME = #{prodName}
+          AND   USEFLAG = TRUE
     </select>
 
     <select id="getQuanProd" parameterType="Integer">
