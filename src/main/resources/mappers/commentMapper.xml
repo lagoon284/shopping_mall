@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.example.shopping.comment.mapper.CommentMapper">
+    <insert id="insertComment" parameterType="org.example.shopping.comment.dto.CommentInsertReq">
+        INSERT INTO COMMENTINFO (WRITER, WRITERID, CONTENT, BOARDSEQNO, PARENTSEQNO, STATUS, REGDATE)
+        VALUES (#{writer}, #{writerId}, #{content}, #{boardSeqNo}, #{parentSeqNo}, #{status}, FORMATDATETIME(NOW(), 'yyyy-MM-dd hh:mm:ss'))
+    </insert>
+
+    <!-- 이걸 한번에 불러오면 안되긴 하는데 일단 이렇게 진행 ㄱ 페이징 처리는 나중에.... ㅇㅇ -->
+    <select id="getCommentByBoardSeqNo" parameterType="Integer">
+        WITH RECURSIVE COMMENT_TREE (
+                                     CMTSEQNO,
+                                     WRITER,
+                                     WRITERID,
+                                     CONTENT,
+                                     BOARDSEQNO,
+                                     PARENTSEQNO,
+                                     STATUS,
+                                     REGDATE,
+                                     UPDDATE,
+                                     LVL,
+                                     PATH
+            ) AS (
+            -- Anchor: 최상위 댓글
+            SELECT
+                CMTSEQNO,
+                WRITER,
+                WRITERID,
+                CONTENT,
+                BOARDSEQNO,
+                PARENTSEQNO,
+                STATUS,
+                REGDATE,
+                UPDDATE,
+                0,
+                CAST(CMTSEQNO AS VARCHAR(100))
+            FROM COMMENTINFO
+            WHERE BOARDSEQNO = #{boardSeqNo} AND PARENTSEQNO IS NULL
+
+            UNION ALL
+
+            -- Recursive: 자식 댓글
+            SELECT
+                c.CMTSEQNO,
+                c.WRITER,
+                c.WRITERID,
+                c.CONTENT,
+                c.BOARDSEQNO,
+                c.PARENTSEQNO,
+                c.STATUS,
+                c.REGDATE,
+                c.UPDDATE,
+                COMMENT_TREE.LVL + 1,
+                COMMENT_TREE.PATH || '-' || c.CMTSEQNO
+            FROM COMMENTINFO c
+                     JOIN COMMENT_TREE ON c.PARENTSEQNO = COMMENT_TREE.CMTSEQNO
+        )
+        SELECT *
+        FROM COMMENT_TREE
+        ORDER BY PATH;
+    </select>
+</mapper>

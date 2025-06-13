@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace = "org.example.shopping.board.mapper.BoardMapper">
+
+    <!-- 게시글 등록 -->
+    <insert id="insertBoard" parameterType="org.example.shopping.board.dto.BoardInsertReq">
+        INSERT INTO BOARDINFO (TITLE, CONTENT, WRITER, WRITERID, REGDATE)
+        VALUES (#{title}, #{content}, #{writer}, #{writerId}, FORMATDATETIME(NOW(), 'yyyy-MM-dd hh:mm:ss'))
+    </insert>
+
+    <!-- 게시글 조회 (글 번호 기준) -->
+    <select id="getBoardInfoBySeqNo" parameterType="Long" resultType="org.example.shopping.board.dto.BoardInfo">
+        SELECT    SEQNO
+                , TITLE
+                , CONTENT
+                , WRITER
+                , WRITERID
+                , ISNOTICE
+                , ISSECRET
+                , ISDRAFT
+                , STATUS
+                , TAGS
+                , PARENTID
+                , DEPTH
+                , EXPIREAT
+                , EDITTYPE
+                , VIEWCNT
+                , LIKECNT
+                , HATECNT
+                , REPORTCNT
+                , COMMENTCNT
+                , ATTACHMENTS
+                , IMAGES
+                , REGDATE
+                , UPDDATE
+        FROM    BOARDINFO
+        WHERE   SEQNO = #{seqNo}
+    </select>
+
+    <!-- 게시글 조회 (검색어 기준) -->
+    <select id="getBoardInfoListByKeyword" parameterType="STRING">
+        SELECT    SEQNO
+             , TITLE
+             , CONTENT
+             , WRITER
+             , WRITERID
+             , ISNOTICE
+             , ISSECRET
+             , ISDRAFT
+             , STATUS
+             , TAGS
+             , PARENTID
+             , DEPTH
+             , EXPIREAT
+             , EDITTYPE
+             , VIEWCNT
+             , LIKECNT
+             , HATECNT
+             , REPORTCNT
+             , COMMENTCNT
+             , ATTACHMENTS
+             , IMAGES
+             , REGDATE
+             , UPDDATE
+        FROM    BOARDINFO
+        WHERE   TITLE LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+    <!-- 게시글 수정 -->
+    <update id="updBoard" parameterType="org.example.shopping.board.dto.BoardUpdateReq">
+        UPDATE  BOARDINFO
+        SET     TITLE       = #{title}
+            , CONTENT       = #{content}
+            , WRITER        = #{writer}
+            , WRITERID      = #{writerId}
+            , ISNOTICE      = #{isNotice}
+            , ISSECRET      = #{isSecret}
+            , ISDRAFT       = #{isDraft}
+            , STATUS        = #{status}
+            , PARENTID      = #{parentId}
+            , DEPTH         = #{depth}
+            , ATTACHMENTS   = #{attachments}
+            , IMAGES        = #{images}
+            , UPDDATE       = FORMATDATETIME(NOW(), 'yyyy-MM-dd hh:mm:ss')
+        WHERE   SEQNO       = #{seqNo}
+    </update>
+</mapper>

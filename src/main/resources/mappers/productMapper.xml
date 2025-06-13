@@ -33,7 +33,7 @@
     </select>
 
     <!-- 상품 조회 (상품 이름 기준) -->
-    <select id="getProdInfoByName" parameterType="org.example.shopping.product.dto.ProductInfo">
+    <select id="getProdInfoByName" parameterType="String">
         SELECT    PRODSEQNO
              , PRODNAME
              , PRICE
@@ -43,7 +43,7 @@
              , REGDATE
              , UPDDATE
         FROM   PRODUCTINFO
-        WHERE   PRODNAME = #{prodName}
+        WHERE   PRODNAME LIKE CONCAT('%', #{prodName}, '%')
           AND   USEFLAG = TRUE
     </select>
 

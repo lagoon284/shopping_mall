@@ -33,7 +33,7 @@ public class ProductService {
         return productMapper.getProdInfoBySeqNo(prodSeqNo);
     }
 
-    public ProductInfo getProdInfoByName(String prodName) {
+    public List<ProductInfo> getProdInfoByName(String prodName) {
 
         return productMapper.getProdInfoByName(prodName);
     }

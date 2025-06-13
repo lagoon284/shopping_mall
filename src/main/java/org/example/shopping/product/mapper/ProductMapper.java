@@ -20,7 +20,7 @@ public interface ProductMapper {
     ProductInfo getProdInfoBySeqNo(Long prodSeqNo);
 
     // 상품 한개 조회?? 검색어?? 일단 read 느낌으로 (상품이름으로 조회)
-    ProductInfo getProdInfoByName(String prodName);
+    List<ProductInfo> getProdInfoByName(String prodName);
 
     // 상품 전체 조회 일단은.
     List<ProductInfo> getQuanProd();
