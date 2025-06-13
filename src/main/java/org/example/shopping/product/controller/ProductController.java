@@ -34,15 +34,15 @@ public class ProductController {
     }
 
     // 한개의 상품 정보 가져오기 (상품 번호 기준)
-    @GetMapping("/{prodSeqNo}")
+    @GetMapping("/prodNo/{prodSeqNo}")
     public ProductInfo getProdInfoBySeqNo(@PathVariable Long prodSeqNo) {
 
         return productService.getProdInfoBySeqNo(prodSeqNo);
     }
 
-    // 한개의 상품 정보 가져오기 (상품 이름 기준)
-    @GetMapping("/getByName/{prodName}")
-    public ProductInfo getProdInfoByName(@PathVariable String prodName) {
+    // 상품 이름을 기반으로 여러개의 정보 가져오기 (상품 이름 기준)
+    @GetMapping("/prodName/{prodName}")
+    public List<ProductInfo> getProdInfoByName(@PathVariable String prodName) {
 
         return productService.getProdInfoByName(prodName);
     }
