@@ -60,6 +60,4 @@
         FROM COMMENT_TREE
         ORDER BY PATH;
     </select>
-
-    -- 하 뭐가 문제지...
 </mapper>
