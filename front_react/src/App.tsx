@@ -101,8 +101,18 @@ function App() {
         <div className="App container" style={{ paddingLeft: '3%' }} >
             <Home {...props}/>
             <Routes>
-                <Route path={"/login"} element={<Login />} />
-                {props.propLoginInfo.id === '' && (<Route path={"/user/signup"} element={<Signup />} />)}
+                <Route path={"/"}
+                       element={
+                           <>
+                               <UserInfos />
+                               <div className={"divider"}/>
+                               <ProductInfos/>
+                               <div className={"divider"}/>
+                               <BoardInfos />
+                           </>
+                       }/>
+                <Route path={"/login"} element={<Login/>}/>
+                {props.propLoginInfo.id === '' && (<Route path={"/user/signup"} element={<Signup/>}/>)}
                 <Route path={"/user/allUserSelect"} element={<UserInfos />} />
                 <Route path={"/user/:id"} element={<UserInfo />} />
                 <Route path={"/product/infoProds"} element={<ProductInfos />} />

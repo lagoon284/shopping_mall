@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
@@ -30,6 +30,13 @@ export default function BoardReg(props: PropsType) {
         // 첨부파일 및 이미지파일
         attachments: [], images: []
     });
+
+    useEffect(() => {
+        if(!props.propLoginInfo.id) {
+            alert("로그인이 필요한 작업입니다.");
+            navigate("/login");
+        }
+    }, [props]);
 
     if (loading) {
         return (

@@ -35,8 +35,9 @@ function ProductInfo() {
 
     if (prod) {
         return (
-            <div className={"ProductInfo"}>
-                <h2>상품상세 정보</h2>
+            <div className={"section"}>
+                <h2 className={"section-title"}>상품상세 정보</h2>
+                <div className={"divider"}/>
                 상품 번호 : {prod.prodSeqNo}<br/>
                 상품이름 : {prod.prodName}<br/>
                 상품가격 : {prod.price}<br/>

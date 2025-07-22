@@ -36,7 +36,6 @@ function ProductInfos() {
         <div className="section">
             <h2 className={"section-title"}>상품 정보</h2>
             <div className={"divider"} />
-            <h3>상품데이터 :</h3>
             <button style={{ marginLeft: "auto", display: "block" }}>
                 <Link to={"/product/insert"}>상품등록</Link>
             </button>

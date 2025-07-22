@@ -44,7 +44,7 @@ function Home({ propLoginInfo, setUserInfo }: PropsType) {
 
 
     return (
-        <div>
+        <>
             <div className={"header"}>
                 <nav className={"nav"}>
                     <h1>
@@ -52,7 +52,6 @@ function Home({ propLoginInfo, setUserInfo }: PropsType) {
                             REACT TEST
                         </Link>
                     </h1>
-                    {loginFlag && <p>{propLoginInfo.name} 님, 환영합니다.</p>}
                     <Link to={"/user/allUserSelect"}>
                         유저정보 확인하기
                     </Link>
@@ -75,9 +74,10 @@ function Home({ propLoginInfo, setUserInfo }: PropsType) {
                         <Link to={"/login"}>로그인 </Link>}
                 </nav>
             </div>
+            {loginFlag && <p>{propLoginInfo.name} 님, 환영합니다.</p>}
             <p/>
             <h1>{title} 입니다.</h1>
-        </div>
+        </>
     )
 }
 

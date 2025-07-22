@@ -37,7 +37,6 @@ function UserInfos() {
         <div className="section">
             <h2 className={"section-title"}>회원 정보</h2>
             <div className={"divider"}/>
-            <h3 key={"user"}>회원데이터 :</h3>
             <div className={"grid"}>
                 {users && users.map((user) => {
                     return (
@@ -53,7 +52,6 @@ function UserInfos() {
                     );
                 })}
             </div>
-            <pre>{JSON.stringify(users, null, 4)}</pre>
         </div>
     );
 }

@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 import { BoardListType } from "../../interfaces/BoardInterface";
 
 export default function BoardInfos() {
-    const [Boards, setBoards] = useState<BoardListType[]>([]);
+    const [boards, setBoards] = useState<BoardListType[]>([]);
 
     // 로딩 상태 관리
     const [ loading, setLoading ] = useState<boolean>(true);
@@ -58,14 +58,14 @@ export default function BoardInfos() {
                     </tr>
                     </thead>
                     <tbody>
-                    {Boards.length === 0 ? (
+                    {boards.length === 0 ? (
                         <tr>
                             <td colSpan={5}>
                                 게시글이 없습니다.
                             </td>
                         </tr>
                     ) : (
-                        Boards.map((board, idx) => (
+                        boards.map((board) => (
                             <tr className={"link-tr"}
                                 key={board.seqNo}
                                 onClick={fnTrClickEvent}
