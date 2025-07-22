@@ -9,6 +9,24 @@
         VALUES (#{title}, #{content}, #{writer}, #{writerId}, FORMATDATETIME(NOW(), 'yyyy-MM-dd hh:mm:ss'))
     </insert>
 
+    <!-- 리스트 조회 (페이징 아직 미적용) -->
+    <select id="getBoardInfoForList" resultType="org.example.shopping.board.dto.BoardInfo">
+        SELECT    SEQNO
+             , TITLE
+             , WRITER
+             , PARENTID
+             , DEPTH
+             , VIEWCNT
+             , LIKECNT
+             , HATECNT
+             , REPORTCNT
+             , COMMENTCNT
+             , REGDATE
+             , UPDDATE
+        FROM    BOARDINFO
+        ORDER BY SEQNO DESC
+    </select>
+
     <!-- 게시글 조회 (글 번호 기준) -->
     <select id="getBoardInfoBySeqNo" parameterType="Long" resultType="org.example.shopping.board.dto.BoardInfo">
         SELECT    SEQNO

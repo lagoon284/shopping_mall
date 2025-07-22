@@ -12,6 +12,8 @@ import axios from "axios";
 import { PropsType } from "./interfaces/PropsInterface";
 import { UserInfoType } from "./interfaces/UserInterface";
 import UserInfos from "./components/user/UserInfos";
+import BoardReg from "./components/board/BoardReg";
+import BoardInfos from "./components/board/BoardInfos";
 
 
 
@@ -96,7 +98,7 @@ function App() {
     }
 
     return (
-        <div className="App" style={{ paddingLeft: '3%' }} >
+        <div className="App container" style={{ paddingLeft: '3%' }} >
             <Home {...props}/>
             <Routes>
                 <Route path={"/login"} element={<Login />} />
@@ -106,6 +108,8 @@ function App() {
                 <Route path={"/product/infoProds"} element={<ProductInfos />} />
                 <Route path={"/product/insert"} element={<ProductReg />} />
                 <Route path={"/product/:prodSeqNo"} element={<ProductInfo />} />
+                <Route path={"/board/getList"} element={<BoardInfos />} />
+                <Route path={"/board/boardReg"} element={<BoardReg  propLoginInfo={props.propLoginInfo} setUserInfo={props.setUserInfo}/>} />
             </Routes>
         </div>
     );

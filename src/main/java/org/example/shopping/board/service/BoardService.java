@@ -20,6 +20,11 @@ public class BoardService {
         boardMapper.insertBoard(boardInfo);
     }
 
+    public List<BoardInfo> getBoardInfoForList() {
+
+        return boardMapper.getBoardInfoForList();
+    }
+
     public BoardInfo getBoardInfoBySeqNo(Long seqNo) {
 
         return boardMapper.getBoardInfoBySeqNo(seqNo);

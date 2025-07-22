@@ -13,7 +13,7 @@ function ProductInfo() {
     const [ loading, setLoading ] = useState<boolean>(true);
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/product/${prodSeqNo}`)
+        axios.get(`http://localhost:8080/api/product/prodNo/${prodSeqNo}`)
             .then(res => {
                 setProd(res.data.data);
             })

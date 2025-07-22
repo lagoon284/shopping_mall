@@ -33,29 +33,28 @@ function ProductInfos() {
     }
 
     return (
-        <div className="ProductInfos">
-            <h2>상품 정보</h2>
-
-            <p></p>
+        <div className="section">
+            <h2 className={"section-title"}>상품 정보</h2>
+            <div className={"divider"} />
             <h3>상품데이터 :</h3>
-            <div>
+            <button style={{ marginLeft: "auto", display: "block" }}>
                 <Link to={"/product/insert"}>상품등록</Link>
+            </button>
+            <div className={"grid"}>
+                {prods && prods.map((prod) => {
+                    return (
+                        <Link to={`/product/${prod.prodSeqNo}`}>
+                        <div className={"card"} key={prod.prodSeqNo}>
+                            상품 번호 : {prod.prodSeqNo}<br/>
+                            상품이름 : {prod.prodName}<br/>
+                            상품가격 : {prod.price}<br/>
+                            판매사 : {prod.provider}<br/>
+                            상품 정보 : {prod.info}
+                        </div>
+                        </Link>
+                    );
+                })}
             </div>
-            <ul>
-            {prods.map((prod) => {
-                return (
-                    <li key={prod.prodSeqNo}>
-                        <Link to={`/product/${prod.prodSeqNo}`}>{prod.prodSeqNo}번 상품 상세보기!!</Link><br/>
-                        상품 번호 : {prod.prodSeqNo}<br/>
-                        상품이름 : {prod.prodName}<br/>
-                        상품가격 : {prod.price}<br/>
-                        판매사 : {prod.provider}<br/>
-                        상품 정보 : {prod.info}
-                        <p></p>
-                    </li>
-                );
-            })}
-            </ul>
         </div>
     );
 }

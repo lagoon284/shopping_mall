@@ -29,9 +29,9 @@ export default function ProductReg() {
         if (currentVal !== '' && currentVal !== null) {
             // 아이디 중복확인 true = 중복되지 않음, false = 중복됨.
             const fetchIdCheck = async () => {
-                await axios.get(`http://localhost:8080/api/product/getByName/${currentVal}`)
+                await axios.get(`http://localhost:8080/api/product/prodName/${currentVal}`)
                     .then(res => {
-                        if (res.data.data !== null) {
+                        if (!Array.isArray(res.data.data) && res.data.data.length !== 0) {
                             setFormData(prvData => ({
                                 ...prvData,
                                 prodNameMsg : "이미 사용중인 상품이름 입니다. 새롭게 다시 입력해 주세요.",
@@ -209,7 +209,7 @@ export default function ProductReg() {
                    maxLength={30}
             />
             <br/>
-            {/* idMsg 값이 있어야만(true)(falsy한 값이라면 태그는 렌더링 되지 않음.) && 를 기준으로 오른쪽 값을 반환함. */}
+            {/* idMsg 값이 있어야만(true)(false한 값이라면 태그는 렌더링 되지 않음.) && 를 기준으로 오른쪽 값을 반환함. */}
             {formData.prodNameMsg && <small style={{color: formData.isProdName ? "green" : "red"}}>{formData.prodNameMsg}</small>}<br/>
             <p/>
 

@@ -22,6 +22,8 @@ function Home({ propLoginInfo, setUserInfo }: PropsType) {
             setTitle('회원 관련 페이지');
         } else if (pathName.includes('/product')) {
             setTitle('상품 관련 페이지');
+        } else if (pathName.includes('/board')) {
+            setTitle('게시판 관련 페이지');
         } else {
             setTitle('메인 페이지');
         }
@@ -42,34 +44,38 @@ function Home({ propLoginInfo, setUserInfo }: PropsType) {
 
 
     return (
-        <div className={"Home"}>
-            <h1>
-                <Link to={"/"}>
-                    REACT TEST
-                </Link>
-            </h1>
-            {loginFlag && <p>{propLoginInfo.name} 님, 환영합니다.</p>}
-            <ul>
-                <li>
+        <div>
+            <div className={"header"}>
+                <nav className={"nav"}>
+                    <h1>
+                        <Link to={"/"}>
+                            REACT TEST
+                        </Link>
+                    </h1>
+                    {loginFlag && <p>{propLoginInfo.name} 님, 환영합니다.</p>}
                     <Link to={"/user/allUserSelect"}>
                         유저정보 확인하기
                     </Link>
-                </li>
-                <li>
+
                     <Link to={"/product/infoProds"}>
                         상품정보 확인하기
                     </Link>
-                </li>
-                {!loginFlag && <li>
-                    <Link to={"/user/signup"}>
-                        회원가입
+
+                    <Link to={"/board/getList"}>
+                        게시판
                     </Link>
-                </li>}
-                <li>
-                    {loginFlag ? <a href={"/"} onClick={(event) => Logout(event)} >로그아웃</a> :
+
+                    {!loginFlag &&
+                        <Link to={"/user/signup"}>
+                            회원가입
+                        </Link>
+                    }
+
+                    {loginFlag ? <a href={"/"} onClick={(event) => Logout(event)}>로그아웃</a> :
                         <Link to={"/login"}>로그인 </Link>}
-                </li>
-            </ul>
+                </nav>
+            </div>
+            <p/>
             <h1>{title} 입니다.</h1>
         </div>
     )

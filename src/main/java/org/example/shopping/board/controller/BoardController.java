@@ -29,6 +29,13 @@ public class BoardController {
 
     // 다중 등록 기능 없을 것.
 
+    // 게시판 리스트 불러오기.
+    @GetMapping("/getList")
+    public List<BoardInfo> getBoardInfoForList() {
+
+        return boardService.getBoardInfoForList();
+    }
+
     // 게시글 한 개 정보 가져오기 (게시글 seqNo 번호 기준)
     @GetMapping("/seq/{seqNo}")
     public BoardInfo getBoardInfoBySeqNo(@PathVariable Long seqNo) {

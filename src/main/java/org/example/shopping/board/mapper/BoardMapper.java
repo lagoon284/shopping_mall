@@ -12,6 +12,8 @@ public interface BoardMapper {
 
     void updateBoard(BoardUpdateReq boardInfo);
 
+    List<BoardInfo> getBoardInfoForList();
+
     BoardInfo getBoardInfoBySeqNo(Long seqNo);
 
     List<BoardInfo> getBoardInfoListByKeyword(String keyword);
