@@ -9,7 +9,7 @@ import org.example.shopping.util.common.dto.RetAttributes;
 // lombok의 @Data 어노테이션 사용으로 @AllArgsConstructor 는 생략 가능.
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ProductInfo extends RetAttributes {    // 상품 정보.
+public class ProductDetail extends RetAttributes {    // 상품 정보.
 
     private Long prodSeqNo;                         // 시퀀스 번호 auto increment.
 

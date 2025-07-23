@@ -18,7 +18,7 @@
     </insert>
 
     <!-- 상품 조회 (상품 번호 기준) -->
-    <select id="getProdInfoBySeqNo" parameterType="org.example.shopping.product.dto.ProductInfo">
+    <select id="getProdInfoBySeqNo" parameterType="org.example.shopping.product.dto.ProductDetail">
         SELECT    PRODSEQNO
                 , PRODNAME
                 , PRICE

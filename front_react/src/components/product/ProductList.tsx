@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 
-import { ProdInfoType } from "../../interfaces/ProdInterface";
+import { ProdDetailType } from "../../interfaces/ProdInterface";
 
-function ProductInfos() {
-    const [prods, setProds] = useState<ProdInfoType[]>([]);
+function ProductList() {
+    const [prods, setProds] = useState<ProdDetailType[]>([]);
 
     // 로딩 상태 관리
     const [ loading, setLoading ] = useState<boolean>(true);
@@ -33,7 +33,7 @@ function ProductInfos() {
     }
 
     return (
-        <div className="section">
+        <>
             <h2 className={"section-title"}>상품 정보</h2>
             <div className={"divider"} />
             <button style={{ marginLeft: "auto", display: "block" }}>
@@ -42,20 +42,20 @@ function ProductInfos() {
             <div className={"grid"}>
                 {prods && prods.map((prod) => {
                     return (
-                        <Link to={`/product/${prod.prodSeqNo}`}>
-                        <div className={"card"} key={prod.prodSeqNo}>
-                            상품 번호 : {prod.prodSeqNo}<br/>
-                            상품이름 : {prod.prodName}<br/>
-                            상품가격 : {prod.price}<br/>
-                            판매사 : {prod.provider}<br/>
-                            상품 정보 : {prod.info}
-                        </div>
+                        <Link to={`/product/${prod.prodSeqNo}`} key={prod.prodSeqNo}>
+                            <div className={"card"}>
+                                상품 번호 : {prod.prodSeqNo}<br/>
+                                상품이름 : {prod.prodName}<br/>
+                                상품가격 : {prod.price}<br/>
+                                판매사 : {prod.provider}<br/>
+                                상품 정보 : {prod.info}
+                            </div>
                         </Link>
                     );
                 })}
             </div>
-        </div>
+        </>
     );
 }
 
-export default ProductInfos;
+export default ProductList;

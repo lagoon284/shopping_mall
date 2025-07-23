@@ -13,7 +13,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class BoardInfo extends RetAttributes {
+public class BoardDetail extends RetAttributes {
 
     // 게시글 번호. (PK)
     private int seqNo;

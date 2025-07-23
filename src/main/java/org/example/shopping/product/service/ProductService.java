@@ -1,11 +1,10 @@
 package org.example.shopping.product.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.product.dto.ProductInfo;
+import org.example.shopping.product.dto.ProductDetail;
 import org.example.shopping.product.dto.ProductInsertReq;
 import org.example.shopping.product.dto.ProductUpdateReq;
 import org.example.shopping.product.mapper.ProductMapper;
-import org.example.shopping.util.common.TimeConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,17 +27,17 @@ public class ProductService {
         productMapper.multiInsertProduct(productInfos);
     }
 
-    public ProductInfo getProdInfoBySeqNo(Long prodSeqNo) {
+    public ProductDetail getProdInfoBySeqNo(Long prodSeqNo) {
 
         return productMapper.getProdInfoBySeqNo(prodSeqNo);
     }
 
-    public List<ProductInfo> getProdInfoByName(String prodName) {
+    public List<ProductDetail> getProdInfoByName(String prodName) {
 
         return productMapper.getProdInfoByName(prodName);
     }
 
-    public List<ProductInfo> getQuanProd() {
+    public List<ProductDetail> getQuanProd() {
 
         return productMapper.getQuanProd();
     }

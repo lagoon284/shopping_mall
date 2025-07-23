@@ -1,11 +1,10 @@
 package org.example.shopping.order.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.order.dto.OrderInfo;
+import org.example.shopping.order.dto.OrderDetail;
 import org.example.shopping.order.dto.OrderInsertReq;
 import org.example.shopping.order.dto.OrderUpdateReq;
 import org.example.shopping.order.mapper.OrderInfoMapper;
-import org.example.shopping.util.common.TimeConverter;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +18,7 @@ public class OrderInfoService {
         orderInfoMapper.insPurchase(order);
     }
 
-    public OrderInfo getOrderInfo(String orderNo) {
+    public OrderDetail getOrderInfo(String orderNo) {
 
         return orderInfoMapper.getOrderInfo(orderNo);
     }

@@ -3,7 +3,7 @@ package org.example.shopping.comment.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.shopping.comment.dto.CommentInfo;
+import org.example.shopping.comment.dto.CommentDetail;
 import org.example.shopping.comment.dto.CommentInsertReq;
 import org.example.shopping.comment.dto.CommentUpdateReq;
 import org.example.shopping.comment.service.CommentService;
@@ -37,7 +37,7 @@ public class CommentController {
     // 여기서 호출할게 아니라 게시판 디테일 들어갔을때 그 컨트롤러에서 호출하여 사용해야함.
     // 여기는 일단 만들어두고 test 용으로 남김. 이후 test 완료 시 주석 처리 예정.
     @GetMapping("/boardNo/{boardSeqNo}")
-    public List<CommentInfo> getCommentInfoByBoardSeqNo(@PathVariable int boardSeqNo) {
+    public List<CommentDetail> getCommentInfoByBoardSeqNo(@PathVariable int boardSeqNo) {
 
         return commentService.getCommentByBoardSeqNo(boardSeqNo);
     }
@@ -47,7 +47,7 @@ public class CommentController {
     // 타인이 보면 안되기 때문에 여기는 자바단에서 인가확인 절차가 있어야 함.
     // 접근 가능한 주체들은 사용자(본인만), 관리자(관리용)
     @GetMapping("/user/{userId}")
-    public List<CommentInfo> getCommentInfoByUserId(@PathVariable String userId) {
+    public List<CommentDetail> getCommentInfoByUserId(@PathVariable String userId) {
 
         return commentService.getCommentByUserId(userId);
     }

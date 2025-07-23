@@ -1,12 +1,11 @@
 package org.example.shopping.main.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.example.shopping.product.dto.ProductInfo;
+import org.example.shopping.product.dto.ProductDetail;
 import org.example.shopping.util.common.CommonService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,7 +32,7 @@ public class MainController {
 
     @RequestMapping("/main")
     @ResponseBody
-    public List<ProductInfo> main() throws IOException {
+    public List<ProductDetail> main() throws IOException {
 
         return commonService.jsonToProdInfo();
     }

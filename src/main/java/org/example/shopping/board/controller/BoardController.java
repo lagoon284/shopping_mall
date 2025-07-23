@@ -4,7 +4,7 @@ package org.example.shopping.board.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.shopping.board.dto.BoardInfo;
+import org.example.shopping.board.dto.BoardDetail;
 import org.example.shopping.board.dto.BoardInsertReq;
 import org.example.shopping.board.dto.BoardUpdateReq;
 import org.example.shopping.board.service.BoardService;
@@ -31,21 +31,23 @@ public class BoardController {
 
     // 게시판 리스트 불러오기.
     @GetMapping("/getList")
-    public List<BoardInfo> getBoardInfoForList() {
+    public List<BoardDetail> getBoardInfoForList() {
 
         return boardService.getBoardInfoForList();
     }
 
     // 게시글 한 개 정보 가져오기 (게시글 seqNo 번호 기준)
     @GetMapping("/seq/{seqNo}")
-    public BoardInfo getBoardInfoBySeqNo(@PathVariable Long seqNo) {
+    public BoardDetail getBoardInfoBySeqNo(@PathVariable String seqNo) {
+        // 쿼리스트링 타입 변환.
+        Long longSeqNo = Long.parseLong(seqNo);
 
-        return boardService.getBoardInfoBySeqNo(seqNo);
+        return boardService.getBoardInfoBySeqNo(longSeqNo);
     }
 
     // 키워드 검색
     @GetMapping("/research/{keyword}")
-    public List<BoardInfo> getBoardInfoListByKeyword(@PathVariable String keyword) {
+    public List<BoardDetail> getBoardInfoListByKeyword(@PathVariable String keyword) {
 
         return boardService.getBoardInfoListByKeyword(keyword);
     }

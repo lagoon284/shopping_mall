@@ -52,9 +52,11 @@ export default function Login() {
 
 
     return (
-        <div className={'Signup'}>
+        <>
+            <h2 className={"section-title"}>로그인을 진행해주세요.</h2>
+            <div className={"divider"}/>
             <form onSubmit={onSubmitHandler}>
-                <label htmlFor={'userId'}>아이디 </label>
+                <label htmlFor={'userId'}>아이디 (ID)</label><br/>
                 <input onChange={onIdHandler}
                        type={'text'}
                        id={'userId'}
@@ -62,8 +64,10 @@ export default function Login() {
                        value={userId}
                        placeholder={'아이디 입력'}
                        maxLength={15}
-                /><br />
-                <label htmlFor={'pw'}>비밀번호 </label>
+                       autoComplete={"username"}
+                /><br/>
+                <p/>
+                <label htmlFor={'pw'}>비밀번호 (PASSWORD)</label><br/>
                 <input onChange={onPwHandler}
                        type={'password'}
                        id={'pw'}
@@ -71,11 +75,12 @@ export default function Login() {
                        value={pw}
                        placeholder={'비밀번호 입력'}
                        maxLength={24}
-                /><br />
+                       autoComplete={"current-password"}
+                /><br/>
                 {loginMsg && <small style={{color: "red"}}>{loginMsg}</small>}<br/>
                 <p/>
                 <button type={'submit'} disabled={!(isUserId && isPw)}>로그인</button>
             </form>
-        </div>
+        </>
     )
 }

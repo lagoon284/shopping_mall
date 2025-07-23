@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 import { BoardListType } from "../../interfaces/BoardInterface";
 
-export default function BoardInfos() {
+export default function BoardList() {
+    const navigate = useNavigate();
+
     const [boards, setBoards] = useState<BoardListType[]>([]);
 
     // 로딩 상태 관리
@@ -32,12 +34,12 @@ export default function BoardInfos() {
         )
     }
 
-    function fnTrClickEvent() {
-        console.debug("click");
+    function fnTrClickEvent(seqNo: string) {
+        navigate(`/board/${seqNo}`);
     }
 
     return (
-        <div className="section">
+        <>
             <h2 className={"section-title"}>게시글 리스트</h2>
             <div className={"divider"}/>
             <p/>
@@ -67,9 +69,8 @@ export default function BoardInfos() {
                     ) : (
                         boards.map((board) => (
                             <tr className={"link-tr"}
-                                key={board.seqNo}
-                                onClick={fnTrClickEvent}
-                            >
+                                onClick={() => fnTrClickEvent(board.seqNo)}
+                                key={board.seqNo}>
                                 <td>{board.seqNo}</td>
                                 <td>{board.title}</td>
                                 <td>{board.writer}</td>
@@ -83,6 +84,6 @@ export default function BoardInfos() {
                     </tbody>
                 </table>
             </ul>
-        </div>
+        </>
     );
 }

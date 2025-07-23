@@ -2,7 +2,7 @@ package org.example.shopping.order.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.order.dto.OrderInfo;
+import org.example.shopping.order.dto.OrderDetail;
 import org.example.shopping.order.dto.OrderInsertReq;
 import org.example.shopping.order.dto.OrderUpdateReq;
 import org.example.shopping.order.service.OrderInfoService;
@@ -25,7 +25,7 @@ public class OrderController {
 
     // select 주문명세.
     @GetMapping("/{orderNo}")
-    public OrderInfo orderInfo(@PathVariable String orderNo) {
+    public OrderDetail orderInfo(@PathVariable String orderNo) {
 
         return orderInfoService.getOrderInfo(orderNo);
     }

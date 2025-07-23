@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace = "org.example.shopping.order.mapper.OrderInfoMapper">
-    <insert id="insPurchase" parameterType = "org.example.shopping.order.dto.OrderInfo">
+    <insert id="insPurchase" parameterType = "org.example.shopping.order.dto.OrderDetail">
         <selectKey keyProperty="orderNo" resultType="Long" order="BEFORE">
             SELECT
                 CASE
@@ -25,7 +25,7 @@
                );
     </insert>
 
-    <select id="getOrderInfo" resultType="org.example.shopping.order.dto.OrderInfo" parameterType="String">
+    <select id="getOrderInfo" resultType="org.example.shopping.order.dto.OrderDetail" parameterType="String">
         SELECT    ORDERNO
                 , USERID
                 , USERNAME
@@ -39,7 +39,7 @@
         WHERE   ORDERNO = #{orderNo}
     </select>
 
-    <update id="updateOrder" parameterType="org.example.shopping.order.dto.OrderInfo">
+    <update id="updateOrder" parameterType="org.example.shopping.order.dto.OrderDetail">
         -- 아직 못정했음.. 주문 상태 속성 필요해보임.
     </update>
 </mapper>

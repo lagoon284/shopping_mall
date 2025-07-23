@@ -3,7 +3,7 @@ package org.example.shopping.product.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.shopping.product.dto.ProductInfo;
+import org.example.shopping.product.dto.ProductDetail;
 import org.example.shopping.product.dto.ProductInsertReq;
 import org.example.shopping.product.dto.ProductUpdateReq;
 import org.example.shopping.product.service.ProductService;
@@ -35,21 +35,21 @@ public class ProductController {
 
     // 한개의 상품 정보 가져오기 (상품 번호 기준)
     @GetMapping("/prodNo/{prodSeqNo}")
-    public ProductInfo getProdInfoBySeqNo(@PathVariable Long prodSeqNo) {
+    public ProductDetail getProdInfoBySeqNo(@PathVariable Long prodSeqNo) {
 
         return productService.getProdInfoBySeqNo(prodSeqNo);
     }
 
     // 상품 이름을 기반으로 여러개의 정보 가져오기 (상품 이름 기준)
     @GetMapping("/prodName/{prodName}")
-    public List<ProductInfo> getProdInfoByName(@PathVariable String prodName) {
+    public List<ProductDetail> getProdInfoByName(@PathVariable String prodName) {
 
         return productService.getProdInfoByName(prodName);
     }
 
     // 일단 전체로 불러오기 (추후 수정 예정 - 지시된 수량 별 혹은 페이지 별.)
     @GetMapping("/infoProds")
-    public List<ProductInfo> getQuanProd() {
+    public List<ProductDetail> getQuanProd() {
 
         return productService.getQuanProd();
     }

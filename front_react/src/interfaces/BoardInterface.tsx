@@ -32,7 +32,7 @@ export interface BoardInsFormDataType {
 }
 
 export interface BoardListType {
-    seqNo : number
+    seqNo : string
     title : string
     // content : string
     writer : string
@@ -56,8 +56,8 @@ export interface BoardListType {
     updDate : string
 }
 
-export interface BoardInfoType {
-    seqNo : number
+export interface BoardDetailType {
+    seqNo : string
     title : string
     content : string
     writer : string

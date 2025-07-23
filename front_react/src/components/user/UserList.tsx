@@ -3,7 +3,7 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import { UserInfoType } from "../../interfaces/UserInterface";
 
-function UserInfos() {
+function UserList() {
     const [users, setUsers] = useState<UserInfoType[] | null>(null);
 
     // 로딩 상태 관리
@@ -34,26 +34,26 @@ function UserInfos() {
     }
 
     return (
-        <div className="section">
+        <>
             <h2 className={"section-title"}>회원 정보</h2>
             <div className={"divider"}/>
             <div className={"grid"}>
                 {users && users.map((user) => {
                     return (
-                        <Link to={`/user/${user.id}`}>
-                        <div className={"card"} key={user.id}>
-                            유저번호 : {user.userNo}<br/>
-                            유저아이디 : {user.id}<br/>
-                            패스워드 : {user.pw}<br/>
-                            유저네임 : {user.name}<br/>
-                            주소 : {user.addr}
-                        </div>
+                        <Link to={`/user/${user.id}`} key={user.id}>
+                            <div className={"card"}>
+                                유저번호 : {user.userNo}<br/>
+                                유저아이디 : {user.id}<br/>
+                                패스워드 : {user.pw}<br/>
+                                유저네임 : {user.name}<br/>
+                                주소 : {user.addr}
+                            </div>
                         </Link>
                     );
                 })}
             </div>
-        </div>
+        </>
     );
 }
 
-export default UserInfos;
+export default UserList;

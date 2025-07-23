@@ -1,33 +1,23 @@
-import React, {useEffect, useState} from "react";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import React from "react";
+import {Link, useLocation} from "react-router-dom";
 import {PropsType} from "../interfaces/PropsInterface";
 
 function Home({ propLoginInfo, setUserInfo }: PropsType) {
     const location = useLocation();
-    const navigate = useNavigate();
-    const [ title, setTitle ] = useState<string>('');
+    // const navigate = useNavigate();
 
-    let loginFlag: boolean = propLoginInfo.id !== "";
+    const loginFlag: boolean = propLoginInfo.id !== "";
 
-    useEffect(() => {
-        // console.log('user info props :', propLoginInfo);
-
-        const pathName: string = location.pathname;
-
-        if (pathName === '/user/signup') {
-            setTitle('회원가입 페이지');
-        } else if (pathName === '/login') {
-            setTitle('로그인 페이지');
-        } else if (pathName.includes('/user')) {
-            setTitle('회원 관련 페이지');
-        } else if (pathName.includes('/product')) {
-            setTitle('상품 관련 페이지');
-        } else if (pathName.includes('/board')) {
-            setTitle('게시판 관련 페이지');
-        } else {
-            setTitle('메인 페이지');
-        }
-    }, [location, propLoginInfo]);
+    const getTitle = () => {
+        const path = location.pathname;
+        if (path === '/user/signup') return '회원가입 페이지';
+        if (path === '/login') return '로그인 페이지';
+        if (path.includes('/user')) return '회원 관련 페이지';
+        if (path.includes('/product')) return '상품 관련 페이지';
+        if (path.includes('/board')) return '게시판 관련 페이지';
+        return '메인 페이지';
+    };
+    const title = getTitle();
 
     function Logout(event: React.MouseEvent<HTMLAnchorElement>) {
         event.preventDefault();
@@ -46,37 +36,26 @@ function Home({ propLoginInfo, setUserInfo }: PropsType) {
     return (
         <>
             <div className={"header"}>
-                <nav className={"nav"}>
-                    <h1>
-                        <Link to={"/"}>
+                <nav className={"nav"} style={{ alignItems: "center", justifyContent: "space-between", padding: "0 1em" }}>
+                    <Link to={"/"}>
+                        <h1 style={{ margin: "0.7em", marginLeft: "0" }}>
                             REACT TEST
-                        </Link>
-                    </h1>
-                    <Link to={"/user/allUserSelect"}>
-                        유저정보 확인하기
+                        </h1>
                     </Link>
-
-                    <Link to={"/product/infoProds"}>
-                        상품정보 확인하기
-                    </Link>
-
-                    <Link to={"/board/getList"}>
-                        게시판
-                    </Link>
-
-                    {!loginFlag &&
-                        <Link to={"/user/signup"}>
-                            회원가입
-                        </Link>
-                    }
-
-                    {loginFlag ? <a href={"/"} onClick={(event) => Logout(event)}>로그아웃</a> :
-                        <Link to={"/login"}>로그인 </Link>}
+                    <div style={{ textAlign: "right" }}>
+                        <Link to={"/user/allUserSelect"}>유저정보 확인하기</Link>
+                        <Link to={"/product/infoProds"}>상품정보 확인하기</Link>
+                        <Link to={"/board/getList"}>게시판</Link>
+                        {!loginFlag &&<Link to={"/user/signup"}>회원가입</Link>}
+                        {loginFlag ? (<a href={"/"} onClick={(event) => Logout(event)}>로그아웃</a>) : <Link to={"/login"}>로그인</Link>}
+                    </div>
                 </nav>
             </div>
-            {loginFlag && <p>{propLoginInfo.name} 님, 환영합니다.</p>}
             <p/>
-            <h1>{title} 입니다.</h1>
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <h2 style={{ marginLeft: "1em" }}>{title} 입니다.</h2>
+                {loginFlag && <p style={{textAlign: "right", marginRight: "2em"}}>{propLoginInfo.name} 님, 환영합니다.</p>}
+            </div>
         </>
     )
 }

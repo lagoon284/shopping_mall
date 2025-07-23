@@ -1,7 +1,7 @@
 package org.example.shopping.comment.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.shopping.comment.dto.CommentInfo;
+import org.example.shopping.comment.dto.CommentDetail;
 import org.example.shopping.comment.dto.CommentInsertReq;
 import org.example.shopping.comment.dto.CommentUpdateReq;
 import org.example.shopping.comment.mapper.CommentMapper;
@@ -20,12 +20,12 @@ public class CommentService {
         commentMapper.insertComment(commentInfo);
     }
 
-    public List<CommentInfo> getCommentByBoardSeqNo(int boardSeqNo) {
+    public List<CommentDetail> getCommentByBoardSeqNo(int boardSeqNo) {
 
         return commentMapper.getCommentByBoardSeqNo(boardSeqNo);
     }
 
-    public List<CommentInfo> getCommentByUserId(String userId) {
+    public List<CommentDetail> getCommentByUserId(String userId) {
 
         return commentMapper.getCommentByUserId(userId);
     }

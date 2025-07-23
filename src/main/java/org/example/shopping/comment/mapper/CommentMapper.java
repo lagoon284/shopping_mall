@@ -1,6 +1,6 @@
 package org.example.shopping.comment.mapper;
 
-import org.example.shopping.comment.dto.CommentInfo;
+import org.example.shopping.comment.dto.CommentDetail;
 import org.example.shopping.comment.dto.CommentInsertReq;
 import org.example.shopping.comment.dto.CommentUpdateReq;
 
@@ -12,9 +12,9 @@ public interface CommentMapper {
 
     void updateComment(CommentUpdateReq commentInfo);
 
-    List<CommentInfo> getCommentByBoardSeqNo(int boardSeqNo);
+    List<CommentDetail> getCommentByBoardSeqNo(int boardSeqNo);
 
-    List<CommentInfo> getCommentByUserId(String userId);
+    List<CommentDetail> getCommentByUserId(String userId);
 
     void statusUpdateComment(int commentSeqNo, int status);
 }

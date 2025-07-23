@@ -1,4 +1,4 @@
-export interface ProdInfoType {
+export interface ProdDetailType {
     prodSeqNo : number
     prodName : string
     price : number

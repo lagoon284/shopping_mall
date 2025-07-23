@@ -1,4 +1,4 @@
-export interface LoginInfoType {
+export interface LoginDetailType {
     userNo : number
     id : string
     name : string

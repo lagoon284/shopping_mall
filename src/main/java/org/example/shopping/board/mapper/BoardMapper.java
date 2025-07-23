@@ -1,6 +1,6 @@
 package org.example.shopping.board.mapper;
 
-import org.example.shopping.board.dto.BoardInfo;
+import org.example.shopping.board.dto.BoardDetail;
 import org.example.shopping.board.dto.BoardInsertReq;
 import org.example.shopping.board.dto.BoardUpdateReq;
 
@@ -12,9 +12,9 @@ public interface BoardMapper {
 
     void updateBoard(BoardUpdateReq boardInfo);
 
-    List<BoardInfo> getBoardInfoForList();
+    List<BoardDetail> getBoardInfoForList();
 
-    BoardInfo getBoardInfoBySeqNo(Long seqNo);
+    BoardDetail getBoardInfoBySeqNo(Long seqNo);
 
-    List<BoardInfo> getBoardInfoListByKeyword(String keyword);
+    List<BoardDetail> getBoardInfoListByKeyword(String keyword);
 }

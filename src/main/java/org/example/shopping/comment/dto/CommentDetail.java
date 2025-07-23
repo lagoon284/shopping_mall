@@ -10,7 +10,7 @@ import org.example.shopping.util.common.dto.RetAttributes;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentInfo extends RetAttributes {
+public class CommentDetail extends RetAttributes {
 
     // 댓글 번호
     private int cmtSeqNo;
