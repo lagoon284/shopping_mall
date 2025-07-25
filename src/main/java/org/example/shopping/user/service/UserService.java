@@ -51,12 +51,12 @@ public class UserService {
             // 존재하면 업데이트.
             if (authTokenMapper.updToken(user.getId(), jwtAccToken, jwtRefToken) != 1) {
                 throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_UPDATE_ERROR);
-            };
+            }
         } else {
             // 존재하지 않으면 인서트.
             if (authTokenMapper.insertToken(user.getId(), jwtAccToken, jwtRefToken) != 1) {
                 throw new CustomException(ErrorCode.AUTH_REF_SIGNATURE_INSERT_ERROR);
-            };
+            }
         }
 
         return new AuthToken(loginReq.getUserId(), jwtAccToken);
