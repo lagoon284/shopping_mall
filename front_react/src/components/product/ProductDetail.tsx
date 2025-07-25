@@ -19,7 +19,6 @@ function ProductDetail() {
     useEffect(() => {
         if (seqNo <= 0) return;
         const fetchProdInfo = async (seqNo: number) => {
-            setLoading(true);
             setError(null);
             try {
                 const res = await axios.get(`http://localhost:8080/api/product/prodNo/${seqNo}`);
@@ -31,7 +30,7 @@ function ProductDetail() {
             }
         };
         fetchProdInfo(seqNo);
-    }, [prodSeqNo]);
+    }, [seqNo]);
 
     if (loading) {
         return (

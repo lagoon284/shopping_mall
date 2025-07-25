@@ -39,7 +39,7 @@ export default function Login() {
                 if (res.data.data) {
                     localStorage.setItem('id', res.data.data.userId);
                     localStorage.setItem('seokho_jwt', res.data.data.accessToken);
-                    localStorage.setItem('seokho_ref_jwt', res.data.data.refreshToken);
+                    // localStorage.setItem('seokho_ref_jwt', res.data.data.refreshToken);
                     navigate('/');
                 }
             })

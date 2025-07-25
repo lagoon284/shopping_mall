@@ -39,4 +39,9 @@ public class BoardService {
 
         boardMapper.updateBoard(boardInfo);
     }
+
+    public void viewedPostPlus(int seqNo) {
+
+        boardMapper.viewedPostPlus(seqNo);
+    }
 }

@@ -59,7 +59,7 @@ public class UserService {
             };
         }
 
-        return new AuthToken(loginReq.getUserId(), jwtAccToken, jwtRefToken);
+        return new AuthToken(loginReq.getUserId(), jwtAccToken);
     }
 
     public AuthToken refLogin(User user) {
@@ -72,12 +72,12 @@ public class UserService {
 
         authTokenMapper.updToken(loginInfo.getId(), newAccToken, newRefToken);
 
-        return new AuthToken(user.getId(), newAccToken, newRefToken);
+        return new AuthToken(user.getId(), newAccToken);
     }
 
     public User getAuthInfo(String token) {
 
-        Optional<AuthToken> authTokenOptional = Optional.ofNullable(authTokenMapper.getToken(token));
+        Optional<AuthToken> authTokenOptional = Optional.ofNullable(authTokenMapper.getTokenByRefToken(token));
 
         AuthToken getAuthInfo = authTokenOptional
                 .filter(authToken -> authToken.getRefreshToken().equals(token))

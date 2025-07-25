@@ -38,11 +38,9 @@ public class BoardController {
 
     // 게시글 한 개 정보 가져오기 (게시글 seqNo 번호 기준)
     @GetMapping("/seq/{seqNo}")
-    public BoardDetail getBoardInfoBySeqNo(@PathVariable String seqNo) {
-        // 쿼리스트링 타입 변환.
-        Long longSeqNo = Long.parseLong(seqNo);
+    public BoardDetail getBoardInfoBySeqNo(@PathVariable Long seqNo) {
 
-        return boardService.getBoardInfoBySeqNo(longSeqNo);
+        return boardService.getBoardInfoBySeqNo(seqNo);
     }
 
     // 키워드 검색
@@ -61,5 +59,12 @@ public class BoardController {
     }
 
     // 삭제는 상태값 변경. 상태값 아직 미정.
+
+    // 조회수 증가
+    @GetMapping("/viewedPostPlus/{seqNo}")
+    public void viewedPostPlus(@PathVariable int seqNo) {
+
+        boardService.viewedPostPlus(seqNo);
+    }
 
 }

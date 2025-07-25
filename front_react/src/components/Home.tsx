@@ -24,7 +24,6 @@ function Home({ propLoginInfo, setUserInfo }: PropsType) {
 
         localStorage.setItem('id', '');
         localStorage.setItem('seokho_jwt', '');
-        localStorage.setItem('seokho_ref_jwt', '');
 
         setUserInfo(null);
 

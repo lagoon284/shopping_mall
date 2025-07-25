@@ -17,4 +17,6 @@ public interface BoardMapper {
     BoardDetail getBoardInfoBySeqNo(Long seqNo);
 
     List<BoardDetail> getBoardInfoListByKeyword(String keyword);
+
+    void viewedPostPlus(int seqNo);
 }

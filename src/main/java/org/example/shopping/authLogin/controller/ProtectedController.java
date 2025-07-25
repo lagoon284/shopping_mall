@@ -10,6 +10,8 @@ import org.example.shopping.user.service.UserService;
 import org.example.shopping.util.common.JwtUtil;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/protected")
@@ -25,19 +27,39 @@ public class ProtectedController {
         if (token != null && token.startsWith("seokhoAccAuth ")) {
             String jwt = token.substring(14);
 
+            LoginInfo userInfo;
             // acc token이 만료되지 않았을 때.
             if (jwtUtil.isTokenExpired(jwt)) {
-                return jwtUtil.extractUserObj(jwt);
+                userInfo = jwtUtil.extractUserObj(jwt);
+                userInfo.setAccessToken(jwt);
             } else {
-                // 유효기간이 지났을 때 핸들링.
-                throw new CustomException(ErrorCode.AUTH_SIGNATURE_EXPIRED_ERROR);
+                AuthToken getNewToken = getProtectRefData(jwt);
+                userInfo = jwtUtil.extractUserObj(getNewToken.getAccessToken());
+                userInfo.setAccessToken(getNewToken.getAccessToken());
             }
+            return userInfo;
         }
         throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
 
     }
 
-    @PutMapping("/refData")
+    public AuthToken getProtectRefData(String token) {
+
+        if (token != null) {
+            Optional<AuthToken> authTokenOptional = Optional.ofNullable(authTokenMapper.getTokenByAccToken(token));
+
+            AuthToken getAuthToken = authTokenOptional
+                    .filter(authToken -> jwtUtil.isTokenExpired(authToken.getRefreshToken()))
+                    .orElseThrow(() -> new CustomException(ErrorCode.AUTH_REF_SIGNATURE_EXPIRED_ERROR));
+
+            // ref token 유효기간이 유효할 때 token 갱신.
+            return userService.refLogin(userService.getAuthInfo(getAuthToken.getRefreshToken()));
+        }
+        throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+    }
+
+    // 수정 전 소스
+    /*@PutMapping("/refData")
     public AuthToken getProtectRefData(@RequestHeader("Authorization") String token) {
 
         if (token != null && token.startsWith("seokhoRefAuth ")) {
@@ -63,7 +85,7 @@ public class ProtectedController {
             }
         }
         throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
-    }
+    }*/
 }
 
 // 스크립트에서 핸들링해줘야 함. localstorage 에 저장된 토큰값을 확인하고 그거로 이쪽 컨트롤러를 타서

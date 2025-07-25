@@ -10,8 +10,12 @@ import lombok.ToString;
 @NoArgsConstructor
 public class AuthToken {                            // 인증 토큰 모델.
 
-
     private String userId;                          // user id.
     private String accessToken;                     // jwt 로그인 토큰.
     private String refreshToken;                    // jwt 재로그인 토큰.
+
+    public AuthToken(String userId, String accessToken) {
+        this.userId = userId;
+        this.accessToken = accessToken;
+    }
 }

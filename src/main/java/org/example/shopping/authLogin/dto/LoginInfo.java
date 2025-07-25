@@ -15,4 +15,11 @@ public class LoginInfo {                            // 로그인 후 정보.
     private String id;                              // 유저 아이디.
     private String name;                            // 유저 네임.
 
+    private String accessToken;
+
+    public LoginInfo(Long userNo, String id, String name) {
+        this.userNo = userNo;
+        this.id = id;
+        this.name = name;
+    }
 }

@@ -103,4 +103,10 @@
             , UPDDATE       = FORMATDATETIME(NOW(), 'yyyy-MM-dd hh:mm:ss')
         WHERE   SEQNO       = #{seqNo}
     </update>
+
+    <update id="viewedPostPlus">
+        UPDATE  BOARDINFO
+        SET     VIEWCNT = VIEWCNT + 1
+        WHERE   SEQNO = #{seqNo}
+    </update>
 </mapper>

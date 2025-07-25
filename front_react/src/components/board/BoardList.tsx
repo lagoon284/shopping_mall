@@ -12,18 +12,21 @@ export default function BoardList() {
     // 로딩 상태 관리
     const [ loading, setLoading ] = useState<boolean>(true);
 
-    useEffect(() => {
+    const fetchBoardList = () => {
         axios.get('http://localhost:8080/api/board/getList')
-            .then(res => {
-                // console.log(res.data.data);
-                setBoards(res.data.data);
-            })
-            .catch(error => {
-                console.log('Error fetching data:', error);
-            })
-            .finally(() => {
-                setLoading(false);
-            })
+        .then(res => {
+            setBoards(res.data.data);
+        })
+        .catch(error => {
+            console.log('Error fetching data:', error);
+        })
+        .finally(() => {
+            setLoading(false);
+        })
+    }
+
+    useEffect(() => {
+        fetchBoardList();
     }, []);
 
     if (loading) {
@@ -34,7 +37,7 @@ export default function BoardList() {
         )
     }
 
-    function fnTrClickEvent(seqNo: string) {
+    function fnTrClickEvent(seqNo: number) {
         navigate(`/board/${seqNo}`);
     }
 

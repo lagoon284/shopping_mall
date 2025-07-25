@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Route, Routes, useNavigate} from "react-router-dom";
+import axios from "axios";
 
 import Home from "./components/Home";
 import Footer from "./components/Footer";
@@ -13,7 +14,6 @@ import UserList from "./components/user/UserList";
 import BoardRegister from "./components/board/BoardRegister";
 import BoardList from "./components/board/BoardList";
 import BoardDetail from "./components/board/BoardDetail";
-import axios from "axios";
 
 import { PropsType } from "./interfaces/PropsInterface";
 import { UserInfoType } from "./interfaces/UserInterface";
@@ -31,48 +31,7 @@ function App() {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            setLoading(true);
-
-            const getJwt = localStorage.getItem('seokho_jwt');
-
-            if (getJwt) {
-                try {
-                    // console.log('자동 로그인 시도 중.');
-                    const response = await axios.post('http://localhost:8080/api/protected/accData', {}, {
-                        headers: { 'Authorization': 'seokhoAccAuth ' + getJwt }
-                    });
-                    setUserInfo(response.data.data);
-                    // console.log('자동로그인 완료.');
-                } catch (err) {
-                    const getRefJwt = localStorage.getItem('seokho_ref_jwt');
-                    await axios.put('http://localhost:8080/api/protected/refData', {}, {
-                        headers: { "Authorization": 'seokhoRefAuth ' + getRefJwt }
-                    })
-                        .then(res => {
-                            localStorage.setItem('id', res.data.data.userId);
-                            localStorage.setItem('seokho_jwt', res.data.data.accessToken);
-                            localStorage.setItem('seokho_ref_jwt', res.data.data.refreshToken);
-                            setError(null);
-                        })
-                        .catch(() => {
-                            setError(null);     // 일단 null 처리.
-                            localStorage.setItem('id', '');
-                            localStorage.setItem('seokho_jwt', '');
-                            localStorage.setItem('seokho_ref_jwt', '');
-                            navigate('/login');
-                        })
-                } finally {
-                    setLoading(false);
-                }
-            } else {
-                setUserInfo(null);
-                setLoading(false);
-            }
-        };
-        fetchUserInfo();
-    }, [navigate]);
+    const getJwt = localStorage.getItem('seokho_jwt');
 
     const props: PropsType = {
         propLoginInfo: {
@@ -83,6 +42,37 @@ function App() {
         },
         setUserInfo
     }
+
+    const fetchUserInfo = async () => {
+        try {
+            const response = await axios.post('http://localhost:8080/api/protected/accData', {}, {
+                headers: { 'Authorization': 'seokhoAccAuth ' + getJwt }
+            });
+            if(!userInfo || JSON.stringify(userInfo) !== JSON.stringify(response.data.data)) {
+                localStorage.setItem('id', response.data.data.id);
+                localStorage.setItem('seokho_jwt', response.data.data.accessToken);
+                setUserInfo(response.data.data);
+            }
+        } catch (err) {
+            localStorage.setItem('id', '');
+            localStorage.setItem('seokho_jwt', '');
+            alert('인증에 실패하였습니다. 다시 로그인 해주세요.');
+            navigate('/login');
+        }
+    };
+
+    useEffect(() => {
+        if (!getJwt) {
+            setUserInfo(null);
+            return;
+        }
+
+        (async () => {
+            await fetchUserInfo();
+            setLoading(false);
+        })();
+
+    }, [navigate]);
 
     // 로딩중일때 표시할 내용.
     if (loading) {
@@ -188,7 +178,7 @@ function App() {
                        element={
                            <>
                                <div className="section">
-                                   <BoardDetail/>
+                                   <BoardDetail {...props}/>
                                </div>
                            </>
                        }

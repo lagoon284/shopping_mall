@@ -9,7 +9,9 @@ public interface  AuthTokenMapper {
 
     int updToken(String userId, String accToken, String refToken);
 
-    AuthToken getToken(String token);
+    AuthToken getTokenByRefToken(String token);
+
+    AuthToken getTokenByAccToken(String token);
 
     boolean getTokenToId(String userId);
 

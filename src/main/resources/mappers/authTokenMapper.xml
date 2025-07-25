@@ -15,12 +15,20 @@
         WHERE   USERID          = #{userId}
     </update>
 
-    <select id="getToken">
+    <select id="getTokenByRefToken">
         SELECT    USERID
                 , ACCESSTOKEN
                 , REFRESHTOKEN
         FROM    AUTHTOKEN
         WHERE   REFRESHTOKEN  = #{token}
+    </select>
+
+    <select id="getTokenByAccToken">
+        SELECT    USERID
+             , ACCESSTOKEN
+             , REFRESHTOKEN
+        FROM    AUTHTOKEN
+        WHERE   ACCESSTOKEN  = #{token}
     </select>
 
     <!--  테이블에 해당하는 값이 있는지 true/false  -->

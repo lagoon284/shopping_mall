@@ -3,42 +3,98 @@ import {useParams} from "react-router-dom";
 import axios from "axios";
 
 import {BoardDetailType} from "../../interfaces/BoardInterface";
+import { PropsType } from "../../interfaces/PropsInterface";
 
-export default function BoardDetail() {
+export default function BoardDetail(props: PropsType) {
     // 객체 데이터
     const [ board, setBoard ] = useState<BoardDetailType | null>(null);
-
     // seqNo 받기
-    const { seqNo } = useParams<{ seqNo: string }>();
-
-    console.log(seqNo);
-    // 숫자로 변환
-    // const seqNo = Number(boardSeqNo);
-
+    const { seqNo } = useParams<{ seqNo: string | undefined }>();
     // 로딩 상태 관리
-    const [ loading, setLoading ] = useState<boolean>(true);
-
+    const [ loading, setLoading ] = useState<boolean>(false);
     // error 핸들러
     const [error, setError] = useState<string | null>(null);
 
+
     useEffect(() => {
-        if(!seqNo) return;
+        if(!seqNo || Number(seqNo) <= 0) return;
 
-        const fetchBoardInfo = async (seqNo: string) => {
-            setLoading(true);
-            setError(null);
+        setLoading(true);
+        setError(null);
 
+        const KEY = 'viewedPosts';
+        // 조회 이력 로드
+        const viewedPosts: string[] = (() => {
+            try {
+                return JSON.parse(localStorage.getItem(KEY) || '[]');
+            } catch {
+                return [];
+            }
+        })();
+
+        const viewed = viewedPosts.includes(seqNo);
+
+        // 게시글 정보 불러오는 함수
+        const fetchBoardInfo = async (seqNo: number) => {
             try {
                 const res = await axios.get(`http://localhost:8080/api/board/seq/${seqNo}`);
                 setBoard(res.data.data);
+                return res.data.data;
             } catch (err) {
                 setError("정보를 불러오는 중 에러가 발생했습니다.");
+            }
+        };
+
+        // 조회 이력 관리 소스.
+        // LocalStorage 이용하여 본 게시글 ID 배열에 저장.
+        // (단, 기기가 바뀌거나 사용자가 로컬스토리지를 지우면 다시 집계됨. 로그인 계정이 바뀌어도 같은 기기로는 1회만 집계)
+        const viewedPostPlus = async (boardData: BoardDetailType ,seqNo: string)=> {
+            try {
+                // 조회수를 증가시키는 api
+                const res = await axios.get(`http://localhost:8080/api/board/viewedPostPlus/${seqNo}`);
+
+                if (res.data.statCode === 'success') {
+                    // 로컬스토리지에 저장.
+                    viewedPosts.push(seqNo);
+                    localStorage.setItem(KEY, JSON.stringify(viewedPosts));
+
+                    // 바로 setBoard (viewCnt만 수동 증가)
+                    setBoard({
+                        ...boardData,
+                        viewCnt: boardData.viewCnt + 1
+                    })
+                    return;
+                } else {
+                    console.log(error + res.data);
+                }
+            } catch (e) {
+                console.log('조회수 증가 API 호출 중 에러:', e);
+                setError('조회수 증가 API 호출 중 에러:' + e);
             } finally {
                 setLoading(false);
             }
-        };
-        fetchBoardInfo(seqNo);
-    }, [seqNo]);
+        }
+
+        (async () => {
+            const boardData = await fetchBoardInfo(Number(seqNo));
+
+            if (!boardData) {
+                setLoading(false);
+                return;
+            }
+
+            const isOwner = props.propLoginInfo.id === boardData.writerId;
+
+            if (!isOwner && !viewed) {
+                await viewedPostPlus(boardData, seqNo);
+                setLoading(false);
+                return;
+            }
+
+            setBoard(boardData);
+            setLoading(false);
+        })();
+    }, [seqNo, props.propLoginInfo.id]);
 
     if (loading) {
         return (
