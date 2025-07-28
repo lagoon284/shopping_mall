@@ -15,6 +15,7 @@ import BoardRegister from "./components/board/BoardRegister";
 import BoardList from "./components/board/BoardList";
 import BoardDetail from "./components/board/BoardDetail";
 
+import { CommonType } from "./interfaces/CommonInterface";
 import { PropsType } from "./interfaces/PropsInterface";
 import { UserInfoType } from "./interfaces/UserInterface";
 
@@ -24,10 +25,10 @@ import { UserInfoType } from "./interfaces/UserInterface";
 function App() {
     // 로그인시 유저 정보 (props)
     const [ userInfo, setUserInfo ] = useState<UserInfoType | null>(null);
-    // 로딩 상태 관리
-    const [ loading, setLoading ] = useState<boolean>(true);
-    // 오류 상태 관리
-    const [ error, setError ] = useState<string |null>(null);
+    // common 상태 관리
+    const [ commonStat, setCommonStat ] = useState<CommonType>({
+        loading: true, error: ""
+    });
 
     const navigate = useNavigate();
 
@@ -56,7 +57,7 @@ function App() {
         } catch (err) {
             localStorage.setItem('id', '');
             localStorage.setItem('seokho_jwt', '');
-            alert('인증에 실패하였습니다. 다시 로그인 해주세요.');
+            alert('자동 로그인 인증에 실패하였습니다. 다시 로그인 해주세요.');
             navigate('/login');
         }
     };
@@ -69,13 +70,16 @@ function App() {
 
         (async () => {
             await fetchUserInfo();
-            setLoading(false);
+            setCommonStat(prev => ({
+                ...prev,
+                loading: false
+            }))
         })();
 
     }, [navigate]);
 
     // 로딩중일때 표시할 내용.
-    if (loading) {
+    if (commonStat.loading) {
         return (
             <div className={'Loading'}>
                 <h1>로딩 중 입니다. 기다리세요. </h1>
@@ -83,10 +87,10 @@ function App() {
         )
     }
 
-    if (error) {
+    if (commonStat.error) {
         return (
             <div className={'Error'}>
-                <h1>error message : {error}</h1>
+                <h1>error message : {commonStat.error}</h1>
             </div>
         )
     }

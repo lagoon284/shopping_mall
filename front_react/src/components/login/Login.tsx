@@ -2,36 +2,46 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import {LoginStateType} from "../../interfaces/LoginInterface";
+
 export default function Login() {
     const navigate = useNavigate();
 
-    const [userId, setUserId] = useState<string>("");
-    const [pw, setPw] = useState<string>("");
-    const [loginMsg, setLoginMsg] = useState<string>("");
+    const [ state, setState ] = useState<LoginStateType>({
+        userId: "",
+        pw: "",
+        loginMsg: "",
 
-    const [isUserId, setIsUserId] = useState<boolean>(false);
-    const [isPw, setIsPw] = useState<boolean>(false);
+        isUserId: false,
+        isPw: false
+    });
 
     const onIdHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentUserId : string = event.currentTarget.value;
 
-        setUserId(currentUserId);
-        setIsUserId(true);
+        setState(prev => ({
+            ...prev,
+            userId: currentUserId,
+            isUserId: true
+        }));
     }
 
     const onPwHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const currentPw : string = event.currentTarget.value;
 
-        setPw(currentPw);
-        setIsPw(true);
+        setState(prev => ({
+            ...prev,
+            pw: currentPw,
+            isPw: true
+        }));
     }
 
     const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const loginData = {
-            userId: userId,
-            pw: pw
+            userId: state.userId,
+            pw: state.pw
         };
 
         axios.put('http://localhost:8080/api/auth/login', loginData)
@@ -39,14 +49,16 @@ export default function Login() {
                 if (res.data.data) {
                     localStorage.setItem('id', res.data.data.userId);
                     localStorage.setItem('seokho_jwt', res.data.data.accessToken);
-                    // localStorage.setItem('seokho_ref_jwt', res.data.data.refreshToken);
                     navigate('/');
                 }
             })
             .catch(err => {
                 console.log('Error fetching data:', err);
-                setLoginMsg('로그인에 실패하였습니다. 아이디와 비밀번호를 확인해 주세요.');
-                // alert(err);
+
+                setState(prev => ({
+                    ...prev,
+                    loginMsg: '로그인에 실패하였습니다. 아이디와 비밀번호를 확인해 주세요.'
+                }));
             })
     }
 
@@ -61,7 +73,7 @@ export default function Login() {
                        type={'text'}
                        id={'userId'}
                        name={'userId'}
-                       value={userId}
+                       value={state.userId}
                        placeholder={'아이디 입력'}
                        maxLength={15}
                        autoComplete={"username"}
@@ -72,14 +84,14 @@ export default function Login() {
                        type={'password'}
                        id={'pw'}
                        name={'pw'}
-                       value={pw}
+                       value={state.pw}
                        placeholder={'비밀번호 입력'}
                        maxLength={24}
                        autoComplete={"current-password"}
                 /><br/>
-                {loginMsg && <small style={{color: "red"}}>{loginMsg}</small>}<br/>
+                {state.loginMsg && <small style={{color: "red"}}>{state.loginMsg}</small>}<br/>
                 <p/>
-                <button type={'submit'} disabled={!(isUserId && isPw)}>로그인</button>
+                <button type={'submit'} disabled={!(state.isUserId && state.isPw)}>로그인</button>
             </form>
         </>
     )

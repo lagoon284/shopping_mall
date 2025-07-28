@@ -2,25 +2,23 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import axios from "axios";
 
+import {CommonType} from "../../interfaces/CommonInterface";
 import {BoardDetailType} from "../../interfaces/BoardInterface";
 import { PropsType } from "../../interfaces/PropsInterface";
 
 export default function BoardDetail(props: PropsType) {
-    // 객체 데이터
-    const [ board, setBoard ] = useState<BoardDetailType | null>(null);
     // seqNo 받기
     const { seqNo } = useParams<{ seqNo: string | undefined }>();
-    // 로딩 상태 관리
-    const [ loading, setLoading ] = useState<boolean>(false);
-    // error 핸들러
-    const [error, setError] = useState<string | null>(null);
+    // 객체 데이터
+    const [ board, setBoard ] = useState<BoardDetailType | null>(null);
 
+    const [ commonStat, setCommonStat ] = useState<CommonType>({
+        loading: true,
+        error: ""
+    });
 
     useEffect(() => {
         if(!seqNo || Number(seqNo) <= 0) return;
-
-        setLoading(true);
-        setError(null);
 
         const KEY = 'viewedPosts';
         // 조회 이력 로드
@@ -41,7 +39,10 @@ export default function BoardDetail(props: PropsType) {
                 setBoard(res.data.data);
                 return res.data.data;
             } catch (err) {
-                setError("정보를 불러오는 중 에러가 발생했습니다.");
+                setCommonStat(prev => ({
+                    ...prev,
+                    error: "정보를 불러오는 중 에러가 발생했습니다."
+                }));
             }
         };
 
@@ -65,13 +66,19 @@ export default function BoardDetail(props: PropsType) {
                     })
                     return;
                 } else {
-                    console.log(error + res.data);
+                    console.log(commonStat.error + res.data);
                 }
             } catch (e) {
                 console.log('조회수 증가 API 호출 중 에러:', e);
-                setError('조회수 증가 API 호출 중 에러:' + e);
+                setCommonStat(prev => ({
+                    ...prev,
+                    error: '조회수 증가 API 호출 중 에러:' + e
+                }));
             } finally {
-                setLoading(false);
+                setCommonStat(prev => ({
+                    ...prev,
+                    loading: false
+                }))
             }
         }
 
@@ -79,7 +86,10 @@ export default function BoardDetail(props: PropsType) {
             const boardData = await fetchBoardInfo(Number(seqNo));
 
             if (!boardData) {
-                setLoading(false);
+                setCommonStat(prev => ({
+                    ...prev,
+                    loading: false
+                }))
                 return;
             }
 
@@ -87,16 +97,22 @@ export default function BoardDetail(props: PropsType) {
 
             if (!isOwner && !viewed) {
                 await viewedPostPlus(boardData, seqNo);
-                setLoading(false);
+                setCommonStat(prev => ({
+                    ...prev,
+                    loading: false
+                }))
                 return;
             }
 
             setBoard(boardData);
-            setLoading(false);
+            setCommonStat(prev => ({
+                ...prev,
+                loading: false
+            }))
         })();
     }, [seqNo, props.propLoginInfo.id]);
 
-    if (loading) {
+    if (commonStat.loading) {
         return (
             <div className={'Loading'}>
                 <h1>로딩 중 입니다. 기다리세요. </h1>
@@ -104,12 +120,12 @@ export default function BoardDetail(props: PropsType) {
         )
     }
 
-    if (error) {
+    if (commonStat.error) {
         return (
             <>
                 <h2 className={"section-title"}>게시글 상세 정보</h2>
                 <div className={"divider"} />
-                <h3>{error}</h3>
+                <h3>{commonStat.error}</h3>
             </>
         );
     }

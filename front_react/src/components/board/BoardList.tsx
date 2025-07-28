@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 
+import {CommonType} from "../../interfaces/CommonInterface";
 import { BoardListType } from "../../interfaces/BoardInterface";
 
 export default function BoardList() {
@@ -10,7 +11,10 @@ export default function BoardList() {
     const [boards, setBoards] = useState<BoardListType[]>([]);
 
     // 로딩 상태 관리
-    const [ loading, setLoading ] = useState<boolean>(true);
+    const [ commonState, setCommonStat ] = useState<CommonType>({
+        loading: true,
+        error: ""
+    });
 
     const fetchBoardList = () => {
         axios.get('http://localhost:8080/api/board/getList')
@@ -19,17 +23,29 @@ export default function BoardList() {
         })
         .catch(error => {
             console.log('Error fetching data:', error);
+
+            setCommonStat(prev => ({
+                ...prev,
+                error: "조회 중 문제가 발생했습니다. : " + error
+            }));
         })
         .finally(() => {
-            setLoading(false);
+            setCommonStat(prev => ({
+                ...prev,
+                loading: false
+            }));
         })
+    }
+
+    function fnTrClickEvent(seqNo: number) {
+        navigate(`/board/${seqNo}`);
     }
 
     useEffect(() => {
         fetchBoardList();
     }, []);
 
-    if (loading) {
+    if (commonState.loading) {
         return (
             <div className={'Loading'}>
                 <h1>로딩 중 입니다. 기다리세요. </h1>
@@ -37,8 +53,12 @@ export default function BoardList() {
         )
     }
 
-    function fnTrClickEvent(seqNo: number) {
-        navigate(`/board/${seqNo}`);
+    if (commonState.error) {
+        return (
+            <div className={'Error'}>
+                <h1>error message : {commonState.error}</h1>
+            </div>
+        )
     }
 
     return (

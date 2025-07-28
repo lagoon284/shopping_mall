@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
+import {CommonType} from "../../interfaces/CommonInterface";
 import {BoardInsFormDataType} from "../../interfaces/BoardInterface";
 import {PropsType} from "../../interfaces/PropsInterface";
 
@@ -9,7 +10,10 @@ export default function BoardRegister(props: PropsType) {
     const navigate = useNavigate();
 
     // 로딩상태 관리
-    const [ loading, setLoading ] = useState<boolean>(false);
+    const [ commonStat, setCommonStat ] = useState<CommonType>({
+        loading: true,
+        error: ""
+    })
 
     const [ formData, setFormData ] = useState<BoardInsFormDataType>({
         // 사용할 상태변수 초기화.
@@ -38,10 +42,18 @@ export default function BoardRegister(props: PropsType) {
         }
     }, [props]);
 
-    if (loading) {
+    if (commonStat.loading) {
         return (
             <div className={'loading'}>
                 <h1>로딩 중 입니다. 기다리세요. </h1>
+            </div>
+        )
+    }
+
+    if (commonStat.error) {
+        return (
+            <div className={'Error'}>
+                <h1>error message : {commonStat.error}</h1>
             </div>
         )
     }

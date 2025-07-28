@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
+
+import { CommonType } from "../../interfaces/CommonInterface";
 import { UserInfoType } from "../../interfaces/UserInterface";
 
 function UserList() {
     const [users, setUsers] = useState<UserInfoType[] | null>(null);
 
-    // 로딩 상태 관리
-    const [ loading, setLoading ] = useState<boolean>(true);
+    // common 상태 관리
+    const [ commonStat, setCommonStat ] = useState<CommonType>({
+        loading: true, error: ""
+    });
 
     useEffect(() => {
         const fetchUserInfo = async () => {await axios.get('http://localhost:8080/api/user/allUserSelect')
@@ -17,19 +21,48 @@ function UserList() {
             })
             .catch(error => {
                 console.log('Error fetching data:', error);
+                setCommonStat(prev => ({
+                    ...prev,
+                    error: 'Error fetching data:' + error
+                }))
             })
             .finally(() => {
-                setLoading(false);
+                setCommonStat(prev => ({
+                    ...prev,
+                    loading: false
+                }))
             })
         }
         fetchUserInfo();
     }, []);
 
-    if (loading) {
+    if (commonStat.loading) {
         return (
             <div className={'Loading'}>
                 <h1>로딩 중 입니다. 기다리세요. </h1>
             </div>
+        )
+    }
+
+    if (commonStat.error) {
+        return (
+            <>
+                <h2 className={"section-title"}>회원 정보</h2>
+                <div className={"divider"} />
+                <h3>{commonStat.error}</h3>
+            </>
+        )
+    }
+
+    if (!users) {
+        return (
+            <>
+                <h2 className={"section-title"}>회원 정보</h2>
+                <div className={"divider"}/>
+                <div className={"grid"}>
+                    등록된 유저가 없습니다.
+                </div>
+            </>
         )
     }
 
@@ -38,7 +71,7 @@ function UserList() {
             <h2 className={"section-title"}>회원 정보</h2>
             <div className={"divider"}/>
             <div className={"grid"}>
-                {users && users.map((user) => {
+                {users.map((user) => {
                     return (
                         <Link to={`/user/${user.id}`} key={user.id}>
                             <div className={"card"}>

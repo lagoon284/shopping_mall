@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
+import { CommonType } from "../../interfaces/CommonInterface";
 import {FormDataRegExpType, FormDataType} from "../../interfaces/UserInterface";
 
 export default function Signup() {
     const navigate = useNavigate();
 
     // 로딩 상태 관리
-    const [ loading, setLoading ] = useState<boolean>();
+    const [ commonStat, setCommonStat ] = useState<CommonType>({
+        loading: true, error: ""
+    });
 
     const [ formData, setFormData ] = useState<FormDataType>({
         // 사용할 상태변수 초기화.
@@ -44,9 +47,6 @@ export default function Signup() {
                             idMsg: "사용가능한 아이디 입니다.",
                             isId: true
                         }));
-                    })
-                    .finally(() => {
-                        setLoading(false);
                     })
             }
             fetchIdCheck();
@@ -176,7 +176,6 @@ export default function Signup() {
             }
 
             const fetchSignup = async () => {
-                setLoading(true);
                 await axios.post('http://localhost:8080/api/user/signup', reqData)
                     .then(res => {
                         if (res.data.statCode === 'success') {
@@ -187,9 +186,10 @@ export default function Signup() {
                     })
                     .catch(err => {
                         console.log('Error fetching data:', err);
-                    })
-                    .finally(() => {
-                        setLoading(false);
+                        setCommonStat(prev => ({
+                            ...prev,
+                            error: "회원가입에 실패하였습니다. : " + err
+                        }))
                     })
             }
             fetchSignup();
@@ -198,12 +198,14 @@ export default function Signup() {
         }
     }
 
-    if (loading) {
+    if (commonStat.error) {
         return (
-            <div className={'loading'}>
-                <h1>로딩 중 입니다. 기다리세요. </h1>
-            </div>
-        )
+            <>
+                <h2 className={"section-title"}>회원정보 입력</h2>
+                <div className={"divider"} />
+                <h3>{commonStat.error}</h3>
+            </>
+        );
     }
 
     return (

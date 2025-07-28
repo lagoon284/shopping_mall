@@ -2,34 +2,54 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 
+import { CommonType } from "../../interfaces/CommonInterface";
 import { ProdDetailType } from "../../interfaces/ProdInterface";
 
 function ProductList() {
     const [prods, setProds] = useState<ProdDetailType[]>([]);
 
     // 로딩 상태 관리
-    const [ loading, setLoading ] = useState<boolean>(true);
+    const [ commonStat, setCommonStat ] = useState<CommonType>({
+        loading: true,
+        error: ""
+    });
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/product/infoProds')
             .then(res => {
-                // console.log(res.data.data);
                 setProds(res.data.data);
             })
             .catch(error => {
                 console.log('Error fetching data:', error);
+                setCommonStat(prev => ({
+                    ...prev,
+                    error: "정보를 불러오는 중 에러가 발생했습니다. : " + error
+                }));
             })
             .finally(() => {
-                setLoading(false);
+                setCommonStat(prev => ({
+                    ...prev,
+                    loading: false
+                }));
             })
     }, []);
 
-    if (loading) {
+    if (commonStat.loading) {
         return (
             <div className={'Loading'}>
                 <h1>로딩 중 입니다. 기다리세요. </h1>
             </div>
         )
+    }
+
+    if (commonStat.error) {
+        return (
+            <>
+                <h2 className={"section-title"}>상품 정보</h2>
+                <div className={"divider"} />
+                <h3>{commonStat.error}</h3>
+            </>
+        );
     }
 
     return (

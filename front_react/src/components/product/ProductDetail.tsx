@@ -2,37 +2,42 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 
+import { CommonType } from "../../interfaces/CommonInterface";
 import { ProdDetailType } from "../../interfaces/ProdInterface";
 
 function ProductDetail() {
+    const { prodSeqNo } = useParams();
+
     const [ prod, setProd ] = useState<ProdDetailType | null >(null);
 
-    const { prodSeqNo } = useParams();
-    // 숫자로 변환.
-    const seqNo: number = Number(prodSeqNo);
-
     // 로딩 상태 관리
-    const [ loading, setLoading ] = useState<boolean>(true);
-    // error 핸들러
-    const [error, setError] = useState<string | null>(null);
+    const [ commonStat, setCommonStat ] = useState<CommonType>({
+        loading: true,
+        error: ""
+    });
 
     useEffect(() => {
-        if (seqNo <= 0) return;
+        if (Number(prodSeqNo) <= 0) return;
         const fetchProdInfo = async (seqNo: number) => {
-            setError(null);
             try {
                 const res = await axios.get(`http://localhost:8080/api/product/prodNo/${seqNo}`);
                 setProd(res.data.data);
             } catch (err) {
-                setError("정보를 불러오는 중 에러가 발생했습니다.");
+                setCommonStat(prev => ({
+                    ...prev,
+                    error: "정보를 불러오는 중 에러가 발생했습니다. : " + err
+                }));
             } finally {
-                setLoading(false);
+                setCommonStat(prev => ({
+                    ...prev,
+                    loading: false
+                }));
             }
         };
-        fetchProdInfo(seqNo);
-    }, [seqNo]);
+        fetchProdInfo(Number(prodSeqNo));
+    }, [prodSeqNo]);
 
-    if (loading) {
+    if (commonStat.loading) {
         return (
             <div className={'Loading'}>
                 <h1>로딩 중 입니다. 기다리세요. </h1>
@@ -40,12 +45,12 @@ function ProductDetail() {
         )
     }
 
-    if (error) {
+    if (commonStat.error) {
         return (
             <>
                 <h2 className={"section-title"}>상품상세 정보</h2>
                 <div className={"divider"} />
-                <h3>{error}</h3>
+                <h3>{commonStat.error}</h3>
             </>
         );
     }

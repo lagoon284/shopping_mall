@@ -4,7 +4,6 @@ import {PropsType} from "../interfaces/PropsInterface";
 
 function Home({ propLoginInfo, setUserInfo }: PropsType) {
     const location = useLocation();
-    // const navigate = useNavigate();
 
     const loginFlag: boolean = propLoginInfo.id !== "";
 

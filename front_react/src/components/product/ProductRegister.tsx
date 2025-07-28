@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
+import { CommonType } from "../../interfaces/CommonInterface";
 import {ProdInsFormDataType} from "../../interfaces/ProdInterface";
 
 export default function ProductRegister() {
     const navigate = useNavigate();
 
     // 로딩 상태 관리
-    const [ loading, setLoading ] = useState<boolean>(false);
+    const [ commonStat, setCommonStat ] = useState<CommonType>({
+        loading: true, error: ""
+    });
 
     const [ formData, setFormData ] = useState<ProdInsFormDataType>({
         // 사용할 상태변수 초기화.
@@ -22,8 +25,6 @@ export default function ProductRegister() {
     });
 
     const blurIdHandler = (event: React.FocusEvent<HTMLInputElement>) => {
-        setLoading(true);
-
         const currentVal : string = event.currentTarget.value;
 
         if (currentVal !== '' && currentVal !== null) {
@@ -47,9 +48,10 @@ export default function ProductRegister() {
                     })
                     .catch(error => {
                         console.log('Error fetching data:', error);
-                    })
-                    .finally(() => {
-                        setLoading(false);
+                        setCommonStat(prev => ({
+                            ...prev,
+                            error: 'Error fetching data : ' + error
+                        }))
                     })
             }
             fetchIdCheck();
@@ -166,7 +168,6 @@ export default function ProductRegister() {
             }
 
             const fetchSignup = async () => {
-                setLoading(true);
                 await axios.post('http://localhost:8080/api/product/insert', reqData)
                     .then(res => {
                         if (res.data.statCode === 'success') {
@@ -177,23 +178,16 @@ export default function ProductRegister() {
                     })
                     .catch(err => {
                         console.log('Error fetching data:', err);
-                    })
-                    .finally(() => {
-                        setLoading(false);
+                        setCommonStat(prev => ({
+                            ...prev,
+                            error: 'Error fetching data : ' + err
+                        }))
                     })
             }
             fetchSignup();
         } else {
             alert("상품등록 양식이 잘못되었습니다. 확인해주세요.");
         }
-    }
-
-    if (loading) {
-        return (
-            <div className={'loading'}>
-                <h1>로딩 중 입니다. 기다리세요. </h1>
-            </div>
-        )
     }
 
     return (
