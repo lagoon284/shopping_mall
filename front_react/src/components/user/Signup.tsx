@@ -213,90 +213,100 @@ export default function Signup() {
             <h2 className={"section-title"}>회원정보 입력</h2>
             <div className={"divider"}/>
             <form onSubmit={(event) => onSubmitHandler(event)}>
-                <label htmlFor={'id'}>아이디 (ID)</label>
-                <br/>
-                <input onChange={(event) => onChangeEventHandler(event, 'id')}
-                       onBlur={(event) => blurIdHandler(event)}
-                       type={'text'}
-                       id={'id'}
-                       name={'id'}
-                       value={formData.id}
-                       placeholder={'아이디 입력'}
-                       maxLength={15}
-                       autoComplete={"username"}
-                />
-                <br/>
-                {/* idMsg 값이 있어야만(true)(falsy한 값이라면 태그는 렌더링 되지 않음.) && 를 기준으로 오른쪽 값을 반환함. */}
-                {formData.idMsg &&
-                    <small style={{color: formData.isId ? "green" : "red"}}>{formData.idMsg}</small>}<br/>
-                <p/>
+                <div className={"form-group"}>
+                    <label htmlFor={'id'}>아이디 (ID)</label>
+                    <br/>
+                    <input className="form-control"
+                           onChange={(event) => onChangeEventHandler(event, 'id')}
+                           onBlur={(event) => blurIdHandler(event)}
+                           type={'text'}
+                           id={'id'}
+                           name={'id'}
+                           value={formData.id}
+                           placeholder={'아이디 입력'}
+                           maxLength={15}
+                           autoComplete={"username"}
+                    />
+                    <br/>
+                    {/* idMsg 값이 있어야만(true)(falsy한 값이라면 태그는 렌더링 되지 않음.) && 를 기준으로 오른쪽 값을 반환함. */}
+                    {formData.idMsg &&
+                        <small style={{color: formData.isId ? "green" : "red"}}>{formData.idMsg}</small>}<br/>
+                    <p/>
 
-                <label htmlFor={'pw'}>비밀번호 (PASSWORD)</label>
-                <br/>
-                <input onChange={(event) => onChangeEventHandler(event, 'pw')}
-                       type={'password'}
-                       id={'pw'}
-                       name={'pw'}
-                       value={formData.pw}
-                       placeholder={'비밀번호 입력'}
-                       maxLength={24}
-                       autoComplete={"new-password"}
-                />
-                <br/>
-                {formData.pwMsg &&
-                    <small style={{color: formData.isPw ? "green" : "red"}}>{formData.pwMsg}</small>}<br/>
-                <p/>
+                    <label htmlFor={'pw'}>비밀번호 (PASSWORD)</label>
+                    <br/>
+                    <input className="form-control"
+                           onChange={(event) => onChangeEventHandler(event, 'pw')}
+                           type={'password'}
+                           id={'pw'}
+                           name={'pw'}
+                           value={formData.pw}
+                           placeholder={'비밀번호 입력'}
+                           maxLength={24}
+                           autoComplete={"new-password"}
+                    />
+                    <br/>
+                    {formData.pwMsg &&
+                        <small style={{color: formData.isPw ? "green" : "red"}}>{formData.pwMsg}</small>}<br/>
+                    <p/>
 
-                <label htmlFor={'confirmPw'}>비밀번호 확인</label>
-                <br/>
-                <input onChange={(event) => onChangeEventHandler(event, 'confirmPw')}
-                       type={'password'}
-                       id={'confirmPw'}
-                       name={'confirmPw'}
-                       value={formData.confirmPw}
-                       placeholder={'비밀번호 재입력'}
-                       maxLength={24}
-                       autoComplete={"new-password"}
-                />
-                <br/>
-                {formData.confirmMsg &&
-                    <small style={{color: formData.isConfirm ? "green" : "red"}}>{formData.confirmMsg}</small>}<br/>
-                <p/>
+                    <label htmlFor={'confirmPw'}>비밀번호 확인</label>
+                    <br/>
+                    <input className="form-control"
+                           onChange={(event) => onChangeEventHandler(event, 'confirmPw')}
+                           type={'password'}
+                           id={'confirmPw'}
+                           name={'confirmPw'}
+                           value={formData.confirmPw}
+                           placeholder={'비밀번호 재입력'}
+                           maxLength={24}
+                           autoComplete={"new-password"}
+                    />
+                    <br/>
+                    {formData.confirmMsg &&
+                        <small style={{color: formData.isConfirm ? "green" : "red"}}>{formData.confirmMsg}</small>}<br/>
+                    <p/>
 
-                <label htmlFor={'name'}>이름</label>
-                <br/>
-                <input onChange={(event) => onChangeEventHandler(event, 'name')}
-                       type={'name'}
-                       id={'name'}
-                       name={'name'}
-                       value={formData.name}
-                       placeholder={'이름 입력'}
-                       maxLength={6}
-                       autoComplete={"username"}
-                />
-                <br/>
-                {formData.nameMsg &&
-                    <small style={{color: formData.isName ? "green" : "red"}}>{formData.nameMsg}</small>}<br/>
-                <p/>
+                    <label htmlFor={'name'}>이름</label>
+                    <br/>
+                    <input className="form-control"
+                           onChange={(event) => onChangeEventHandler(event, 'name')}
+                           type={'name'}
+                           id={'name'}
+                           name={'name'}
+                           value={formData.name}
+                           placeholder={'이름 입력'}
+                           maxLength={6}
+                           autoComplete={"username"}
+                    />
+                    <br/>
+                    {formData.nameMsg &&
+                        <small style={{color: formData.isName ? "green" : "red"}}>{formData.nameMsg}</small>}<br/>
+                    <p/>
 
-                <label htmlFor={'addr'}>주소</label>
-                <br/>
-                <input onChange={(event) => onChangeEventHandler(event, 'addr')}
-                       type={'text'}
-                       id={'addr'}
-                       name={'addr'}
-                       value={formData.addr}
-                       placeholder={'주소를 적어주세요.'}
-                />
-                <br/>
-                {formData.addrMsg &&
-                    <small style={{color: formData.isAddr ? "green" : "red"}}>{formData.addrMsg}</small>}<br/>
-                <p/>
+                    <label htmlFor={'addr'}>주소</label>
+                    <br/>
+                    <input className="form-control"
+                           onChange={(event) => onChangeEventHandler(event, 'addr')}
+                           type={'text'}
+                           id={'addr'}
+                           name={'addr'}
+                           value={formData.addr}
+                           placeholder={'주소를 적어주세요.'}
+                    />
+                    <br/>
+                    {formData.addrMsg &&
+                        <small style={{color: formData.isAddr ? "green" : "red"}}>{formData.addrMsg}</small>}<br/>
+                    <p/>
 
-                <button type={'submit'}
-                        disabled={!(formData.isId && formData.isPw && formData.isConfirm && formData.isName && formData.isAddr)}>가입하기
-                </button>
+                    <div style={{textAlign: 'right'}}>
+                        <button className="btn btn-primary"
+                                type={'submit'}
+                                disabled={!(formData.isId && formData.isPw && formData.isConfirm && formData.isName && formData.isAddr)}>가입하기
+                        </button>
+                    </div>
+                </div>
             </form>
         </>
-    )
+)
 }

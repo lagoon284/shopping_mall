@@ -68,30 +68,34 @@ export default function Login() {
             <h2 className={"section-title"}>로그인을 진행해주세요.</h2>
             <div className={"divider"}/>
             <form onSubmit={onSubmitHandler}>
-                <label htmlFor={'userId'}>아이디 (ID)</label><br/>
-                <input onChange={onIdHandler}
-                       type={'text'}
-                       id={'userId'}
-                       name={'userId'}
-                       value={state.userId}
-                       placeholder={'아이디 입력'}
-                       maxLength={15}
-                       autoComplete={"username"}
-                /><br/>
-                <p/>
-                <label htmlFor={'pw'}>비밀번호 (PASSWORD)</label><br/>
-                <input onChange={onPwHandler}
-                       type={'password'}
-                       id={'pw'}
-                       name={'pw'}
-                       value={state.pw}
-                       placeholder={'비밀번호 입력'}
-                       maxLength={24}
-                       autoComplete={"current-password"}
-                /><br/>
-                {state.loginMsg && <small style={{color: "red"}}>{state.loginMsg}</small>}<br/>
-                <p/>
-                <button type={'submit'} disabled={!(state.isUserId && state.isPw)}>로그인</button>
+                <div className={"form-group"}>
+                    <label htmlFor={'userId'}>아이디 (ID)</label><br/>
+                    <input className="form-control"
+                           onChange={onIdHandler}
+                           type={'text'}
+                           id={'userId'}
+                           name={'userId'}
+                           value={state.userId}
+                           placeholder={'아이디 입력'}
+                           maxLength={15}
+                           autoComplete={"username"}
+                    /><br/>
+                    <p/>
+                    <label htmlFor={'pw'}>비밀번호 (PASSWORD)</label><br/>
+                    <input className="form-control"
+                           onChange={onPwHandler}
+                           type={'password'}
+                           id={'pw'}
+                           name={'pw'}
+                           value={state.pw}
+                           placeholder={'비밀번호 입력'}
+                           maxLength={24}
+                           autoComplete={"current-password"}
+                    /><br/>
+                    {state.loginMsg && <small style={{color: "red"}}>{state.loginMsg}</small>}<br/>
+                    <p/>
+                    <button className="btn btn-primary" type={'submit'} disabled={!(state.isUserId && state.isPw)}>로그인</button>
+                </div>
             </form>
         </>
     )

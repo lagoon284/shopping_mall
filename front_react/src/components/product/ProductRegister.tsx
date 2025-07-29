@@ -159,7 +159,7 @@ export default function ProductRegister() {
         event.preventDefault();
 
         if (formData.isProdName && formData.isPrice && formData.isProvider && formData.isInfo) {
-            let reqData = {
+            const reqData = {
                 prodName: formData.prodName,
                 price: formData.price,
                 provider: formData.provider,
@@ -195,87 +195,98 @@ export default function ProductRegister() {
             <h2 className={"section-title"}>상품 정보 입력</h2>
             <div className={"divider"}/>
             <form onSubmit={(event) => onSubmitHandler(event)}>
-                <label htmlFor={'prodName'}>상품이름</label>
-                <br/>
-                <input onChange={(event) => onChangeEventHandler(event, 'prodName')}
-                       onBlur={(event) => blurIdHandler(event)}
-                       type={'text'}
-                       id={'prodName'}
-                       name={'prodName'}
-                       value={formData.prodName}
-                       placeholder={'상품이름 입력'}
-                       maxLength={30}
-                />
-                <br/>
-                {/* idMsg 값이 있어야만(true)(false한 값이라면 태그는 렌더링 되지 않음.) && 를 기준으로 오른쪽 값을 반환함. */}
-                {formData.prodNameMsg &&
-                    <small style={{color: formData.isProdName ? "green" : "red"}}>{formData.prodNameMsg}</small>}<br/>
-                <p/>
+                <div className={"form-group"}>
+                    <label htmlFor={'prodName'}>상품이름</label>
+                    <br/>
+                    <input className="form-control"
+                           onChange={(event) => onChangeEventHandler(event, 'prodName')}
+                           onBlur={(event) => blurIdHandler(event)}
+                           type={'text'}
+                           id={'prodName'}
+                           name={'prodName'}
+                           value={formData.prodName}
+                           placeholder={'상품이름 입력'}
+                           maxLength={30}
+                    />
+                    <br/>
+                    {/* idMsg 값이 있어야만(true)(false한 값이라면 태그는 렌더링 되지 않음.) && 를 기준으로 오른쪽 값을 반환함. */}
+                    {formData.prodNameMsg &&
+                        <small
+                            style={{color: formData.isProdName ? "green" : "red"}}>{formData.prodNameMsg}</small>}<br/>
+                    <p/>
 
-                <label htmlFor={'price'}>상품가격</label>
-                <br/>
-                <input onChange={(event) => onChangeEventHandler(event, 'price')}
-                       type={'number'}
-                       id={'price'}
-                       name={'price'}
-                       value={formData.price}
-                       placeholder={'상품가격 입력'}
-                />
-                <br/>
-                {formData.priceMsg &&
-                    <small style={{color: formData.isPrice ? "green" : "red"}}>{formData.priceMsg}</small>}<br/>
-                <p/>
+                    <label htmlFor={'price'}>상품가격</label>
+                    <br/>
+                    <input className="form-control"
+                           onChange={(event) => onChangeEventHandler(event, 'price')}
+                           type={'number'}
+                           id={'price'}
+                           name={'price'}
+                           value={formData.price}
+                           placeholder={'상품가격 입력'}
+                    />
+                    <br/>
+                    {formData.priceMsg &&
+                        <small style={{color: formData.isPrice ? "green" : "red"}}>{formData.priceMsg}</small>}<br/>
+                    <p/>
 
-                <label htmlFor={'provider'}>판매처 이름</label>
-                <br/>
-                <input onChange={(event) => onChangeEventHandler(event, 'provider')}
-                       type={'text'}
-                       id={'provider'}
-                       name={'provider'}
-                       value={formData.provider}
-                       placeholder={'판매처 이름 입력'}
-                       maxLength={15}
-                />
-                <br/>
-                {formData.providerMsg &&
-                    <small style={{color: formData.isProvider ? "green" : "red"}}>{formData.providerMsg}</small>}<br/>
-                <p/>
+                    <label htmlFor={'provider'}>판매처 이름</label>
+                    <br/>
+                    <input className="form-control"
+                           onChange={(event) => onChangeEventHandler(event, 'provider')}
+                           type={'text'}
+                           id={'provider'}
+                           name={'provider'}
+                           value={formData.provider}
+                           placeholder={'판매처 이름 입력'}
+                           maxLength={15}
+                    />
+                    <br/>
+                    {formData.providerMsg &&
+                        <small
+                            style={{color: formData.isProvider ? "green" : "red"}}>{formData.providerMsg}</small>}<br/>
+                    <p/>
 
-                <label htmlFor={'info'}>상품 정보</label>
-                <br/>
-                <textarea onChange={(event) => onChangeEventHandler(event, 'info')}
-                          id={'info'}
-                          name={'info'}
-                          value={formData.info}
-                          placeholder={'상품 정보를 적어주세요.'}
-                />
-                <br/>
-                {formData.infoMsg &&
-                    <small style={{color: formData.isInfo ? "green" : "red"}}>{formData.infoMsg}</small>}<br/>
-                <p/>
+                    <label htmlFor={'info'}>상품 정보</label>
+                    <br/>
+                    <textarea className="form-control"
+                              onChange={(event) => onChangeEventHandler(event, 'info')}
+                              id={'info'}
+                              name={'info'}
+                              value={formData.info}
+                              placeholder={'상품 정보를 적어주세요.'}
+                    />
+                    <br/>
+                    {formData.infoMsg &&
+                        <small style={{color: formData.isInfo ? "green" : "red"}}>{formData.infoMsg}</small>}<br/>
+                    <p/>
 
-                <label htmlFor={'useFlag'}>노출/비노출 여부</label><br/>
-                <input onChange={(event) => onChangeEventHandler(event, 'useFlag')}
-                       type={'radio'}
-                       id={'useFlag'}
-                       value={'true'}
-                       name={'useFlag'}
-                       defaultChecked
-                /> 노출
-                <br/>
-                <input onChange={(event) => onChangeEventHandler(event, 'useFlag')}
-                       type={'radio'}
-                       id={'useFlag'}
-                       value={'false'}
-                       name={'useFlag'}
-                /> 비노출
-                <br/>
-                <p/>
+                    <label htmlFor={'useFlag'}>노출/비노출 여부</label><br/>
+                    <input onChange={(event) => onChangeEventHandler(event, 'useFlag')}
+                           type={'radio'}
+                           id={'useFlag'}
+                           value={'true'}
+                           name={'useFlag'}
+                           defaultChecked
+                    /> 노출
+                    <br/>
+                    <input onChange={(event) => onChangeEventHandler(event, 'useFlag')}
+                           type={'radio'}
+                           id={'useFlag'}
+                           value={'false'}
+                           name={'useFlag'}
+                    /> 비노출
+                    <br/>
+                    <p/>
 
-                <button type={'submit'}
-                        disabled={!(formData.isProdName && formData.isPrice && formData.isProvider && formData.isInfo)}>등록하기
-                </button>
+                    <div style={{textAlign: 'right'}}>
+                        <button className="btn btn-primary"
+                                type={'submit'}
+                                disabled={!(formData.isProdName && formData.isPrice && formData.isProvider && formData.isInfo)}>등록하기
+                        </button>
+                    </div>
+                </div>
             </form>
         </>
-    )
+)
 }

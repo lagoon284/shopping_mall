@@ -1,9 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 
-import Home from "./components/Home";
-import Footer from "./components/Footer";
+// Layout Components
+// import Home from "./components/Home";
+import Sidebar from "./components/layout/Sidebar";
+import Footer from "./components/layout/Footer";
+import PageLayout from "./components/layout/PageLayout";
+
+// Page Components
 import Signup from "./components/user/Signup";
 import Login from "./components/login/Login";
 import UserDetail from "./components/user/UserDetail";
@@ -15,6 +20,7 @@ import BoardRegister from "./components/board/BoardRegister";
 import BoardList from "./components/board/BoardList";
 import BoardDetail from "./components/board/BoardDetail";
 
+// Interfaces
 import { CommonType } from "./interfaces/CommonInterface";
 import { PropsType } from "./interfaces/PropsInterface";
 import { UserInfoType } from "./interfaces/UserInterface";
@@ -30,19 +36,25 @@ function App() {
         loading: true, error: ""
     });
 
+    const location = useLocation();
+
     const navigate = useNavigate();
 
     const getJwt = localStorage.getItem('seokho_jwt');
 
-    const props: PropsType = {
-        propLoginInfo: {
-            // userInfo 가 null 일 경우 기본값.
-            userNo: userInfo?.userNo || 0,
-            id : userInfo?.id || '',
-            name : userInfo?.name || ''
-        },
-        setUserInfo
-    }
+
+
+    const getTitle = () => {
+        const path = location.pathname;
+        if (path === '/user/signup') return '회원가입 페이지';
+        if (path === '/login') return '로그인 페이지';
+        if (path.includes('/user')) return '회원 관련 페이지';
+        if (path.includes('/product')) return '상품 관련 페이지';
+        if (path.includes('/board')) return '게시판 관련 페이지';
+        return '메인 페이지';
+    };
+
+    const title = getTitle();
 
     const fetchUserInfo = async () => {
         try {
@@ -62,9 +74,23 @@ function App() {
         }
     };
 
+    const props: PropsType = {
+        propLoginInfo: {
+            // userInfo 가 null 일 경우 기본값.
+            userNo: userInfo?.userNo || 0,
+            id : userInfo?.id || '',
+            name : userInfo?.name || ''
+        },
+        setUserInfo
+    }
+
     useEffect(() => {
         if (!getJwt) {
             setUserInfo(null);
+            setCommonStat(prev => ({
+                ...prev,
+                loading: false
+            }))
             return;
         }
 
@@ -97,108 +123,115 @@ function App() {
 
     return (
         <div className="App container" style={{paddingLeft: '3%'}}>
-            <Home {...props}/>
-            <Routes>
-                <Route path={"/"}
-                       element={
-                           //  컴포넌트 이해를 위해 메인에서 렌더링 시도.
-                           <>
-                               <div className="section">
-                                   <UserList/>
-                               </div>
-                               <div className="section">
-                                   <ProductList/>
-                               </div>
-                               <div className="section">
-                                   <BoardList/>
-                               </div>
-                           </>}
-                />
-                <Route path={"/login"}
-                       element={
-                           <>
-                               <div className="section">
-                                   <Login/>
-                               </div>
-                           </>}
-                />
-                {props.propLoginInfo.id === '' && (<Route path={"/user/signup"}
-                                                          element={
-                                                              <>
-                                                                  <div className="section">
-                                                                      <Signup/>
-                                                                  </div>
-                                                              </>}
-                />)}
-                <Route path={"/user/allUserSelect"}
-                       element={
-                           <>
-                               <div className="section">
-                                   <UserList/>
-                               </div>
-                           </>}
-                />
-                <Route path={"/user/:id"}
-                       element={
-                           <>
-                               <div className="section">
-                                   <UserDetail/>
-                               </div>
-                           </>}
-                />
-                <Route path={"/product/infoProds"}
-                       element={
-                           <>
-                               <div className="section">
-                                   <ProductList/>
-                               </div>
-                           </>}
-                />
-                <Route path={"/product/insert"}
-                       element={
-                           <>
-                               <div className="section">
-                                   <ProductRegister/>
-                               </div>
-                           </>}
-                />
-                <Route path={"/product/:prodSeqNo"}
-                       element={
-                           <>
-                               <div className="section">
-                                   <ProductDetail/>
-                               </div>
-                           </>}
-                />
-                <Route path={"/board/getList"}
-                       element={
-                           <>
-                               <div className="section">
-                                   <BoardList/>
-                               </div>
-                           </>}
-                />
-                <Route path={"/board/:seqNo"}
-                       element={
-                           <>
-                               <div className="section">
-                                   <BoardDetail {...props}/>
-                               </div>
-                           </>
-                       }
-                />
-                <Route path={"/board/boardReg"}
-                       element={
-                           <>
-                               <div className="section">
-                                   <BoardRegister propLoginInfo={props.propLoginInfo} setUserInfo={props.setUserInfo}/>
-                               </div>
-                           </>}
-                />
-            </Routes>
-            <div className={"divider"} style={{ opacity: "0.3", background: "#868686" }}/>
-            <Footer/>
-
+            <Sidebar {...props} />
+            <div className="content-wrapper">
+                <main className={"main-content"}>
+                    <div className={"container"}>
+                        <h2 style={{marginLeft: "1em"}}>{title} 입니다.</h2>
+                        <div className={"divider"}/>
+                        <Routes>
+                            <Route path={"/"}
+                                   element={
+                                       //  컴포넌트 이해를 위해 메인에서 렌더링 시도.
+                                       <>
+                                           <div className="section">
+                                               <UserList/>
+                                           </div>
+                                           <div className="section">
+                                               <ProductList/>
+                                           </div>
+                                           <div className="section">
+                                               <BoardList/>
+                                           </div>
+                                       </>}
+                            />
+                            <Route path={"/login"}
+                                   element={
+                                       <>
+                                           <div className="section">
+                                               <Login/>
+                                           </div>
+                                       </>}
+                            />
+                            {props.propLoginInfo.id === '' && (<Route path={"/user/signup"}
+                                                                      element={
+                                                                          <>
+                                                                              <div className="section">
+                                                                                  <Signup/>
+                                                                              </div>
+                                                                          </>}
+                            />)}
+                            <Route path={"/user/allUserSelect"}
+                                   element={
+                                       <>
+                                           <div className="section">
+                                               <UserList/>
+                                           </div>
+                                       </>}
+                            />
+                            <Route path={"/user/:id"}
+                                   element={
+                                       <>
+                                           <div className="section">
+                                               <UserDetail/>
+                                           </div>
+                                       </>}
+                            />
+                            <Route path={"/product/infoProds"}
+                                   element={
+                                       <>
+                                           <div className="section">
+                                               <ProductList/>
+                                           </div>
+                                       </>}
+                            />
+                            <Route path={"/product/insert"}
+                                   element={
+                                       <>
+                                           <div className="section">
+                                               <ProductRegister/>
+                                           </div>
+                                       </>}
+                            />
+                            <Route path={"/product/:prodSeqNo"}
+                                   element={
+                                       <>
+                                           <div className="section">
+                                               <ProductDetail/>
+                                           </div>
+                                       </>}
+                            />
+                            <Route path={"/board/getList"}
+                                   element={
+                                       <>
+                                           <div className="section">
+                                               <BoardList/>
+                                           </div>
+                                       </>}
+                            />
+                            <Route path={"/board/:seqNo"}
+                                   element={
+                                       <>
+                                           <div className="section">
+                                               <BoardDetail {...props}/>
+                                           </div>
+                                       </>
+                                   }
+                            />
+                            <Route path={"/board/boardReg"}
+                                   element={
+                                       <>
+                                           <div className="section">
+                                               <BoardRegister {...props} />
+                                           </div>
+                                       </>}
+                            />
+                        </Routes>
+                    </div>
+                </main>
+                <div className={"divider"}/>
+                <Footer/>
+            </div>
         </div>
     );
 }

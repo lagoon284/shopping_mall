@@ -26,9 +26,9 @@ export interface BoardInsFormDataType {
     depth : number
 
     // 첨부파일
-    attachments : string[]
+    attachments : File[] | null
     // 이미지
-    images : string[]
+    images : ImageData[] | null
 }
 
 export interface BoardListType {
