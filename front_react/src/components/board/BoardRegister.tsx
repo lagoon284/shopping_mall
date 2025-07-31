@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
+import ApiClient from "../util/ApiClient";
+import {useAuth} from "../../contexts/AuthContext";
 
 import {CommonType} from "../../interfaces/CommonInterface";
 import {BoardInsFormDataType} from "../../interfaces/BoardInterface";
-import {PropsType} from "../../interfaces/PropsInterface";
 
-export default function BoardRegister(props: PropsType) {
+export default function BoardRegister() {
+    const { user, logout, isLoggedIn } = useAuth();
     const navigate = useNavigate();
 
     // 로딩상태 관리
@@ -17,7 +18,7 @@ export default function BoardRegister(props: PropsType) {
 
     const [ formData, setFormData ] = useState<BoardInsFormDataType>({
         // 사용할 상태변수 초기화.
-        title: "", content: "", writer: "", writerId: props.propLoginInfo.id,
+        title: "", content: "", writer: "", writerId: user?.id,
 
         // 사용할 메세지 상태변수 초기화.
         titleMsg: "", contentMsg: "", writerMsg: "",
@@ -113,21 +114,22 @@ export default function BoardRegister(props: PropsType) {
             }
 
             const fetchRegBoard = async () => {
-                await axios.post('http://localhost:8080/api/board/insert', reqData)
-                    .then(res => {
-                        if (res.data.statCode === 'success') {
-                            // console.log("if inner : " + res.data.statCode);
-                            alert("글 등록이 완료되었습니다. 게시판 화면으로 이동합니다.");
-                            navigate('/board/getList');
-                        }
-                    })
-                    .catch(err => {
-                        console.log('Error fetching data:', err);
-                        setCommonStat(prev => ({
-                            ...prev,
-                            error: 'Error fetching data : ' + err
-                        }))
-                    })
+                try {
+                    const res = await ApiClient.post('/api/board/insert', reqData);
+
+                    if(res.data.statCode === 'success') {
+                        alert("글 등록이 완료되었습니다. 게시판 화면으로 이동합니다.");
+                        navigate('/board/getList');
+                    } else {
+                        alert('글 등록에 실패했습니다. 다시 시도해 주세요.');
+                    }
+                } catch (err) {
+                    console.log('Error fetching data:', err);
+                    setCommonStat(prev => ({
+                        ...prev,
+                        error: 'Error fetching data : ' + err
+                    }))
+                }
             }
 
             fetchRegBoard();
@@ -137,9 +139,9 @@ export default function BoardRegister(props: PropsType) {
     }
 
     useEffect(() => {
-        if(!props.propLoginInfo.id || props.propLoginInfo.id === "") {
+        if(!isLoggedIn) {
             alert("로그인이 필요한 작업입니다.");
-            props.setUserInfo(null);
+            logout();
             navigate("/login");
         }
 
@@ -147,7 +149,7 @@ export default function BoardRegister(props: PropsType) {
             ...Prev,
             loading: false
         }))
-    }, [props.propLoginInfo.id]);
+    }, [isLoggedIn]);
 
     if (commonStat.loading) {
         return (

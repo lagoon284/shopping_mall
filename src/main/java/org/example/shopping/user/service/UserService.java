@@ -30,12 +30,9 @@ public class UserService {
 
     public AuthToken login(Login loginReq) {
         // 받은 id 값으로 조회. 전체 데이터. pw포함.
-        User user = Optional.ofNullable(userMapper.selectUserById(loginReq.getUserId()))
+        User user = Optional.ofNullable(userMapper.selectUserById(loginReq.getId()))
                 // 검증 실패시 null 리턴, 컨트롤러에서 핸들링 함.
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
-        // 일부 데이터 userNo, id, name
-        LoginInfo loginInfo = new LoginInfo(user.getUserNo(), user.getId(), user.getName());
 
         // 조회한 pw 값으로 밉력받은 pw 와 비교하여 검증.
         if (!user.getPw().equals(loginReq.getPw())) {
@@ -43,8 +40,8 @@ public class UserService {
             throw new CustomException(ErrorCode.USER_NOT_EQUALS_PASSWORD);
         }
 
-        String jwtAccToken = jwtUtil.generateAccToken(loginInfo);
-        String jwtRefToken = jwtUtil.generateRefToken(loginInfo.getId());
+        String jwtAccToken = jwtUtil.generateAccToken(user.getId(), user.getRole());
+        String jwtRefToken = jwtUtil.generateRefToken(user.getId());
 
         // 입력된 아이디 회원 정보에 AUTHTOKEN이 존재하는지?
         if (authTokenMapper.getTokenToId(user.getId())) {
@@ -59,28 +56,25 @@ public class UserService {
             }
         }
 
-        return new AuthToken(loginReq.getUserId(), jwtAccToken);
+        return new AuthToken(loginReq.getId(), jwtAccToken);
     }
 
     public AuthToken refLogin(User user) {
 
-        LoginInfo loginInfo = Optional.ofNullable(authTokenMapper.getLoginInfo(user.getId()))
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        String newAccToken = jwtUtil.generateAccToken(user.getId(), user.getRole());
+        String newRefToken = jwtUtil.generateRefToken(user.getId());
 
-        String newAccToken = jwtUtil.generateAccToken(loginInfo);
-        String newRefToken = jwtUtil.generateRefToken(loginInfo.getId());
-
-        authTokenMapper.updToken(loginInfo.getId(), newAccToken, newRefToken);
+        authTokenMapper.updToken(user.getId(), newAccToken, newRefToken);
 
         return new AuthToken(user.getId(), newAccToken);
     }
 
-    public User getAuthInfo(String token) {
+    public User getAuthInfo(String refToken) {
 
-        Optional<AuthToken> authTokenOptional = Optional.ofNullable(authTokenMapper.getTokenByRefToken(token));
+        Optional<AuthToken> authTokenOptional = Optional.ofNullable(authTokenMapper.getTokenByRefToken(refToken));
 
         AuthToken getAuthInfo = authTokenOptional
-                .filter(authToken -> authToken.getRefreshToken().equals(token))
+                .filter(authToken -> authToken.getRefreshToken().equals(refToken))
                 // 인증에 실패했을 때 핸들링.
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTH_REF_SIGNATURE_FAIL_ERROR));
 

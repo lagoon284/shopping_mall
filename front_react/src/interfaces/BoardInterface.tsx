@@ -2,7 +2,7 @@ export interface BoardInsFormDataType {
     title : string
     content : string
     writer : string
-    writerId : string
+    writerId : string | null | undefined
 
     // 입력 안내 메세지
     titleMsg : string

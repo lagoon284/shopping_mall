@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {Route, Routes, useNavigate} from "react-router-dom";
-import axios from "axios";
 
 // Layout Components
 import Sidebar from "./components/layout/Sidebar";
 import Footer from "./components/layout/Footer";
-import PageLayout from "./components/layout/PageLayout"; // 1단계에서 만든 레이아웃 컴포넌트
+import PageLayout from "./components/layout/PageLayout";
 
 // Page Components
 import Signup from "./components/user/Signup";
@@ -20,53 +19,35 @@ import BoardList from "./components/board/BoardList";
 import BoardDetail from "./components/board/BoardDetail";
 
 // Interfaces
-import { PropsType } from "./interfaces/PropsInterface";
-import { UserInfoType } from "./interfaces/UserInterface";
+import { LoginDetailType } from "./interfaces/UserInterface";
+import {useAuth} from "./contexts/AuthContext";
 
 function NewApp() {
-    const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
+    // const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
+    const { isLoggedIn } = useAuth();
+    const [ loginInfo, setLoginInfo ] = useState<LoginDetailType | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true); // 로딩 상태를 더 간단하게 관리
 
     const navigate = useNavigate();
-    const getJwt = localStorage.getItem('seokho_jwt');
-
-    // Sidebar에 전달할 props를 명확하게 정의합니다.
-    const props: PropsType = {
-        propLoginInfo: {
-            userNo: userInfo?.userNo || 0,
-            id : userInfo?.id || '',
-            name : userInfo?.name || ''
-        },
-        setUserInfo
-    };
 
     useEffect(() => {
+        const getId = localStorage.getItem('id');
+        const getJwt = localStorage.getItem('seokho_jwt');
+
         if (!getJwt) {
-            setUserInfo(null);
+            setLoginInfo(null);
             setIsLoading(false);
             return;
+        } else {
+            setLoginInfo({
+                userId: getId,
+                accessToken: getJwt
+            })
         }
 
-        const fetchUserInfoOnLoad = async () => {
-            try {
-                const response = await axios.post('http://localhost:8080/api/protected/accData', {}, {
-                    headers: { 'Authorization': 'seokhoAccAuth ' + getJwt }
-                });
-                localStorage.setItem('id', response.data.data.id);
-                localStorage.setItem('seokho_jwt', response.data.data.accessToken);
-                setUserInfo(response.data.data);
-            } catch (err) {
-                localStorage.removeItem('id');
-                localStorage.removeItem('seokho_jwt');
-                alert('자동 로그인 인증에 실패하였습니다. 다시 로그인 해주세요.');
-                navigate('/login');
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        setIsLoading(false);
 
-        fetchUserInfoOnLoad();
-    }, [getJwt, navigate]); // getJwt 값이 변경될 때만 실행되도록 수정
+    }, [navigate, isLoggedIn]); // getJwt 값이 변경될 때만 실행되도록 수정
 
     if (isLoading) {
         return (
@@ -79,7 +60,7 @@ function NewApp() {
     return (
         // 최상위 div의 클래스를 app-layout으로 변경하여 CSS가 올바르게 적용되도록 합니다.
         <div className="app-layout">
-            <Sidebar {...props} />
+            <Sidebar />
             <div className="content-wrapper">
                 <main className="main-content">
                     {/* Routes 바깥에 있던 불필요한 container와 title을 제거하고 각 페이지가 자체적으로 관리하도록 합니다. */}
@@ -97,7 +78,7 @@ function NewApp() {
                         <Route path={"/login"} element={<PageLayout><Login /></PageLayout>} />
 
                         {/* 로그인하지 않았을 때만 회원가입 페이지를 보여줍니다. */}
-                        {!userInfo && <Route path={"/user/signup"} element={<PageLayout><Signup /></PageLayout>} />}
+                        {!loginInfo && <Route path={"/user/signup"} element={<PageLayout><Signup /></PageLayout>} />}
 
                         <Route path={"/user/allUserSelect"} element={<PageLayout><UserList /></PageLayout>} />
                         <Route path={"/user/:id"} element={<PageLayout><UserDetail /></PageLayout>} />
@@ -107,8 +88,8 @@ function NewApp() {
                         <Route path={"/product/:prodSeqNo"} element={<PageLayout><ProductDetail /></PageLayout>} />
 
                         <Route path={"/board/getList"} element={<PageLayout><BoardList /></PageLayout>} />
-                        <Route path={"/board/:seqNo"} element={<PageLayout><BoardDetail {...props} /></PageLayout>} />
-                        <Route path={"/board/boardReg"} element={<PageLayout><BoardRegister {...props} /></PageLayout>} />
+                        <Route path={"/board/:seqNo"} element={<PageLayout><BoardDetail /></PageLayout>} />
+                        <Route path={"/board/boardReg"} element={<PageLayout><BoardRegister /></PageLayout>} />
                     </Routes>
                 </main>
                 <Footer />

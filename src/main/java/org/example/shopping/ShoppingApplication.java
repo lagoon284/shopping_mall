@@ -16,9 +16,7 @@ public class ShoppingApplication {
 	@Value("${test}")
 	private String test;
 
-	public static void main(String[] args) {
-		SpringApplication.run(ShoppingApplication.class, args);
-	}
+	public static void main(String[] args) {SpringApplication.run(ShoppingApplication.class, args);}
 
 	// 의존성 주입 타이밍에서 실행해줌. 어떤 properties 파일이 컴파일 됐는지 확인하기 위해 사용함.
 	@PostConstruct

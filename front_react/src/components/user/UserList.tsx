@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import ApiClient from "../util/ApiClient";
 import {Link} from "react-router-dom";
 
 import { CommonType } from "../../interfaces/CommonInterface";
@@ -15,16 +15,15 @@ function UserList() {
 
     useEffect(() => {
         const fetchUserInfo = async () => {
-            await axios.get('http://localhost:8080/api/user/allUserSelect')
+            await ApiClient.get('/admin/user/allUserSelect')
             .then(res => {
-                // console.log(res.data.data);
                 setUsers(res.data.data);
             })
             .catch(error => {
                 console.log('Error fetching data:', error);
                 setCommonStat(prev => ({
                     ...prev,
-                    error: 'Error fetching data:' + error
+                    error: '데이터를 불러오는 중 오류가 발생했습니다. : ' + error
                 }))
             })
             .finally(() => {

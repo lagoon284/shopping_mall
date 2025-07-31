@@ -2,16 +2,16 @@ import React from "react";
 import {Link, useLocation} from "react-router-dom";
 import {PropsType} from "../interfaces/PropsInterface";
 
-function Home({ propLoginInfo, setUserInfo }: PropsType) {
-    const loginFlag: boolean = propLoginInfo.id !== "";
+function Home({ propLoginInfo, setLoginInfo }: PropsType) {
+    const loginFlag: boolean = propLoginInfo.userId !== "";
 
     function Logout(event: React.MouseEvent<HTMLAnchorElement>) {
         event.preventDefault();
 
-        localStorage.setItem('id', '');
-        localStorage.setItem('seokho_jwt', '');
+        // localStorage.setItem('id', '');
+        // localStorage.setItem('seokho_jwt', '');
 
-        setUserInfo(null);
+        setLoginInfo(null);
 
         alert("정상적으로 로그아웃 되었습니다.");
     }
@@ -39,7 +39,7 @@ function Home({ propLoginInfo, setUserInfo }: PropsType) {
                 </div>
                 <p/>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                    {loginFlag && <p style={{textAlign: "right", marginRight: "2em"}}>{propLoginInfo.name} 님, 환영합니다.</p>}
+                    {loginFlag && <p style={{textAlign: "right", marginRight: "2em"}}>{propLoginInfo.userId} 님, 환영합니다.</p>}
                 </div>
             </aside>
         </>

@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import axios from "axios";
+import {useAuth} from "../../contexts/AuthContext";
 
 import {CommonType} from "../../interfaces/CommonInterface";
 import {BoardDetailType} from "../../interfaces/BoardInterface";
 import { PropsType } from "../../interfaces/PropsInterface";
 
-export default function BoardDetail(props: PropsType) {
+export default function BoardDetail() {
+    const { user } = useAuth();
     // seqNo 받기
     const { seqNo } = useParams<{ seqNo: string | undefined }>();
     // 객체 데이터
@@ -92,8 +94,7 @@ export default function BoardDetail(props: PropsType) {
                 }))
                 return;
             }
-
-            const isOwner = props.propLoginInfo.id === boardData.writerId;
+            const isOwner = user?.id === boardData.writerId;
 
             if (!isOwner && !viewed) {
                 await viewedPostPlus(boardData, seqNo);
@@ -110,7 +111,7 @@ export default function BoardDetail(props: PropsType) {
                 loading: false
             }))
         })();
-    }, [seqNo, props.propLoginInfo.id]);
+    }, [seqNo, user?.id]);
 
     if (commonStat.loading) {
         return (

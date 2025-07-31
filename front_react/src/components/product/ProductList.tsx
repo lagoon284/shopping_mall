@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
+import ApiClient from "../util/ApiClient";
 import {Link} from "react-router-dom";
 
 import { CommonType } from "../../interfaces/CommonInterface";
@@ -16,7 +16,8 @@ function ProductList() {
 
     useEffect(() => {
         const fetchProductInfo = async () => {
-            await axios.get('http://localhost:8080/api/product/infoProds')
+            await ApiClient.get('/auth/product/infoProds', {
+            })
                 .then(res => {
                     setProds(res.data.data);
                 })

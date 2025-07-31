@@ -15,6 +15,7 @@
                 , PW
                 , NAME
                 , ADDR
+                , ROLE
                 , SLEEPFLAG
                 , REGDATE
                 , UPDDATE

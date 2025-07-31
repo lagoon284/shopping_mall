@@ -7,19 +7,19 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 //@Builder
 public class LoginInfo {                            // 로그인 후 정보.
 
-    private Long userNo;                          // 유저 번호.
+//    private Long userNo;                          // 유저 번호.
     private String id;                              // 유저 아이디.
-    private String name;                            // 유저 네임.
+//    private String name;                            // 유저 네임.
 
     private String accessToken;
 
-    public LoginInfo(Long userNo, String id, String name) {
-        this.userNo = userNo;
+    public LoginInfo(String id) {
+//        this.userNo = userNo;
         this.id = id;
-        this.name = name;
+//        this.name = name;
     }
 }

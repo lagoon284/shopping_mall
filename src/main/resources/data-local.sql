@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS USERS (
     NAME            NVARCHAR(30)     NOT NULL ,
     ADDR            NVARCHAR(255)    NOT NULL ,
     SLEEPFLAG       BOOLEAN         NOT NULL    DEFAULT FALSE ,
+    ROLE            VARCHAR(10)     NOT NULL    DEFAULT USER,
 
     REGDATE         VARCHAR(19)     NOT NULL ,
     UPDDATE         VARCHAR(19)
@@ -110,13 +111,13 @@ CREATE TABLE IF NOT EXISTS COMMENTINFO (
 );
 
 -- 회원 데이터 삽입.
-INSERT INTO USERS (ID, PW, NAME, ADDR, REGDATE)
+INSERT INTO USERS (ID, PW, NAME, ADDR, ROLE, REGDATE)
 SELECT *
-FROM (SELECT 'test1' AS ID, '1234' AS PW, 'John Doe' AS NAME, '경기도 용인시 어쩌구 저쩌구' AS ADDR, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') AS REGDATE UNION ALL
-      SELECT 'test2', '1234', 'Jane Smith', '경기도 화성시 어쩌구 저쩌구', FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
-      SELECT 'test3', '1234', 'Alice Johnson', '경기도 성남시 어쩌구 저쩌구', FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
-      SELECT 'test4', '1234', 'Bob Brown', '서울 중랑구 어쩌구 저쩌구', FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
-      SELECT 'test5', '1234', 'Charlie Green', '경기도 구리시 어쩌구 저쩌구', FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss')) AS TEMP
+FROM (SELECT 'test1' AS ID, '1234' AS PW, 'John Doe' AS NAME, '경기도 용인시 어쩌구 저쩌구' AS ADDR, 'ADMIN' AS ROLE, FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') AS REGDATE UNION ALL
+      SELECT 'test2', '1234', 'Jane Smith', '경기도 화성시 어쩌구 저쩌구', 'USER', FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
+      SELECT 'test3', '1234', 'Alice Johnson', '경기도 성남시 어쩌구 저쩌구', 'USER', FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
+      SELECT 'test4', '1234', 'Bob Brown', '서울 중랑구 어쩌구 저쩌구', 'USER', FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss') UNION ALL
+      SELECT 'test5', '1234', 'Charlie Green', '경기도 구리시 어쩌구 저쩌구', 'USER', FORMATDATETIME(CURRENT_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss')) AS TEMP
 WHERE NOT EXISTS (SELECT 1 FROM USERS);
 
 -- 상품 데이터 삽입.

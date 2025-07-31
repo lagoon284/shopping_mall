@@ -1,6 +1,9 @@
 package org.example.shopping.user.dto;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.*;
+import org.example.shopping.util.Role;
 import org.example.shopping.util.common.dto.RetAttributes;
 
 @EqualsAndHashCode(callSuper = true)
@@ -21,5 +24,8 @@ public class User extends RetAttributes {           // 유저 모델.
     private String addr;                            // 회원이 설정한 주소.
 
     private boolean sleepFlag;                      // 휴면 계정 flag.
+    
+    @Enumerated(EnumType.STRING)
+    private Role role;                              // 권한 속성
 
 }

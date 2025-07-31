@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
+import ApiClient from "../util/ApiClient";
 
 import {CommonType} from "../../interfaces/CommonInterface";
 import { BoardListType } from "../../interfaces/BoardInterface";
@@ -18,7 +18,7 @@ function BoardList() {
 
     useEffect(() => {
         const fetchBoardList = async () => {
-            await axios.get('http://localhost:8080/api/board/getList')
+            await ApiClient.get('/board/getList')
                 .then(res => {
                     setBoards(res.data.data);
                 })
@@ -26,7 +26,7 @@ function BoardList() {
                     console.log('Error fetching data:', error);
                     setCommonStat(prev => ({
                         ...prev,
-                        error: "데이터를 불러오는 중 오류가 발생했습니다: " + error.message
+                        error: "데이터를 불러오는 중 오류가 발생했습니다. : " + error.message
                     }));
                 })
                 .finally(() => {

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useAuth } from "../../contexts/AuthContext";
 
 import {LoginStateType} from "../../interfaces/LoginInterface";
+import {LoginData} from "../../interfaces/AuthInterface";
+import axios from "axios";
 
 export default function Login() {
+    const { login } = useAuth();
     const navigate = useNavigate();
-
     const [ state, setState ] = useState<LoginStateType>({
         userId: "",
         pw: "",
@@ -36,32 +38,45 @@ export default function Login() {
         }));
     }
 
-    const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const loginData = {
-            userId: state.userId,
+        const loginData: LoginData = {
+            id: state.userId,
             pw: state.pw
         };
 
-        axios.put('http://localhost:8080/api/auth/login', loginData)
-            .then(res => {
-                if (res.data.data) {
-                    localStorage.setItem('id', res.data.data.userId);
-                    localStorage.setItem('seokho_jwt', res.data.data.accessToken);
-                    navigate('/');
+        try {
+            await login(loginData)
+            navigate('/');
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                if(err.response) {
+                    console.error('API Error:', err.response.data);
+                    console.error('Status Code:', err.response.status);
+
+                    if (err.status === 403) {
+                        setState(prev => ({
+                            ...prev,
+                            loginMsg: 'jwt 이 만료되었습니다. 재로그인 시도해주세요.'
+                        }));
+                    } else {
+                        setState(prev => ({
+                            ...prev,
+                            loginMsg: '로그인에 실패하였습니다. 아이디와 비밀번호를 확인해 주세요.'
+                        }));
+                    }
+                } else {
+                    // 요청은 보냈지만 응답을 받지 못한 경우 (네트워크 문제 등)
+                    alert('서버로부터 응답이 없습니다.');
                 }
-            })
-            .catch(err => {
-                console.log('Error fetching data:', err);
-
-                setState(prev => ({
-                    ...prev,
-                    loginMsg: '로그인에 실패하였습니다. 아이디와 비밀번호를 확인해 주세요.'
-                }));
-            })
+            } else {
+                // axios 에러가 아닌 다른 종류의 에러일 경우 (예: 렌더링 에러)
+                console.error('An unexpected error occurred:', err);
+                alert('예상치 못한 오류가 발생했습니다.');
+            }
+        }
     }
-
 
     return (
         <>

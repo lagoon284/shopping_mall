@@ -9,7 +9,7 @@ import lombok.Data;
 public class Login {                            // 로그인 요청 파라미터.
 
     @NotBlank
-    private String userId;                      // user id.
+    private String id;                      // user id.
 
     @NotBlank
     private String pw;                          // 패스워드.

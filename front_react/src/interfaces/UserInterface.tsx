@@ -1,7 +1,8 @@
 export interface LoginDetailType {
-    userNo : number
-    id : string
-    name : string
+    // userNo : number
+    userId : string | null
+    // name : string
+    accessToken : string | null
 }
 
 export interface FormDataType {

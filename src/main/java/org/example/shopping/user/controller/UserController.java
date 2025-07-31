@@ -33,12 +33,7 @@ public class UserController {
         return userService.oneUserSelect(id);
     }
 
-    // 모든 계정 정보 select.
-    @GetMapping("/allUserSelect")
-    public List<User> allUserSelect() {
 
-        return userService.allUserSelect();
-    }
 
     // 회원정보 수정 id 값 변경 불가.
     @PutMapping("/updateInfo")
