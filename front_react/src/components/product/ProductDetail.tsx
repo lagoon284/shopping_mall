@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import ApiClient from "../util/ApiClient";
 import {useParams} from "react-router-dom";
 
 import { CommonType } from "../../interfaces/CommonInterface";
@@ -20,7 +20,7 @@ function ProductDetail() {
         if (Number(prodSeqNo) <= 0) return;
         const fetchProdInfo = async (seqNo: number) => {
             try {
-                const res = await axios.get(`http://localhost:8080/api/product/prodNo/${seqNo}`);
+                const res = await ApiClient.get(`/product/prodNo/${seqNo}`);
                 setProd(res.data.data);
             } catch (err) {
                 setCommonStat(prev => ({

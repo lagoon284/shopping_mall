@@ -1,5 +1,5 @@
 // axios 인스턴스 설정 파일 (e.g., api.js)
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
 
 const ApiClient = axios.create({
     baseURL: 'http://localhost:8080/api', // 백엔드 주소
@@ -21,14 +21,19 @@ export const setupAxiosInterceptors = (onNewToken: (token: string) => void) => {
 
             return response;
         },
-        (error) => {
+        (error: AxiosError) => {
+            // if (error.response?.status === 401) {
+            //     console.log('setupAxiosInterceptors 로그아웃');
+            //     onForceLogout();     매개변수로 로그아웃 줘야함.
+            // }
+
             return Promise.reject(error);
         }
     );
 }
 
 // 요청 인터셉터도 추가 (localStorage에서 토큰 꺼내서 헤더에 넣기)
-ApiClient.interceptors.request.use(
+/*ApiClient.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('seokho_jwt');
 
@@ -41,6 +46,6 @@ ApiClient.interceptors.request.use(
     (error) => {
         return Promise.reject(error);
     }
-);
+);*/
 
 export default ApiClient;

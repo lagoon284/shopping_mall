@@ -1,25 +1,21 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
+import ApiClient from "../util/ApiClient";
 
 import { CommonType } from "../../interfaces/CommonInterface";
 import {FormDataRegExpType, FormDataType} from "../../interfaces/UserInterface";
 
 export default function Signup() {
     const navigate = useNavigate();
-
     // 로딩 상태 관리
     const [ commonStat, setCommonStat ] = useState<CommonType>({
         loading: true, error: ""
     });
-
     const [ formData, setFormData ] = useState<FormDataType>({
         // 사용할 상태변수 초기화.
         id: "", pw: "", confirmPw: "", name: "", addr: "",
-
         // 사용할 메세지 상태변수 초기화.
         idMsg: "", pwMsg: "", confirmMsg: "", nameMsg: "", addrMsg: "",
-
         // 유효성 상태변수 초기화.
         isId: false, isPw: false, isConfirm: false, isName: false, isAddr: false
     });
@@ -30,7 +26,7 @@ export default function Signup() {
         if (currentId !== '' && currentId !== null) {
             // 아이디 중복확인 true = 중복되지 않음, false = 중복됨.
             const fetchIdCheck = async () => {
-                await axios.get(`http://localhost:8080/api/user/${currentId}`)
+                await ApiClient.get(`/user/${currentId}`)
                     .then(res => {
                         if (res.data.data !== null) {
                             setFormData(prvData => ({
@@ -41,6 +37,7 @@ export default function Signup() {
                         }
                     })
                     .catch(error => {
+                        // 아이디 중복 확인 로직 -> exception 발생시 중복없는 것.
                         console.log('Error fetching data:', error);
                         setFormData(prvData => ({
                             ...prvData,
@@ -176,10 +173,9 @@ export default function Signup() {
             }
 
             const fetchSignup = async () => {
-                await axios.post('http://localhost:8080/api/user/signup', reqData)
+                await ApiClient.post('/user/signup', reqData)
                     .then(res => {
                         if (res.data.statCode === 'success') {
-                            // console.log("if inner : " + res.data.statCode);
                             alert("회원가입이 완료되었습니다. 로그인화면으로 이동합니다.");
                             navigate('/login');
                         }

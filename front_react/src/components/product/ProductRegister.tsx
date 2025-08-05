@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
+import ApiClient from "../util/ApiClient";
 
 import { CommonType } from "../../interfaces/CommonInterface";
 import {ProdInsFormDataType} from "../../interfaces/ProdInterface";
 
 export default function ProductRegister() {
     const navigate = useNavigate();
-
     // 로딩 상태 관리
     const [ commonStat, setCommonStat ] = useState<CommonType>({
         loading: true, error: ""
     });
-
     const [ formData, setFormData ] = useState<ProdInsFormDataType>({
         // 사용할 상태변수 초기화.
         prodName: "", price: 0, provider: "", info: "", useFlag: true,
@@ -30,7 +28,7 @@ export default function ProductRegister() {
         if (currentVal !== '' && currentVal !== null) {
             // 아이디 중복확인 true = 중복되지 않음, false = 중복됨.
             const fetchIdCheck = async () => {
-                await axios.get(`http://localhost:8080/api/product/prodName/${currentVal}`)
+                await ApiClient.get(`/product/prodName/${currentVal}`)
                     .then(res => {
                         if (!Array.isArray(res.data.data) && res.data.data.length !== 0) {
                             setFormData(prvData => ({
@@ -168,7 +166,7 @@ export default function ProductRegister() {
             }
 
             const fetchSignup = async () => {
-                await axios.post('http://localhost:8080/api/product/insert', reqData)
+                await ApiClient.post('/product/insert', reqData)
                     .then(res => {
                         if (res.data.statCode === 'success') {
                             // console.log("if inner : " + res.data.statCode);

@@ -6,7 +6,7 @@ interface PageLayoutProps {
 }
 
 function PageLayout({ children }: PageLayoutProps) {
-    // 모든 페이지 콘텐츠는 자동으로 .section 클래스로 감싸집니다.
+    // 모든 페이지 콘텐츠는 자동으로 .section 클래스로 감싼다.
     return (
         <div className="section">
             {children}

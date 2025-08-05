@@ -7,7 +7,7 @@
 //import org.example.shopping.util.exception.enums.ErrorCode;
 //import org.example.shopping.util.exception.dto.CustomException;
 //import org.example.shopping.user.service.UserService;
-//import org.example.shopping.util.common.JwtUtil;
+//import org.example.shopping.util.common.security.JwtUtil;
 //import org.springframework.web.bind.annotation.*;
 //
 //import java.util.Optional;

@@ -13,12 +13,12 @@ export interface LoginData {
 export interface DecodedToken {
     sub: string
     role: string
-    // exp: number      토큰 만료 처리는 자바에서 진행함으로 사용하지 않음.
+    exp: number
 }
 
 export interface AuthContextType {
     user: AuthToken | null;
-    token: string | null;
+    token: string | null | undefined;
     isLoggedIn: boolean;
     login: (loginData: LoginData) => Promise<void>; // 로그인 함수
     logout: () => void; // 로그아웃 함수

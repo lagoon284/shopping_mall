@@ -1,4 +1,4 @@
-package org.example.shopping.util.common;
+package org.example.shopping.util.common.security;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 요청 헤더에서 토큰을 추출.
+        // 클라이언트 요청 헤더에서 토큰을 추출.
         String token = resolveToken(request);
 
         if (token != null && !token.isEmpty()) {
@@ -50,16 +50,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (!jwtUtil.isTokenExpired(token)) {
                 claims = jwtUtil.getClaimsFromToken(token);
             } else {
+                // accToken이 유효 하지 않을 경우.
                 AuthToken getNewToken = getProtectRefData(token);
                 claims = jwtUtil.getClaimsFromToken(getNewToken.getAccessToken());
 
-                // 응답 헤더에 새로 발급된 Access Token을 추가해준다.
+                // 응답 헤더에 새로 발급된 Access Token을 추가.
                 response.setHeader("new-access-token", getNewToken.getAccessToken());
             }
 
             userId = claims.getSubject();
             role = claims.get("role", String.class);
-
 
             SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
 
@@ -92,7 +92,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Optional<AuthToken> authTokenOptional = Optional.ofNullable(authTokenMapper.getTokenByAccToken(token));
 
         AuthToken getAuthToken = authTokenOptional
-                .filter(authToken -> !jwtUtil.isTokenExpired(authToken.getRefreshToken()))
+                .filter(authToken -> jwtUtil.isTokenExpired(authToken.getRefreshToken()))
                 .orElseThrow(() -> new CustomException(ErrorCode.AUTH_REF_SIGNATURE_EXPIRED_ERROR));
 
         // ref token 유효기간이 유효할 때 token 갱신.

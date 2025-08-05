@@ -1,10 +1,3 @@
-export interface LoginDetailType {
-    // userNo : number
-    userId : string | null
-    // name : string
-    accessToken : string | null
-}
-
 export interface FormDataType {
     // 사용할 상태변수 초기화.
     id : string

@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import ApiClient, { setupAxiosInterceptors } from "../components/util/ApiClient";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 import { DecodedToken, AuthContextType, AuthProviderProps, AuthToken, LoginData } from "../interfaces/AuthInterface";
 
@@ -9,8 +10,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // AuthProvider 컴포넌트 구현
 export function AuthProvider({ children }: AuthProviderProps ) {
+    const navigate = useNavigate();
     const [ user, setUser] = useState<AuthToken | null>(null);
-    const [ token, setToken] = useState<string | null>(() => localStorage.getItem('seokho_jwt'));
+    const [ token, setToken] = useState<string | null | undefined>(() => localStorage.getItem('seokho_jwt'));
 
     useEffect(() => {
         const handlerNewToken = (newToken: string) => {
@@ -26,11 +28,17 @@ export function AuthProvider({ children }: AuthProviderProps ) {
         if (token) {
             try {
                 const decodedToken = jwtDecode<DecodedToken>(token);
-                setUser({ id: decodedToken.sub, role: decodedToken.role });
-                ApiClient.defaults.headers.common['Authorization'] = `seokhoAccAuth ${token}`;
+
+                if (decodedToken.exp * 1000 < Date.now()) {
+                    console.log("저장된 토큰이 만료되어 자동으로 정리합니다.");
+                    logout();
+                } else {
+                    setUser({ id: decodedToken.sub, role: decodedToken.role });
+                    ApiClient.defaults.headers.common['Authorization'] = `seokhoAccAuth ${token}`;
+                }
             } catch (error) {
                 // 토큰이 유효하지 않은 형식일 경우 디코딩 에러 발생
-                console.error('유효하지 않은 토큰입니다.', error);
+                console.log('유효하지 않은 토큰입니다.', error);
                 logout(); // 잘못된 토큰이므로 로그아웃 처리
             }
         }
@@ -57,11 +65,15 @@ export function AuthProvider({ children }: AuthProviderProps ) {
     };
 
     const logout = () => {
-        localStorage.removeItem('id');
-        localStorage.removeItem('seokho_jwt');
-        delete ApiClient.defaults.headers.common['Authorization'];
-        setToken(null);
-        setUser(null);
+        if (token) {
+            localStorage.removeItem('id');
+            localStorage.removeItem('seokho_jwt');
+            delete ApiClient.defaults.headers.common['Authorization'];
+            alert('로그인 토큰 만료로 로그아웃 되었습니다. 로그인 페이지로 이동합니다.');
+            setToken(null);
+            setUser(null);
+            navigate('/login', { replace: true });
+        }
     };
 
     const value: AuthContextType = {

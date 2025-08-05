@@ -1,4 +1,4 @@
-package org.example.shopping.util.common;
+package org.example.shopping.util.common.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
@@ -32,8 +32,8 @@ public class JwtUtil {
     // @PostConstruct: 의존성 주입이 완료된 후 실행되는 메소드
     @PostConstruct
     public void init() {
-        // secret 값을 Base64 인코딩된 문자열로 다룹니다.
-        // String을 바이트 배열로 변환한 뒤, 이를 사용해 Key 객체를 생성합니다.
+        // secret 값을 Base64 인코딩된 문자열로 변환.
+        // String을 바이트 배열로 변환한 뒤, 이를 사용해 Key 객체를 생성.
         byte[] keyBytes = Base64.getDecoder().decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -57,11 +57,13 @@ public class JwtUtil {
                 .compact();
     }
 
+    // 아이디 만으로 refreshToken 생성.
     public String generateRefToken(String userId) {
+        Claims claims = Jwts.claims().setSubject(userId);
 
         return Jwts.builder()
-                .setSubject(userId)
-                .setExpiration(new Date(System.currentTimeMillis() + (expiration))) /* * 20 */
+                .setClaims(claims)
+                .setExpiration(new Date(System.currentTimeMillis() + (expiration * 20))) // test 2분 기준 약 40분
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
@@ -71,9 +73,11 @@ public class JwtUtil {
 //    }
 
     // String 인 토큰의 payLoad 값을 모델로 변환해줌.
-    public LoginInfo extractUserObj(String token) {
+    // 이전에는 payload에 유저의 모든 정보를 다 담아서 넘기려고했는데 정보 탈취의 위험성이 있다고 보여서
+    // 주석 처리...
+    /*public LoginInfo extractUserObj(String token) {
 
-//        ObjectMapper obj = new ObjectMapper();
+        ObjectMapper obj = new ObjectMapper();
 
         try {
             // jwt 분해해서 String으로 변환.
@@ -93,7 +97,7 @@ public class JwtUtil {
         } catch (Exception e) {
             throw new RuntimeException("User object to JSON conversion failed", e);
         }
-    }
+    }*/
 
     /**
      * 토큰에서 Claims(정보)를 추출하는 메소드
@@ -108,15 +112,8 @@ public class JwtUtil {
                 .getBody(); // Claims 부분 반환
     }
 
-//    public Claims extractAuth(String token) {
-//        return Jwts.parser()
-//                .setSigningKey(secret)
-//                .parseClaimsJws(token)
-//                .getBody();
-//    }
-
     // 토큰이 아직 유효기간이 남았는지 체크. 지나면 로그인 안됨.
-    // 토큰이 유효하면 true, 만료되었으면 false.
+    // 토큰이 유효하면 false, 만료되었으면 true.
     public boolean isTokenExpired(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);

@@ -1,20 +1,17 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {useParams} from "react-router-dom";
+import ApiClient from "../util/ApiClient";
 
 import { CommonType } from "../../interfaces/CommonInterface";
 import { UserInfoType } from "../../interfaces/UserInterface";
 
 function UserDetail() {
     const { id } = useParams<{ id: string }>();
-
     const [ user, setUser ] = useState<UserInfoType | null>(null);
-
     // common 상태 관리
     const [ commonStat, setCommonStat ] = useState<CommonType>({
         loading: true, error: ""
     });
-
 
     // id 값이 변경 되었을 때 (props, state 가 바뀌었을 때, 마운트 될 때) 발동.
     // deps 에 특정 값을 넣게 된다면 컴포넌트가 처음 마운트 될 때, 지정한 값이 바뀔 때, 언마운트 될 때, 값이 바뀌기 직전에 모두 호출.
@@ -26,7 +23,7 @@ function UserDetail() {
 
         const fetchUserInfo = async (id: string) => {
             try {
-                const res = await axios.get(`http://localhost:8080/api/user/${id}`);
+                const res = await ApiClient.get(`/user/${id}`);
                 setUser(res.data.data);
             } catch (err) {
                 setCommonStat(prev => ({

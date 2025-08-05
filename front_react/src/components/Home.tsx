@@ -1,3 +1,4 @@
+/*
 import React from "react";
 import {Link, useLocation} from "react-router-dom";
 import {PropsType} from "../interfaces/PropsInterface";
@@ -46,4 +47,4 @@ function Home({ propLoginInfo, setLoginInfo }: PropsType) {
     )
 }
 
-export default Home;
+export default Home;*/

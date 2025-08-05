@@ -20,11 +20,18 @@ function UserList() {
                 setUsers(res.data.data);
             })
             .catch(error => {
-                console.log('Error fetching data:', error);
-                setCommonStat(prev => ({
-                    ...prev,
-                    error: '데이터를 불러오는 중 오류가 발생했습니다. : ' + error
-                }))
+                if (error.status === 401) {
+                    setCommonStat(prev => ({
+                        ...prev,
+                        error: '접근 권한이 없습니다.'
+                    }))
+                } else {
+                    console.log('Error fetching data:', error);
+                    setCommonStat(prev => ({
+                        ...prev,
+                        error: '데이터를 불러오는 중 오류가 발생했습니다. : ' + error.message
+                    }))
+                }
             })
             .finally(() => {
                 setCommonStat(prev => ({

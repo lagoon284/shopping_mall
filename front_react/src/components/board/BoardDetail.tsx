@@ -5,7 +5,6 @@ import {useAuth} from "../../contexts/AuthContext";
 
 import {CommonType} from "../../interfaces/CommonInterface";
 import {BoardDetailType} from "../../interfaces/BoardInterface";
-import { PropsType } from "../../interfaces/PropsInterface";
 
 export default function BoardDetail() {
     const { user } = useAuth();
@@ -67,9 +66,9 @@ export default function BoardDetail() {
                         viewCnt: boardData.viewCnt + 1
                     })
                     return;
-                } else {
+                } /*else {
                     console.log(commonStat.error + res.data);
-                }
+                }*/
             } catch (e) {
                 console.log('조회수 증가 API 호출 중 에러:', e);
                 setCommonStat(prev => ({

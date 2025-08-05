@@ -9,29 +9,22 @@ import {BoardInsFormDataType} from "../../interfaces/BoardInterface";
 export default function BoardRegister() {
     const { user, logout, isLoggedIn } = useAuth();
     const navigate = useNavigate();
-
     // 로딩상태 관리
     const [ commonStat, setCommonStat ] = useState<CommonType>({
         loading: true,
         error: ""
     })
-
     const [ formData, setFormData ] = useState<BoardInsFormDataType>({
         // 사용할 상태변수 초기화.
         title: "", content: "", writer: "", writerId: user?.id,
-
         // 사용할 메세지 상태변수 초기화.
         titleMsg: "", contentMsg: "", writerMsg: "",
-
         // 유효성 상태변수 초기화.
         isTitle: false, isContent: false, isWriter: false,
-
         // 기타 적용 사항.
         isNotice: false, isSecret: false, isDraft: false,
-
         // 기타 상태 표시.
         status: 0, parentId: 0, depth: 0,
-
         // 첨부파일 및 이미지파일
         attachments: null, images: null
     });

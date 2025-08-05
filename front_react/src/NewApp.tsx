@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {Route, Routes, useNavigate} from "react-router-dom";
+import React from "react";
+import {Route, Routes} from "react-router-dom";
 
 // Layout Components
 import Sidebar from "./components/layout/Sidebar";
 import Footer from "./components/layout/Footer";
 import PageLayout from "./components/layout/PageLayout";
+import PrivateRoute from "./components/util/PrivateRoute";
 
 // Page Components
 import Signup from "./components/user/Signup";
@@ -19,43 +20,11 @@ import BoardList from "./components/board/BoardList";
 import BoardDetail from "./components/board/BoardDetail";
 
 // Interfaces
-import { LoginDetailType } from "./interfaces/UserInterface";
 import {useAuth} from "./contexts/AuthContext";
 
 function NewApp() {
-    // const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
+    // 로그인 되어있는지 여부.
     const { isLoggedIn } = useAuth();
-    const [ loginInfo, setLoginInfo ] = useState<LoginDetailType | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true); // 로딩 상태를 더 간단하게 관리
-
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const getId = localStorage.getItem('id');
-        const getJwt = localStorage.getItem('seokho_jwt');
-
-        if (!getJwt) {
-            setLoginInfo(null);
-            setIsLoading(false);
-            return;
-        } else {
-            setLoginInfo({
-                userId: getId,
-                accessToken: getJwt
-            })
-        }
-
-        setIsLoading(false);
-
-    }, [navigate, isLoggedIn]); // getJwt 값이 변경될 때만 실행되도록 수정
-
-    if (isLoading) {
-        return (
-            <div className={'Loading'}>
-                <h1>로딩 중 입니다. 기다리세요. </h1>
-            </div>
-        );
-    }
 
     return (
         // 최상위 div의 클래스를 app-layout으로 변경하여 CSS가 올바르게 적용되도록 합니다.
@@ -78,18 +47,26 @@ function NewApp() {
                         <Route path={"/login"} element={<PageLayout><Login /></PageLayout>} />
 
                         {/* 로그인하지 않았을 때만 회원가입 페이지를 보여줍니다. */}
-                        {!loginInfo && <Route path={"/user/signup"} element={<PageLayout><Signup /></PageLayout>} />}
+                        {!isLoggedIn && <Route path={"/user/signup"} element={<PageLayout><Signup /></PageLayout>} />}
 
-                        <Route path={"/user/allUserSelect"} element={<PageLayout><UserList /></PageLayout>} />
+                        <Route path={"/user/allUserSelect"} element={   <PrivateRoute requiredRole={'ADMIN'}>
+                                                                            <PageLayout>
+                                                                                <UserList />
+                                                                            </PageLayout>
+                                                                        </PrivateRoute>} />
                         <Route path={"/user/:id"} element={<PageLayout><UserDetail /></PageLayout>} />
 
                         <Route path={"/product/infoProds"} element={<PageLayout><ProductList /></PageLayout>} />
-                        <Route path={"/product/insert"} element={<PageLayout><ProductRegister /></PageLayout>} />
+                        <Route path={"/product/insert"} element={<PrivateRoute requiredRole={'ADMIN'}><PageLayout><ProductRegister /></PageLayout></PrivateRoute>} />
                         <Route path={"/product/:prodSeqNo"} element={<PageLayout><ProductDetail /></PageLayout>} />
 
                         <Route path={"/board/getList"} element={<PageLayout><BoardList /></PageLayout>} />
                         <Route path={"/board/:seqNo"} element={<PageLayout><BoardDetail /></PageLayout>} />
-                        <Route path={"/board/boardReg"} element={<PageLayout><BoardRegister /></PageLayout>} />
+                        <Route path={"/board/boardReg"} element={   <PrivateRoute requiredRole={'USER'}>
+                                                                        <PageLayout>
+                                                                            <BoardRegister />
+                                                                        </PageLayout>
+                                                                    </PrivateRoute>} />
                     </Routes>
                 </main>
                 <Footer />

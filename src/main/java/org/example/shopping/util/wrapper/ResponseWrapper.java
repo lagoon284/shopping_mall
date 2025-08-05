@@ -25,7 +25,7 @@ import java.lang.reflect.ParameterizedType;
 @RequiredArgsConstructor                                                        // 필드의 의존성 주입을 위한 어노테이션.
 public class ResponseWrapper implements ResponseBodyAdvice<Object> {
 
-    private final ObjectMapper objectMapper;
+    // private final ObjectMapper objectMapper;
 
     // wrapper 클래스로 감쌀지 말지 명확하게 결정하는 메소드.
     // ResponseEntity 타입 return 인지 / ApiRes 타입 return 인지 확인.
